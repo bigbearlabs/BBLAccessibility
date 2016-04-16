@@ -17,3 +17,4 @@ FOUNDATION_EXPORT const unsigned char BBLAccessibilityVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <BBLAccessibility/PublicHeader.h>
 
 
+#import "BBLAccessibilityWindowWatcher.h"

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:../../../../../../../../../../../../../Shared/Users/ilo/dev/src/bigbearlabs/contexter/webbuddy-motion/ext/BBLAccessibility/BBLAccessibility.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "container:../../../../../../../../../../Network/Servers/tunip.local/Shared/Users/ilo/dev/src/bigbearlabs/contexter/webbuddy-motion/ext/NMAccessibility/NMTest001.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../../../../../../../../../../Shared/Users/ilo/dev/src/bigbearlabs/contexter/webbuddy-motion/ext/BBLAccessibility/Silica/Silica.xcodeproj">
+   </FileRef>
+</Workspace>
