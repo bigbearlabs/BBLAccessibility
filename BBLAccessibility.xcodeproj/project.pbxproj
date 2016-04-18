@@ -15,9 +15,9 @@
 		51100F331CC15D540095B985 /* BBLAccessibilityAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51100F321CC15D540095B985 /* BBLAccessibilityAppUITests.swift */; };
 		51100F3D1CC15D660095B985 /* BBLAccessibilityWindowWatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 51100F3B1CC15D660095B985 /* BBLAccessibilityWindowWatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		51100F3E1CC15D660095B985 /* BBLAccessibilityWindowWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 51100F3C1CC15D660095B985 /* BBLAccessibilityWindowWatcher.m */; };
-		51100F441CC15DD20095B985 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F431CC15DD20095B985 /* Silica.framework */; };
 		51100F451CC15DED0095B985 /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
 		51100F461CC15DED0095B985 /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5135279B1CC57AE400E2B2B4 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5135279A1CC57AE400E2B2B4 /* Silica.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,7 +68,7 @@
 		51100F3B1CC15D660095B985 /* BBLAccessibilityWindowWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBLAccessibilityWindowWatcher.h; sourceTree = "<group>"; };
 		51100F3C1CC15D660095B985 /* BBLAccessibilityWindowWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBLAccessibilityWindowWatcher.m; sourceTree = "<group>"; };
 		51100F3F1CC15DA30095B985 /* BBLAccessibilityApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBLAccessibilityApp-Bridging-Header.h"; sourceTree = "<group>"; };
-		51100F431CC15DD20095B985 /* Silica.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Silica.framework; path = "../../../../../../../../../../../../Volumes/ramdisk/DerivedData/NMTest001-gofsnckwadxrzsdueocbaizsaytr/Build/Products/Debug/Silica.framework"; sourceTree = "<group>"; };
+		5135279A1CC57AE400E2B2B4 /* Silica.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Silica.framework; path = "../../../../../../../../../Volumes/ramdisk/DerivedData/BBLAccessibility-bgisjunbhkdpnbcxwyuhectcesud/Build/Products/Debug/Silica.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,7 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51100F441CC15DD20095B985 /* Silica.framework in Frameworks */,
+				5135279B1CC57AE400E2B2B4 /* Silica.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,7 +112,7 @@
 				51100F211CC15D540095B985 /* BBLAccessibilityApp */,
 				51100F0D1CC15D200095B985 /* BBLAccessibility */,
 				51100F311CC15D540095B985 /* BBLAccessibilityAppUITests */,
-				51100F431CC15DD20095B985 /* Silica.framework */,
+				5135279A1CC57AE400E2B2B4 /* Silica.framework */,
 				5109F3F71CC17D56007E1D13 /* Cocoa.framework */,
 				51100F0C1CC15D200095B985 /* Products */,
 			);
@@ -616,6 +616,7 @@
 				5109F3D61CC17CAB007E1D13 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		51100F051CC15D200095B985 /* Build configuration list for PBXProject "BBLAccessibility" */ = {
 			isa = XCConfigurationList;

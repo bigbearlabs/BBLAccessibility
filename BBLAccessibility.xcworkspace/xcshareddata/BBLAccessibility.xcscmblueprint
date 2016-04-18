@@ -1,17 +1,22 @@
 {
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "0187FD8E7B296CEAF7520105D6EDD775240C7EBA",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
 
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
-    "6C71DF8D4EAED84A4BB92018D54642F26E11361D" : 0,
     "0167A075022F90ADECBC7CDCE171F2B857416BB6" : 0,
-    "06E7CE2D0ECFC9E9F3EE80734E82F3C3A4072C4C" : 0
+    "06E7CE2D0ECFC9E9F3EE80734E82F3C3A4072C4C" : 0,
+    "BE91C9C5ADF3ADEE2969E31AF581A0C779CC0273" : 0,
+    "0187FD8E7B296CEAF7520105D6EDD775240C7EBA" : 0,
+    "6C71DF8D4EAED84A4BB92018D54642F26E11361D" : 0
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "22C7A291-195D-4413-B080-B6004217B4C5",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "6C71DF8D4EAED84A4BB92018D54642F26E11361D" : "..\/..",
     "0167A075022F90ADECBC7CDCE171F2B857416BB6" : "NMAccessibility\/",
-    "06E7CE2D0ECFC9E9F3EE80734E82F3C3A4072C4C" : ".."
+    "06E7CE2D0ECFC9E9F3EE80734E82F3C3A4072C4C" : "..",
+    "BE91C9C5ADF3ADEE2969E31AF581A0C779CC0273" : "BBLAccessibility\/Silica\/",
+    "0187FD8E7B296CEAF7520105D6EDD775240C7EBA" : "BBLAccessibility\/",
+    "6C71DF8D4EAED84A4BB92018D54642F26E11361D" : "..\/.."
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "BBLAccessibility",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
@@ -23,6 +28,11 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0167A075022F90ADECBC7CDCE171F2B857416BB6"
     },
     {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:bigbearlabs\/BBLAccessibility.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0187FD8E7B296CEAF7520105D6EDD775240C7EBA"
+    },
+    {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "bitbucket.org:bigbearlabs\/webbuddy-motion.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "06E7CE2D0ECFC9E9F3EE80734E82F3C3A4072C4C"
@@ -31,6 +41,11 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "ssh:\/\/tunip.local\/git\/contexter.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6C71DF8D4EAED84A4BB92018D54642F26E11361D"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/SiO2\/Silica.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "BE91C9C5ADF3ADEE2969E31AF581A0C779CC0273"
     }
   ]
 }

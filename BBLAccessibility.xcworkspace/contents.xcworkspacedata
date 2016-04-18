@@ -2,12 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../../../../../../../../../../../../../Shared/Users/ilo/dev/src/bigbearlabs/contexter/webbuddy-motion/ext/BBLAccessibility/BBLAccessibility.xcodeproj">
+      location = "group:BBLAccessibility.xcodeproj">
    </FileRef>
    <FileRef
-      location = "container:../../../../../../../../../../Network/Servers/tunip.local/Shared/Users/ilo/dev/src/bigbearlabs/contexter/webbuddy-motion/ext/NMAccessibility/NMTest001.xcodeproj">
+      location = "group:NMAccessibility/NMTest001.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../../../../../../../../../../../../../Shared/Users/ilo/dev/src/bigbearlabs/contexter/webbuddy-motion/ext/BBLAccessibility/Silica/Silica.xcodeproj">
+      location = "group:NMAccessibility/../Silica/Silica.xcodeproj">
    </FileRef>
 </Workspace>
