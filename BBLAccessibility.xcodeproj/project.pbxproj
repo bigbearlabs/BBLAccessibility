@@ -18,6 +18,7 @@
 		51100F451CC15DED0095B985 /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
 		51100F461CC15DED0095B985 /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5135279B1CC57AE400E2B2B4 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5135279A1CC57AE400E2B2B4 /* Silica.framework */; };
+		5135279E1CC57E7600E2B2B4 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 5135279D1CC57E7600E2B2B4 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,7 +69,8 @@
 		51100F3B1CC15D660095B985 /* BBLAccessibilityWindowWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBLAccessibilityWindowWatcher.h; sourceTree = "<group>"; };
 		51100F3C1CC15D660095B985 /* BBLAccessibilityWindowWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBLAccessibilityWindowWatcher.m; sourceTree = "<group>"; };
 		51100F3F1CC15DA30095B985 /* BBLAccessibilityApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBLAccessibilityApp-Bridging-Header.h"; sourceTree = "<group>"; };
-		5135279A1CC57AE400E2B2B4 /* Silica.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Silica.framework; path = "../../../../../../../../../Volumes/ramdisk/DerivedData/BBLAccessibility-bgisjunbhkdpnbcxwyuhectcesud/Build/Products/Debug/Silica.framework"; sourceTree = "<group>"; };
+		5135279A1CC57AE400E2B2B4 /* Silica.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Silica.framework; path = "/Volumes/ramdisk/DerivedData/BBLAccessibility-bgisjunbhkdpnbcxwyuhectcesud/Build/Products/Debug/Silica.framework"; sourceTree = "<group>"; };
+		5135279D1CC57E7600E2B2B4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +150,7 @@
 				51100F261CC15D540095B985 /* MainMenu.xib */,
 				51100F291CC15D540095B985 /* Info.plist */,
 				51100F3F1CC15DA30095B985 /* BBLAccessibilityApp-Bridging-Header.h */,
+				5135279D1CC57E7600E2B2B4 /* README.md */,
 			);
 			path = BBLAccessibilityApp;
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5135279E1CC57E7600E2B2B4 /* README.md in Sources */,
 				51100F231CC15D540095B985 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
