@@ -8,7 +8,6 @@ Gathers source from extremely valuable repos, such as [Silica] and [NMTest001], 
 -[x] Getting information for windows for all apps
 -[x] Getting the selected text region
 -[x] Getting information for windows in the current space
--[x] Providing a good user experience to give the app the accessibility permission.
 -[ ] Moving a window to another screen or space
 
 
