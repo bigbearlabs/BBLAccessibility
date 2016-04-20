@@ -14,6 +14,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "942474B417DF67D700BF9B61"
+               BuildableName = "Silica.framework"
+               BlueprintName = "Silica"
+               ReferencedContainer = "container:Silica/Silica.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "51100F0A1CC15D200095B985"
                BuildableName = "BBLAccessibility.framework"
                BlueprintName = "BBLAccessibility"
@@ -29,6 +43,15 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "51100F0A1CC15D200095B985"
+            BuildableName = "BBLAccessibility.framework"
+            BlueprintName = "BBLAccessibility"
+            ReferencedContainer = "container:BBLAccessibility.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
