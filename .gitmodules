@@ -1,3 +1,3 @@
 [submodule "Silica"]
 	path = Silica
-	url = https://github.com/SiO2/Silica.git
+	url = git@github.com:bigbearlabs/Silica.git
