@@ -9,7 +9,6 @@
 import Cocoa
 import BBLAccessibility
 
-
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
@@ -26,6 +25,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Insert code here to tear down your application
   }
 
-
+  @IBAction
+  func action_showAccessibilityGrantDialog(sender: AnyObject) {
+    AccessibilityHelper.complainIfNeeded()
+  }
 }
 

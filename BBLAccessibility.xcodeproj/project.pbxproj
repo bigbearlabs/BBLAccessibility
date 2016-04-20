@@ -18,7 +18,8 @@
 		51100F451CC15DED0095B985 /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
 		51100F461CC15DED0095B985 /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5135279B1CC57AE400E2B2B4 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5135279A1CC57AE400E2B2B4 /* Silica.framework */; };
-		5135279E1CC57E7600E2B2B4 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 5135279D1CC57E7600E2B2B4 /* README.md */; };
+		513527A21CC583FB00E2B2B4 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 513527A11CC583FB00E2B2B4 /* ApplicationServices.framework */; };
+		513527A41CC5842500E2B2B4 /* AccessibilityHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513527A31CC5842500E2B2B4 /* AccessibilityHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,7 +71,8 @@
 		51100F3C1CC15D660095B985 /* BBLAccessibilityWindowWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBLAccessibilityWindowWatcher.m; sourceTree = "<group>"; };
 		51100F3F1CC15DA30095B985 /* BBLAccessibilityApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBLAccessibilityApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		5135279A1CC57AE400E2B2B4 /* Silica.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Silica.framework; path = "/Volumes/ramdisk/DerivedData/BBLAccessibility-bgisjunbhkdpnbcxwyuhectcesud/Build/Products/Debug/Silica.framework"; sourceTree = "<group>"; };
-		5135279D1CC57E7600E2B2B4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		513527A11CC583FB00E2B2B4 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		513527A31CC5842500E2B2B4 /* AccessibilityHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccessibilityHelper.swift; path = Silica/../BBLAccessibilityApp/AccessibilityHelper.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				513527A21CC583FB00E2B2B4 /* ApplicationServices.framework in Frameworks */,
 				5135279B1CC57AE400E2B2B4 /* Silica.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -111,6 +114,7 @@
 		51100F011CC15D200095B985 = {
 			isa = PBXGroup;
 			children = (
+				513527A11CC583FB00E2B2B4 /* ApplicationServices.framework */,
 				51100F211CC15D540095B985 /* BBLAccessibilityApp */,
 				51100F0D1CC15D200095B985 /* BBLAccessibility */,
 				51100F311CC15D540095B985 /* BBLAccessibilityAppUITests */,
@@ -136,6 +140,7 @@
 			children = (
 				51100F3B1CC15D660095B985 /* BBLAccessibilityWindowWatcher.h */,
 				51100F3C1CC15D660095B985 /* BBLAccessibilityWindowWatcher.m */,
+				513527A31CC5842500E2B2B4 /* AccessibilityHelper.swift */,
 				51100F0E1CC15D200095B985 /* BBLAccessibility.h */,
 				51100F101CC15D200095B985 /* Info.plist */,
 			);
@@ -150,7 +155,6 @@
 				51100F261CC15D540095B985 /* MainMenu.xib */,
 				51100F291CC15D540095B985 /* Info.plist */,
 				51100F3F1CC15DA30095B985 /* BBLAccessibilityApp-Bridging-Header.h */,
-				5135279D1CC57E7600E2B2B4 /* README.md */,
 			);
 			path = BBLAccessibilityApp;
 			sourceTree = "<group>";
@@ -350,6 +354,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				513527A41CC5842500E2B2B4 /* AccessibilityHelper.swift in Sources */,
 				51100F3E1CC15D660095B985 /* BBLAccessibilityWindowWatcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -358,7 +363,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5135279E1CC57E7600E2B2B4 /* README.md in Sources */,
 				51100F231CC15D540095B985 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -563,6 +567,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = BBLAccessibilityApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibilityApp;
@@ -578,6 +583,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = BBLAccessibilityApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibilityApp;
