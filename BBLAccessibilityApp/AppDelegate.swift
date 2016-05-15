@@ -8,6 +8,8 @@
 
 import Cocoa
 import BBLAccessibility
+import Silica
+
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
