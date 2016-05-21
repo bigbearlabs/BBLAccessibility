@@ -113,12 +113,12 @@
 		51100F011CC15D200095B985 = {
 			isa = PBXGroup;
 			children = (
-				51AC6CFA1CE6754D0078C2EE /* NMAccessibility.framework */,
-				51AC6CF61CE66E620078C2EE /* Silica.framework */,
-				513527A11CC583FB00E2B2B4 /* ApplicationServices.framework */,
 				51100F211CC15D540095B985 /* BBLAccessibilityApp */,
 				51100F0D1CC15D200095B985 /* BBLAccessibility */,
 				51100F311CC15D540095B985 /* BBLAccessibilityAppUITests */,
+				51AC6CFA1CE6754D0078C2EE /* NMAccessibility.framework */,
+				51AC6CF61CE66E620078C2EE /* Silica.framework */,
+				513527A11CC583FB00E2B2B4 /* ApplicationServices.framework */,
 				5109F3F71CC17D56007E1D13 /* Cocoa.framework */,
 				51100F0C1CC15D200095B985 /* Products */,
 			);
