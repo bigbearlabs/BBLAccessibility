@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "51A4008C1CB9CD29008F34E7"
+               BlueprintIdentifier = "51AC6CEC1CE66D340078C2EE"
                BuildableName = "NMAccessibility.framework"
                BlueprintName = "NMAccessibility"
                ReferencedContainer = "container:NMTest001.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "51A4008C1CB9CD29008F34E7"
+            BlueprintIdentifier = "51AC6CEC1CE66D340078C2EE"
             BuildableName = "NMAccessibility.framework"
             BlueprintName = "NMAccessibility"
             ReferencedContainer = "container:NMTest001.xcodeproj">
@@ -63,7 +63,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "51A4008C1CB9CD29008F34E7"
+            BlueprintIdentifier = "51AC6CEC1CE66D340078C2EE"
             BuildableName = "NMAccessibility.framework"
             BlueprintName = "NMAccessibility"
             ReferencedContainer = "container:NMTest001.xcodeproj">
