@@ -14,6 +14,8 @@ Gathers source from extremely valuable repos, such as [Silica] and [NMTest001], 
 
 
 
-This is for an app I'm building that manages working contexts on OS X. I wouldn't be able to make such a tool without valuable source that was open to explore, so I thought I'd share my findings with everyone. Your pull requests and suggestions are welcome.
+This is for an app I'm building that manages working contexts on OS X. I wouldn't be able to make such a tool without valuable source that was open to explore, so I thought I'd share my findings with everyone. 
+
+Your pull requests and suggestions are welcome.
 
 
