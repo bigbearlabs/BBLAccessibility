@@ -15,10 +15,10 @@
 		013D8CC3143C85A200AC2A43 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 013D8CC1143C85A200AC2A43 /* MainMenu.xib */; };
 		013D8CEC143CA34000AC2A43 /* TestWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 013D8CEB143CA34000AC2A43 /* TestWindowController.m */; };
 		013D8CEE143CA41200AC2A43 /* Window.xib in Resources */ = {isa = PBXBuildFile; fileRef = 013D8CED143CA41200AC2A43 /* Window.xib */; };
-		5135279C1CC57B7800E2B2B4 /* NMUIElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 013D8CD9143C8B5100AC2A43 /* NMUIElement.m */; };
 		5148948D1C091352005F43AB /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5148948C1C091352005F43AB /* WebKit.framework */; };
-		51AC6CF01CE66D350078C2EE /* NMAccessibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 51AC6CEF1CE66D340078C2EE /* NMAccessibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		51AC6CF51CE66D3B0078C2EE /* NMUIElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 013D8CD9143C8B5100AC2A43 /* NMUIElement.m */; };
+		51B8F2201DB509B100E79EEC /* NMAccessibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 51AC6CEF1CE66D340078C2EE /* NMAccessibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		51B8F2211DB50A4000E79EEC /* NMUIElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 013D8CD8143C8B5100AC2A43 /* NMUIElement.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,8 +35,8 @@
 		013D8CBE143C85A100AC2A43 /* TestAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestAppDelegate.h; sourceTree = "<group>"; };
 		013D8CBF143C85A100AC2A43 /* TestAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestAppDelegate.m; sourceTree = "<group>"; };
 		013D8CC2143C85A200AC2A43 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		013D8CD8143C8B5100AC2A43 /* NMUIElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NMUIElement.h; path = ../NMTest001/NMUIElement.h; sourceTree = "<group>"; };
-		013D8CD9143C8B5100AC2A43 /* NMUIElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NMUIElement.m; path = ../NMTest001/NMUIElement.m; sourceTree = "<group>"; };
+		013D8CD8143C8B5100AC2A43 /* NMUIElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMUIElement.h; sourceTree = "<group>"; };
+		013D8CD9143C8B5100AC2A43 /* NMUIElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMUIElement.m; sourceTree = "<group>"; };
 		013D8CEA143CA34000AC2A43 /* TestWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestWindowController.h; sourceTree = "<group>"; };
 		013D8CEB143CA34000AC2A43 /* TestWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestWindowController.m; sourceTree = "<group>"; };
 		013D8CED143CA41200AC2A43 /* Window.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Window.xib; sourceTree = "<group>"; };
@@ -143,8 +143,7 @@
 				013D8CD8143C8B5100AC2A43 /* NMUIElement.h */,
 				013D8CD9143C8B5100AC2A43 /* NMUIElement.m */,
 			);
-			name = NMUIElement;
-			path = NMAccessibility;
+			path = NMUIElement;
 			sourceTree = "<group>";
 		};
 		51AC6CEE1CE66D340078C2EE /* NMAccessibility */ = {
@@ -153,8 +152,7 @@
 				51AC6CEF1CE66D340078C2EE /* NMAccessibility.h */,
 				51AC6CF11CE66D350078C2EE /* Info.plist */,
 			);
-			name = NMAccessibility;
-			path = "NMAccessibility";
+			path = NMAccessibility;
 			sourceTree = "<absolute>";
 		};
 /* End PBXGroup section */
@@ -164,7 +162,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51AC6CF01CE66D350078C2EE /* NMAccessibility.h in Headers */,
+				51B8F2211DB50A4000E79EEC /* NMUIElement.h in Headers */,
+				51B8F2201DB509B100E79EEC /* NMAccessibility.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,7 +265,6 @@
 				013D8CB9143C85A100AC2A43 /* main.m in Sources */,
 				013D8CC0143C85A100AC2A43 /* TestAppDelegate.m in Sources */,
 				013D8CEC143CA34000AC2A43 /* TestWindowController.m in Sources */,
-				5135279C1CC57B7800E2B2B4 /* NMUIElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
