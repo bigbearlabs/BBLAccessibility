@@ -9,7 +9,7 @@
 import Cocoa
 import BBLAccessibility
 import Silica
-
+import ApplicationServices
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -19,6 +19,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   var watcher: BBLAccessibilityWindowWatcher?
   
   func applicationDidFinishLaunching(aNotification: NSNotification) {
+    print("trusted: #\(AXIsProcessTrusted())")
+    
     watcher = BBLAccessibilityWindowWatcher()
     watcher!.watchWindows()
   }
@@ -29,7 +31,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
   @IBAction
   func action_showAccessibilityGrantDialog(sender: AnyObject) {
-    AccessibilityHelper.complainIfNeeded()
+    // OUTDATED
+//    AccessibilityHelper.complainIfNeeded()
   }
 }
 
