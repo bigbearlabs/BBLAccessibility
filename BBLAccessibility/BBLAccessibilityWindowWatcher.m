@@ -138,6 +138,7 @@
       
 
       // observe appropriately for text selection handling.
+      // NOTE some apps, e.g. iterm, seem to fail to notify observers properly.
       [application observeNotification:kAXSelectedTextChangedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
