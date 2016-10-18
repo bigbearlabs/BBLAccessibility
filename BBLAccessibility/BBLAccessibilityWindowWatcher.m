@@ -142,8 +142,11 @@
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
                                  NMUIElement* nmElement = [[NMUIElement alloc] initWithElement:accessibilityElement.axElementRef];
-                                 id text = [nmElement selectedText];
-                                 [self onTextSelectionChanged:accessibilityElement selectedText:text];
+                                 NSString* text = [nmElement selectedText];
+                                 if (text.length > 0) {
+                                   [self onTextSelectionChanged:accessibilityElement selectedText:text];
+                                   // NOTE we won't get notified if text selection is cleared.
+                                 }
                                }];
       
       
