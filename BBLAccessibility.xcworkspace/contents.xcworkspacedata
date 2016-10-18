@@ -8,9 +8,9 @@
       location = "group:BBLAccessibility.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:NMAccessibility/NMTest001.xcodeproj">
+      location = "group:Silica/Silica.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:NMAccessibility/../Silica/Silica.xcodeproj">
+      location = "group:NMAccessibility/NMTest001.xcodeproj">
    </FileRef>
 </Workspace>

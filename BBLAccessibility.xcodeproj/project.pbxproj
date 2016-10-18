@@ -3,22 +3,25 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 47;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5109F3F81CC17D56007E1D13 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5109F3F71CC17D56007E1D13 /* Cocoa.framework */; };
 		51100F0F1CC15D200095B985 /* BBLAccessibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 51100F0E1CC15D200095B985 /* BBLAccessibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		51100F231CC15D540095B985 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51100F221CC15D540095B985 /* AppDelegate.swift */; };
 		51100F251CC15D540095B985 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51100F241CC15D540095B985 /* Assets.xcassets */; };
 		51100F281CC15D540095B985 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51100F261CC15D540095B985 /* MainMenu.xib */; };
 		51100F331CC15D540095B985 /* BBLAccessibilityAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51100F321CC15D540095B985 /* BBLAccessibilityAppUITests.swift */; };
-		51100F451CC15DED0095B985 /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
-		51100F461CC15DED0095B985 /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		513527A21CC583FB00E2B2B4 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 513527A11CC583FB00E2B2B4 /* ApplicationServices.framework */; };
-		513527A41CC5842500E2B2B4 /* AccessibilityHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513527A31CC5842500E2B2B4 /* AccessibilityHelper.swift */; };
-		51AC6CF71CE66E620078C2EE /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51AC6CF61CE66E620078C2EE /* Silica.framework */; };
-		51AC6CFB1CE6754D0078C2EE /* NMAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51AC6CFA1CE6754D0078C2EE /* NMAccessibility.framework */; };
+		51B8F2241DB5774100E79EEC /* BBLAccessibilityWindowWatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 51B8F2221DB5774100E79EEC /* BBLAccessibilityWindowWatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		51B8F2251DB5774100E79EEC /* BBLAccessibilityWindowWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B8F2231DB5774100E79EEC /* BBLAccessibilityWindowWatcher.m */; };
+		51B8F2571DB5820A00E79EEC /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51B8F2561DB5820A00E79EEC /* Silica.framework */; };
+		51B8F25D1DB582A200E79EEC /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
+		51B8F25E1DB582A200E79EEC /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		51B8F2621DB582E500E79EEC /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51B8F2561DB5820A00E79EEC /* Silica.framework */; };
+		51B8F2631DB582E500E79EEC /* Silica.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51B8F2561DB5820A00E79EEC /* Silica.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		51B8F2691DB5871300E79EEC /* NMAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51B8F2681DB5871300E79EEC /* NMAccessibility.framework */; };
+		51B8F26E1DB5873D00E79EEC /* NMAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51B8F2681DB5871300E79EEC /* NMAccessibility.framework */; };
+		51B8F26F1DB5873D00E79EEC /* NMAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51B8F2681DB5871300E79EEC /* NMAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,7 +32,7 @@
 			remoteGlobalIDString = 51100F1F1CC15D540095B985;
 			remoteInfo = BBLAccessibilityApp;
 		};
-		51100F471CC15DED0095B985 /* PBXContainerItemProxy */ = {
+		51B8F25F1DB582A200E79EEC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 51100F021CC15D200095B985 /* Project object */;
 			proxyType = 1;
@@ -39,13 +42,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		51100F491CC15DED0095B985 /* Embed Frameworks */ = {
+		51B8F2611DB582A200E79EEC /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				51100F461CC15DED0095B985 /* BBLAccessibility.framework in Embed Frameworks */,
+				51B8F25E1DB582A200E79EEC /* BBLAccessibility.framework in Embed Frameworks */,
+				51B8F26F1DB5873D00E79EEC /* NMAccessibility.framework in Embed Frameworks */,
+				51B8F2631DB582E500E79EEC /* Silica.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -54,7 +59,6 @@
 
 /* Begin PBXFileReference section */
 		5109F3CF1CC17CAB007E1D13 /* BBLAccessibilityMonolithic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BBLAccessibilityMonolithic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5109F3F71CC17D56007E1D13 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		51100F0B1CC15D200095B985 /* BBLAccessibility.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BBLAccessibility.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51100F0E1CC15D200095B985 /* BBLAccessibility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBLAccessibility.h; sourceTree = "<group>"; };
 		51100F101CC15D200095B985 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -67,10 +71,11 @@
 		51100F321CC15D540095B985 /* BBLAccessibilityAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BBLAccessibilityAppUITests.swift; sourceTree = "<group>"; };
 		51100F341CC15D540095B985 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		51100F3F1CC15DA30095B985 /* BBLAccessibilityApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBLAccessibilityApp-Bridging-Header.h"; sourceTree = "<group>"; };
-		513527A11CC583FB00E2B2B4 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
 		513527A31CC5842500E2B2B4 /* AccessibilityHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccessibilityHelper.swift; path = Silica/../BBLAccessibilityApp/AccessibilityHelper.swift; sourceTree = SOURCE_ROOT; };
-		51AC6CF61CE66E620078C2EE /* Silica.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Silica.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		51AC6CFA1CE6754D0078C2EE /* NMAccessibility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NMAccessibility.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		51B8F2221DB5774100E79EEC /* BBLAccessibilityWindowWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBLAccessibilityWindowWatcher.h; sourceTree = "<group>"; };
+		51B8F2231DB5774100E79EEC /* BBLAccessibilityWindowWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBLAccessibilityWindowWatcher.m; sourceTree = "<group>"; };
+		51B8F2561DB5820A00E79EEC /* Silica.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Silica.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		51B8F2681DB5871300E79EEC /* NMAccessibility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NMAccessibility.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,7 +83,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5109F3F81CC17D56007E1D13 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,9 +90,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51AC6CFB1CE6754D0078C2EE /* NMAccessibility.framework in Frameworks */,
-				51AC6CF71CE66E620078C2EE /* Silica.framework in Frameworks */,
-				513527A21CC583FB00E2B2B4 /* ApplicationServices.framework in Frameworks */,
+				51B8F2691DB5871300E79EEC /* NMAccessibility.framework in Frameworks */,
+				51B8F2571DB5820A00E79EEC /* Silica.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,7 +99,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51100F451CC15DED0095B985 /* BBLAccessibility.framework in Frameworks */,
+				51B8F25D1DB582A200E79EEC /* BBLAccessibility.framework in Frameworks */,
+				51B8F26E1DB5873D00E79EEC /* NMAccessibility.framework in Frameworks */,
+				51B8F2621DB582E500E79EEC /* Silica.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,10 +121,8 @@
 				51100F211CC15D540095B985 /* BBLAccessibilityApp */,
 				51100F0D1CC15D200095B985 /* BBLAccessibility */,
 				51100F311CC15D540095B985 /* BBLAccessibilityAppUITests */,
-				51AC6CFA1CE6754D0078C2EE /* NMAccessibility.framework */,
-				51AC6CF61CE66E620078C2EE /* Silica.framework */,
-				513527A11CC583FB00E2B2B4 /* ApplicationServices.framework */,
-				5109F3F71CC17D56007E1D13 /* Cocoa.framework */,
+				51B8F2561DB5820A00E79EEC /* Silica.framework */,
+				51B8F2681DB5871300E79EEC /* NMAccessibility.framework */,
 				51100F0C1CC15D200095B985 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -138,8 +141,10 @@
 		51100F0D1CC15D200095B985 /* BBLAccessibility */ = {
 			isa = PBXGroup;
 			children = (
-				513527A31CC5842500E2B2B4 /* AccessibilityHelper.swift */,
 				51100F0E1CC15D200095B985 /* BBLAccessibility.h */,
+				51B8F2221DB5774100E79EEC /* BBLAccessibilityWindowWatcher.h */,
+				51B8F2231DB5774100E79EEC /* BBLAccessibilityWindowWatcher.m */,
+				513527A31CC5842500E2B2B4 /* AccessibilityHelper.swift */,
 				51100F101CC15D200095B985 /* Info.plist */,
 			);
 			path = BBLAccessibility;
@@ -181,6 +186,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				51100F0F1CC15D200095B985 /* BBLAccessibility.h in Headers */,
+				51B8F2241DB5774100E79EEC /* BBLAccessibilityWindowWatcher.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,12 +236,12 @@
 				51100F1C1CC15D540095B985 /* Sources */,
 				51100F1D1CC15D540095B985 /* Frameworks */,
 				51100F1E1CC15D540095B985 /* Resources */,
-				51100F491CC15DED0095B985 /* Embed Frameworks */,
+				51B8F2611DB582A200E79EEC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				51100F481CC15DED0095B985 /* PBXTargetDependency */,
+				51B8F2601DB582A200E79EEC /* PBXTargetDependency */,
 			);
 			name = BBLAccessibilityApp;
 			productName = BBLAccessibilityApp;
@@ -275,18 +281,21 @@
 					};
 					51100F0A1CC15D200095B985 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 					51100F1F1CC15D540095B985 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 					51100F2D1CC15D540095B985 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 						TestTargetID = 51100F1F1CC15D540095B985;
 					};
 				};
 			};
 			buildConfigurationList = 51100F051CC15D200095B985 /* Build configuration list for PBXProject "BBLAccessibility" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -351,7 +360,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				513527A41CC5842500E2B2B4 /* AccessibilityHelper.swift in Sources */,
+				51B8F2251DB5774100E79EEC /* BBLAccessibilityWindowWatcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,10 +388,10 @@
 			target = 51100F1F1CC15D540095B985 /* BBLAccessibilityApp */;
 			targetProxy = 51100F2F1CC15D540095B985 /* PBXContainerItemProxy */;
 		};
-		51100F481CC15DED0095B985 /* PBXTargetDependency */ = {
+		51B8F2601DB582A200E79EEC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 51100F0A1CC15D200095B985 /* BBLAccessibility */;
-			targetProxy = 51100F471CC15DED0095B985 /* PBXContainerItemProxy */;
+			targetProxy = 51B8F25F1DB582A200E79EEC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -452,7 +461,6 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -499,7 +507,6 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -529,17 +536,14 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/NMAccessibility/build/Debug",
-				);
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = BBLAccessibility/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibility;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -551,17 +555,14 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/NMAccessibility/build/Debug",
-				);
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = BBLAccessibility/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibility;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -571,13 +572,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = BBLAccessibilityApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibilityApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BBLAccessibilityApp/BBLAccessibilityApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -587,12 +588,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = BBLAccessibilityApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibilityApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BBLAccessibilityApp/BBLAccessibilityApp-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -604,6 +605,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibilityAppUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = BBLAccessibilityApp;
 			};
 			name = Debug;
@@ -616,6 +618,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibilityAppUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = BBLAccessibilityApp;
 			};
 			name = Release;

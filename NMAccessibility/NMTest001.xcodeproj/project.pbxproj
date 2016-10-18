@@ -40,7 +40,6 @@
 		013D8CEA143CA34000AC2A43 /* TestWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestWindowController.h; sourceTree = "<group>"; };
 		013D8CEB143CA34000AC2A43 /* TestWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestWindowController.m; sourceTree = "<group>"; };
 		013D8CED143CA41200AC2A43 /* Window.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Window.xib; sourceTree = "<group>"; };
-		51100EF41CC134750095B985 /* Silica.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = Silica.framework; path = "/Volumes/ramdisk/DerivedData/NMTest001-gofsnckwadxrzsdueocbaizsaytr/Build/Products/Debug/Silica.framework"; sourceTree = "<absolute>"; };
 		5148948B1C090F0D005F43AB /* WebKitSystemInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebKitSystemInterface.h; sourceTree = "<group>"; };
 		5148948C1C091352005F43AB /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		51AC6CED1CE66D340078C2EE /* NMAccessibility.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NMAccessibility.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,7 +90,6 @@
 		013D8CAB143C85A100AC2A43 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				51100EF41CC134750095B985 /* Silica.framework */,
 				5148948C1C091352005F43AB /* WebKit.framework */,
 				013D8CAC143C85A100AC2A43 /* Cocoa.framework */,
 				013D8CAE143C85A100AC2A43 /* Other Frameworks */,
@@ -153,7 +151,7 @@
 				51AC6CF11CE66D350078C2EE /* Info.plist */,
 			);
 			path = NMAccessibility;
-			sourceTree = "<absolute>";
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
