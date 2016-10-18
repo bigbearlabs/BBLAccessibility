@@ -141,10 +141,11 @@
       [application observeNotification:kAXSelectedTextChangedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self onTextSelectionChanged:accessibilityElement];
+                                 NMUIElement* nmElement = [[NMUIElement alloc] initWithElement:accessibilityElement.axElementRef];
+                                 id text = [nmElement selectedText];
+                                 [self onTextSelectionChanged:accessibilityElement selectedText:text];
                                }];
       
-
       
       if (!watchedApps) {
         watchedApps = [@[] mutableCopy];
@@ -211,13 +212,8 @@
   NSLog(@"window resized: %@",window.title);  // NOTE title may not be available yet.
 }
 
--(void) onTextSelectionChanged:(SIAccessibilityElement*)element {
-  NMUIElement* nmElement = [[NMUIElement alloc] initWithElement:element.axElementRef];
-  id selection = [nmElement selectedText];
-  NSLog(@"text selection: %@", selection);
-//  DISABLED depends on NMAccessibility.
-  
-  NSLog(@"selected text changed on element %@", element);
+-(void) onTextSelectionChanged:(SIAccessibilityElement*)element selectedText:(NSString*)text {
+  NSLog(@"element: %@, selected text: %@", element, text);
 }
 
 
