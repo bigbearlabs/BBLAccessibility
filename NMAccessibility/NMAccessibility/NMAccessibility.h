@@ -17,4 +17,4 @@ FOUNDATION_EXPORT const unsigned char NMAccessibilityVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <NMAccessibility/PublicHeader.h>
 
 
-#import <NMAccessibility/UIElement.h>
+#import <NMAccessibility/NMUIElement.h>
