@@ -138,13 +138,18 @@
       
 
       // observe appropriately for text selection handling.
+      // NOTE some apps, e.g. iterm, seem to fail to notify observers properly.
       [application observeNotification:kAXSelectedTextChangedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self onTextSelectionChanged:accessibilityElement];
+                                 NMUIElement* nmElement = [[NMUIElement alloc] initWithElement:accessibilityElement.axElementRef];
+                                 NSString* text = [nmElement selectedText];
+                                 if (text.length > 0) {
+                                   [self onTextSelectionChanged:accessibilityElement selectedText:text];
+                                   // NOTE we won't get notified if text selection is cleared.
+                                 }
                                }];
       
-
       
       if (!watchedApps) {
         watchedApps = [@[] mutableCopy];
@@ -211,13 +216,8 @@
   NSLog(@"window resized: %@",window.title);  // NOTE title may not be available yet.
 }
 
--(void) onTextSelectionChanged:(SIAccessibilityElement*)element {
-  NMUIElement* nmElement = [[NMUIElement alloc] initWithElement:element.axElementRef];
-  id selection = [nmElement selectedText];
-  NSLog(@"text selection: %@", selection);
-//  DISABLED depends on NMAccessibility.
-  
-  NSLog(@"selected text changed on element %@", element);
+-(void) onTextSelectionChanged:(SIAccessibilityElement*)element selectedText:(NSString*)text {
+  NSLog(@"element: %@, selected text: %@", element, text);
 }
 
 
