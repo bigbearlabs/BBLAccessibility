@@ -143,8 +143,9 @@
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
                                  NMUIElement* nmElement = [[NMUIElement alloc] initWithElement:accessibilityElement.axElementRef];
-                                 NSString* text = nmElement.selectedText;
-                                 CGRect bounds = nmElement.selectionBounds;
+                                 NSDictionary* accessibilityInfo = nmElement.accessibilityInfo;
+                                 NSString* text = accessibilityInfo[@"selectedText"];
+                                 CGRect bounds = NSRectFromString(accessibilityInfo[@"selectionBounds"]);
                                  if (text.length > 0) {
                                    [self onTextSelectionChanged:accessibilityElement text:text bounds:bounds];
                                    // NOTE we won't get notified if text selection is cleared.
@@ -218,7 +219,7 @@
 }
 
 -(void) onTextSelectionChanged:(SIAccessibilityElement*)element text:(NSString*)text bounds:(CGRect)bounds {
-  NSLog(@"element: %@, selected text: %@", element, text);
+  NSLog(@"element: %@, selected text: %@, bounds: %@", element, text, [NSValue valueWithRect:bounds]);
 }
 
 
