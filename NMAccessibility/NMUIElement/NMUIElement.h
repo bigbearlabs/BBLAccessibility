@@ -21,8 +21,8 @@
 @property (readonly) pid_t pid;
 
 @property (readonly) NSString *selectedText;
-@property (readonly) NSString *firstSelectedTextInHierarchy;
-@property (readwrite) CGRect selectionBounds;
+@property (readonly) CGRect selectionBounds;
+
 @property (readonly) NSString *role;
 @property (readonly) NSString *subRole;
 @property (readonly) NSString *title;

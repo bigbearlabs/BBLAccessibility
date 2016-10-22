@@ -73,26 +73,15 @@ typedef void (^NMAXObservationHandler)(void);
       
     }];
 
-    // TODO to handle text selection without mouse, observe kAXSelectedTextChangedNotification, find ui element for text selection, get accessibility info.
-//    NMAXObservationHandler handler = ^ {
-//      
-//    };
-//    [[NMAXObservationCentre sharedInstance] observe:kAXSelectedTextChangedNotification withHandler:handler];
-// ABORT we need to do this per element, making this approach impractical.
-  
-//  IT2
-//  observe systemwide element for focuseduielement changes, observe focused element for selected text changes and clean up prior observation.
-  
-//  IT3
     // periodically poll for info on first responder element.
-
     timer=[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timerRoutine) userInfo:nil repeats:YES];
+  
+    // ALT: observe systemwide element for focuseduielement changes, observe focused element for selected text changes.
 }
 
 -(void)timerRoutine {
   NMUIElement* focusedElement = [NMUIElement focusedElement];
-  id selectedText = focusedElement.firstSelectedTextInHierarchy;
-  NSLog(@"focusedElement: %@ details: %@", focusedElement, (selectedText?selectedText : [NSNull null]));
+  NSLog(@"focusedElement: %@ selectedText: %@ selectionBounds: %@", focusedElement, focusedElement.selectedText, focusedElement.selectionBounds);
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender

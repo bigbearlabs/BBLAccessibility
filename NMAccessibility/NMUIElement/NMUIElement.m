@@ -107,10 +107,13 @@ static AXUIElementRef _systemWide = NULL;
 //  [info setObject:[NSNumber numberWithInt:windowId] forKey:@"windowId"];
   
   // selectedText, selectionBounds.
-  id selectedText = self.firstSelectedTextInHierarchy;
-  if (selectedText) {
-    [info setObject:selectedText forKey:@"selectedText"];
-    [info setObject:NSStringFromRect(selectionBounds) forKey:@"selectionBounds"];
+  NMUIElement* elementWithSelection = self.firstChildElementWithSelection;
+  if (elementWithSelection) {
+    id text = elementWithSelection.selectedText;
+    if (text) info[@"selectedText"] = text;
+    
+    id bounds = NSStringFromRect(elementWithSelection.selectionBounds);
+    if (bounds) info[@"selectionBounds"] = bounds;
   }
   
   // FIXME doens't work with webviews.
@@ -141,15 +144,13 @@ static AXUIElementRef _systemWide = NULL;
 
 - (NSString *)selectedText
 {
-  CFTypeRef result;
+  CFTypeRef result = NULL;
   AXUIElementCopyAttributeValue(elementRef, kAXSelectedTextAttribute, &result);
-  return (NSString*)CFBridgingRelease(result);
-  
-  //  TODO ranges available with:
-  // kAXSelectedTextRangeAttribute
-  // kAXSelectedTextRangesAttribute
-  
-  
+  if (result) {
+    return (NSString*)CFBridgingRelease(result);
+  } else {
+    return self.selectedTextForWebArea;
+  }
 }
 
 - (NSString *)selectedTextForWebArea {
@@ -173,71 +174,81 @@ static AXUIElementRef _systemWide = NULL;
   AXValueRef selectedRangeValue = NULL;
   // range
   AXError err = AXUIElementCopyAttributeValue(self.elementRef, kAXSelectedTextRangeAttribute, (CFTypeRef *)&selectedRangeValue);
-  if (err == kAXErrorSuccess) {
-    AXValueRef selectionBoundsValue = NULL;
-    if (AXUIElementCopyParameterizedAttributeValue(self.elementRef, kAXBoundsForRangeParameterizedAttribute, selectedRangeValue, (CFTypeRef *)&selectionBoundsValue) == kAXErrorSuccess) {
-      // get value out
+  if (err != kAXErrorSuccess) {
+    // try web area range query.
+    err = AXUIElementCopyAttributeValue(elementRef, CFSTR("AXSelectedTextMarkerRange"), (CFTypeRef *)&selectedRangeValue);
+    
+    if (err != kAXErrorSuccess) {
+      // CASE Preview.app: AXGroup doesn't have the selectedTextRange, but its child AXStaticText does.
+      if ([self.role isEqualToString:(__bridge NSString*)kAXGroupRole]) {
+        AXUIElementRef staticText = (__bridge AXUIElementRef)(self.children[0]);
+        NMUIElement* staticTextElem = [[NMUIElement alloc] initWithElement:staticText];
+        CGRect result = staticTextElem.selectionBounds;
+        return result;
+      }
+      
+      else {
+        NSLog(@"query for selection ranged failed on %@", self);
+        NSLog(@"diagnosis: %@", self.description);
+        return CGRectZero;
+      }
+    }
+  }
+  
+  AXValueRef selectionBoundsValue = NULL;
+  if (AXUIElementCopyParameterizedAttributeValue(self.elementRef, kAXBoundsForRangeParameterizedAttribute, selectedRangeValue, (CFTypeRef *)&selectionBoundsValue) == kAXErrorSuccess) {
+    // get value out
+    CGRect result;
+    AXValueGetValue(selectionBoundsValue, kAXValueCGRectType, &result);
+    
+    if (selectedRangeValue) CFRelease(selectedRangeValue);
+    if (selectionBoundsValue) CFRelease(selectionBoundsValue);
+    
+    // NSLog(@"bounds: %@", [NSValue valueWithRect:selectionBounds]);
+    
+    return result;
+  }
+  else {
+    // couldn't query rect.
+    
+    CFArrayRef names = NULL;
+    AXUIElementCopyParameterizedAttributeNames(self.elementRef, &names);
+    
+    if (AXUIElementCopyParameterizedAttributeValue(self.elementRef, CFSTR("AXBoundsForTextMarkerRange"), selectedRangeValue, (CFTypeRef *)&selectionBoundsValue) == kAXErrorSuccess) {
+      // queried the webview-specific selection bounds.
       CGRect result;
       AXValueGetValue(selectionBoundsValue, kAXValueCGRectType, &result);
       
-      if (selectedRangeValue) CFRelease(selectedRangeValue);
-      if (selectionBoundsValue) CFRelease(selectionBoundsValue);
-      
-      // NSLog(@"bounds: %@", [NSValue valueWithRect:selectionBounds]);
+      // TODO release.
       
       return result;
     }
-  } else {
-    // failing. why?
-    NSLog(@"diagnosis: %@", self.description);
-    
-    // CASE AXGroup from preview doesn't have the selectedTextRange, but its child AXStaticText does.
-    if ([self.role isEqualToString:(__bridge NSString*)kAXGroupRole]) {
-      AXUIElementRef staticText = (__bridge AXUIElementRef)(self.children[0]);
-      NMUIElement* staticTextElem = [[NMUIElement alloc] initWithElement:staticText];
-      CGRect result = staticTextElem.selectionBounds;
-      return result;
-    }
+    return CGRectZero;
   }
   
-  if (AXUIElementCopyAttributeValue(self.elementRef, kAXSelectedTextRangesAttribute, (CFTypeRef *)&selectedRangeValue) == kAXErrorSuccess) {
-    
-  }
-  
-  return CGRectZero;
-  
-  //  TODO ensure releases.
+  //  TODO ensure all cfref's are released.
 }
 
--(void) setSelectionBounds:(CGRect)aSelectionBounds {
-  selectionBounds = aSelectionBounds;
-}
-
-- (NSString*) firstSelectedTextInHierarchy {
+- (NMUIElement*)firstChildElementWithSelection {
   NMUIElement* element = self;
   while (element) {
     id text = element.selectedText;
-    if (text) {
-      // HACK!
-      selectionBounds = element.selectionBounds;
-      
-      return text;
+    
+    if (text == nil) {
+      // web area selection?
+      text = element.selectedTextForWebArea;
     }
-    else
+    
+    if (text) {
+      return element;
+    }
+    else {
+      // walk up element tree.
       element = element.parentElement;
+    }
   }
   
-  // no selectedText found in element hierarchy. fall back to webview selection detection.
-  element = self;
-  while (element) {
-    id text = element.selectedTextForWebArea;
-    if (text)
-      return text;
-    else
-      element = element.parentElement;
-  }
-  
-  // there is no selection detected.
+  // couldn't retrieve selected text.
   return nil;
 }
 
