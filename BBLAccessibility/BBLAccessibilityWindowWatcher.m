@@ -143,9 +143,10 @@
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
                                  NMUIElement* nmElement = [[NMUIElement alloc] initWithElement:accessibilityElement.axElementRef];
-                                 NSString* text = [nmElement selectedText];
+                                 NSString* text = nmElement.selectedText;
+                                 CGRect bounds = nmElement.selectionBounds;
                                  if (text.length > 0) {
-                                   [self onTextSelectionChanged:accessibilityElement selectedText:text];
+                                   [self onTextSelectionChanged:accessibilityElement text:text bounds:bounds];
                                    // NOTE we won't get notified if text selection is cleared.
                                  }
                                }];
@@ -216,7 +217,7 @@
   NSLog(@"window resized: %@",window.title);  // NOTE title may not be available yet.
 }
 
--(void) onTextSelectionChanged:(SIAccessibilityElement*)element selectedText:(NSString*)text {
+-(void) onTextSelectionChanged:(SIAccessibilityElement*)element text:(NSString*)text bounds:(CGRect)bounds {
   NSLog(@"element: %@, selected text: %@", element, text);
 }
 

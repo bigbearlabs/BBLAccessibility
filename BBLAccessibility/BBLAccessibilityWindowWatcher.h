@@ -30,7 +30,7 @@
 
 -(void) onWindowResized:(SIWindow*)window;
 
--(void) onTextSelectionChanged:(SIAccessibilityElement*)element selectedText:(NSString*)text;
+-(void) onTextSelectionChanged:(SIAccessibilityElement*)element text:(NSString*)text bounds:(CGRect)bounds;
 
 
 -(SIWindow*) keyWindowForApplication:(SIApplication*) application;
