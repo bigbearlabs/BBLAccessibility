@@ -1,8 +1,7 @@
 //
 //  BBLAccessibilityWindowWatcher.m
-//  NMTest001
 //
-//  Created by ilo on 15/04/2016.
+//  Created by Andy Park on 15/04/2016.
 //
 //
 
