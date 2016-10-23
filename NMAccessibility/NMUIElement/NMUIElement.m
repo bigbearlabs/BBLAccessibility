@@ -97,7 +97,7 @@ static AXUIElementRef _systemWide = NULL;
   NSPoint origin = window.origin;
   NSSize size = window.size;
   NSRect windowRect = NSMakeRect(origin.x, origin.y, size.width, size.height);
-  [info setObject:NSStringFromRect(windowRect) forKey:@"windowRect"];
+  info[@"windowRect"] = [NSValue valueWithRect:windowRect];
   
 //  // window id.
 //  CGWindowID windowId = [NMUIElement windowIdForElement:window.elementRef];
@@ -109,11 +109,8 @@ static AXUIElementRef _systemWide = NULL;
   // selectedText, selectionBounds.
   NMUIElement* elementWithSelection = self.firstChildElementWithSelection;
   if (elementWithSelection) {
-    id text = elementWithSelection.selectedText;
-    info[@"selectedText"] = text;
-    
-    id bounds = NSStringFromRect(elementWithSelection.selectionBounds);
-    info[@"selectionBounds"] = bounds;
+    info[@"selectedText"] = elementWithSelection.selectedText;
+    info[@"selectionBounds"] = [NSValue valueWithRect:elementWithSelection.selectionBounds];
   }
   
   
