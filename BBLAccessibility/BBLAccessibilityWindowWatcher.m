@@ -9,10 +9,19 @@
 #import "BBLAccessibilityWindowWatcher.h"
 #import <NMAccessibility/NMAccessibility.h>
 
+@interface BBLAccessibilityWindowWatcher ()
+
+@property(copy) NSDictionary* accessibilityInfo;  // for the focused app / window.
+
+@end
+
+
+
 @implementation BBLAccessibilityWindowWatcher
 {
   NSMutableArray* watchedApps;
 }
+
 
 // return non-primitive type to work around RM interface botch.
 -(NSNumber*) isExcludedApp:(NSRunningApplication*) application {
@@ -89,42 +98,56 @@
       [application observeNotification:kAXFocusedWindowChangedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
+                                 self.accessibilityInfo = [self accessibilityInfoFor:accessibilityElement.axElementRef];
+                                 
                                  [self onFocusedWindowChanged:(SIWindow*)accessibilityElement];
                                }];
       
       [application observeNotification:kAXWindowCreatedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
+                                 self.accessibilityInfo = [self accessibilityInfoFor:accessibilityElement.axElementRef];
+
                                  [self onWindowCreated:(SIWindow*)accessibilityElement];
                                }];
       
       [application observeNotification:kAXTitleChangedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
+                                 self.accessibilityInfo = [self accessibilityInfoFor:accessibilityElement.axElementRef];
+
                                  [self onTitleChanged:accessibilityElement];
                                }];
 
       [application observeNotification:kAXWindowMiniaturizedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
+                                 self.accessibilityInfo = [self accessibilityInfoFor:accessibilityElement.axElementRef];
+
                                  [self onWindowMinimised:(SIWindow*)accessibilityElement];
                                }];
       
       [application observeNotification:kAXWindowDeminiaturizedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
+                                 self.accessibilityInfo = [self accessibilityInfoFor:accessibilityElement.axElementRef];
+
                                  [self onWindowUnminimised:(SIWindow*)accessibilityElement];
                                }];
       
       [application observeNotification:kAXWindowMovedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
+                                 self.accessibilityInfo = [self accessibilityInfoFor:accessibilityElement.axElementRef];
+
                                  [self onWindowMoved:(SIWindow*)accessibilityElement];
                                }];
       
       [application observeNotification:kAXWindowResizedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
+                                 self.accessibilityInfo = [self accessibilityInfoFor:accessibilityElement.axElementRef];
+
                                  [self onWindowResized:(SIWindow*)accessibilityElement];
                                }];
       
@@ -142,13 +165,11 @@
       [application observeNotification:kAXSelectedTextChangedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 NMUIElement* nmElement = [[NMUIElement alloc] initWithElement:accessibilityElement.axElementRef];
-                                 NSDictionary* accessibilityInfo = nmElement.accessibilityInfo;
-                                 NSString* text = accessibilityInfo[@"selectedText"];
-                                 CGRect bounds = NSRectFromString(accessibilityInfo[@"selectionBounds"]);
-                                 if (text.length > 0) {
-                                   [self onTextSelectionChanged:accessibilityElement text:text bounds:bounds];
-                                   // NOTE we won't get notified if text selection is cleared.
+                                 // guard: xcode spams us with notifs even when no text has changed, so only notify when value has changed.
+                                 NSDictionary* newAccessibilityInfo = [self accessibilityInfoFor:accessibilityElement.axElementRef];
+                                 if ((newAccessibilityInfo[@"selectedText"]) != self.accessibilityInfo[@"selectedText"]) {
+                                   self.accessibilityInfo = newAccessibilityInfo;
+                                   [self onTextSelectionChanged:accessibilityElement];
                                  }
                                }];
       
@@ -161,6 +182,11 @@
       NSLog(@"setup observers for %@", application);
     });
   }];
+}
+
+-(NSDictionary*) accessibilityInfoFor:(AXUIElementRef)element {
+  NMUIElement* nmElement = [[NMUIElement alloc] initWithElement:element];
+  return nmElement.accessibilityInfo;
 }
 
 -(void) unwatchApp:(SIApplication*)application {
@@ -218,8 +244,8 @@
   NSLog(@"window resized: %@",window.title);  // NOTE title may not be available yet.
 }
 
--(void) onTextSelectionChanged:(SIAccessibilityElement*)element text:(NSString*)text bounds:(CGRect)bounds {
-  NSLog(@"element: %@, selected text: %@, bounds: %@", element, text, [NSValue valueWithRect:bounds]);
+-(void) onTextSelectionChanged:(SIAccessibilityElement*)element {
+  NSLog(@"element: %@, ax info: %@", element, self.accessibilityInfo);
 }
 
 

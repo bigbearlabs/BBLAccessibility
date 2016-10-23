@@ -12,15 +12,19 @@
 
 @interface BBLAccessibilityWindowWatcher : NSObject
 
+
+@property(readonly) NSDictionary* accessibilityInfo;  // for the focused app / window.
+
+
 -(void) watchWindows;
 
 
--(void) onFocusedWindowChanged:(SIWindow*)window;
-
--(void) onWindowCreated:(SIWindow*)window;
-
 -(void) onApplicationActivated:(SIAccessibilityElement*)element;
 
+-(void) onFocusedWindowChanged:(SIWindow*)window;
+
+
+-(void) onWindowCreated:(SIWindow*)window;
 
 -(void) onWindowMinimised:(SIWindow*)window;
 
@@ -30,7 +34,8 @@
 
 -(void) onWindowResized:(SIWindow*)window;
 
--(void) onTextSelectionChanged:(SIAccessibilityElement*)element text:(NSString*)text bounds:(CGRect)bounds;
+
+-(void) onTextSelectionChanged:(SIAccessibilityElement*)element;
 
 
 -(SIWindow*) keyWindowForApplication:(SIApplication*) application;
