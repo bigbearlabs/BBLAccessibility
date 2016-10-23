@@ -13,7 +13,7 @@
 @interface BBLAccessibilityWindowWatcher : NSObject
 
 
-@property(readonly) NSDictionary* accessibilityInfo;  // for the focused app / window.
+@property(readonly) NSDictionary* accessibilityInfosByPid;  // for the focused app / window.
 
 
 -(void) watchWindows;
