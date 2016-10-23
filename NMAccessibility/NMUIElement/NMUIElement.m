@@ -15,9 +15,6 @@ static AXUIElementRef _systemWide = NULL;
 
 
 @implementation NMUIElement
-{
-  CGRect selectionBounds;
-}
 
 @synthesize elementRef;
 
@@ -100,23 +97,22 @@ static AXUIElementRef _systemWide = NULL;
   NSPoint origin = window.origin;
   NSSize size = window.size;
   NSRect windowRect = NSMakeRect(origin.x, origin.y, size.width, size.height);
-  [info setObject:NSStringFromRect(windowRect) forKey:@"windowRect"];
+  info[@"windowRect"] = [NSValue valueWithRect:windowRect];
   
 //  // window id.
 //  CGWindowID windowId = [NMUIElement windowIdForElement:window.elementRef];
 //  [info setObject:[NSNumber numberWithInt:windowId] forKey:@"windowId"];
+
+  // other AX info.
+  info[@"role"] = self.role;
   
   // selectedText, selectionBounds.
   NMUIElement* elementWithSelection = self.firstChildElementWithSelection;
   if (elementWithSelection) {
-    id text = elementWithSelection.selectedText;
-    if (text) info[@"selectedText"] = text;
-    
-    id bounds = NSStringFromRect(elementWithSelection.selectionBounds);
-    if (bounds) info[@"selectionBounds"] = bounds;
+    info[@"selectedText"] = elementWithSelection.selectedText;
+    info[@"selectionBounds"] = [NSValue valueWithRect:elementWithSelection.selectionBounds];
   }
   
-  // FIXME doens't work with webviews.
   
   // TODO for a more complete Accessibility information provider:
   
