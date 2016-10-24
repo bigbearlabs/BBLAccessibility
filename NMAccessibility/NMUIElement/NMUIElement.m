@@ -86,11 +86,13 @@ static AXUIElementRef _systemWide = NULL;
   //            return [[element title] isEqualToString:self.menuItemTitle];
   //        }];
   
-  id title = [appElement title];
-  [info setObject:(title ? title : [NSNull null]) forKey:@"appTitle"];
-  [info setObject:[NSNumber numberWithInt:[appElement pid]] forKey:@"pid"];
+  // app-level info.
+  info[@"appTitle"] = [appElement title];
+  info[@"pid"] = @([appElement pid]);
   //  }
   
+  // AX info.
+  info[@"role"] = self.role;
   
   // window info.
   NMUIElement* window = self.windowElement;
@@ -103,9 +105,6 @@ static AXUIElementRef _systemWide = NULL;
 //  CGWindowID windowId = [NMUIElement windowIdForElement:window.elementRef];
 //  [info setObject:[NSNumber numberWithInt:windowId] forKey:@"windowId"];
 
-  // other AX info.
-  info[@"role"] = self.role;
-  
   // selectedText, selectionBounds.
   NMUIElement* elementWithSelection = self.firstChildElementWithSelection;
   if (elementWithSelection) {
@@ -114,11 +113,16 @@ static AXUIElementRef _systemWide = NULL;
   }
   
   
-  // TODO for a more complete Accessibility information provider:
+  // TODO to provide a more complete AX information:
   
-  // PoC mouseover'ed URL.
-  
+  // (contexter)
   // PoC URL of resource represented by window.
+
+  // (xform)
+  // PoC Contents of content-containing control (e.g. TextView or web text area)
+  
+  // (webbuddy)
+  // PoC mouseover'ed URL.
   
   return info;
 }
@@ -149,12 +153,14 @@ static AXUIElementRef _systemWide = NULL;
   }
 }
 
+// selected text query specific for web views.
 - (NSString *)selectedTextForWebArea {
   CFTypeRef range = NULL;
   AXUIElementCopyAttributeValue(elementRef, CFSTR("AXSelectedTextMarkerRange"), &range);
   
   CFTypeRef val = NULL;
   AXError err = AXUIElementCopyParameterizedAttributeValue(self.elementRef, CFSTR("AXStringForTextMarkerRange"), range, &val);
+  
   if (range) CFRelease(range);
 
   if (err == kAXErrorSuccess) {
@@ -167,14 +173,15 @@ static AXUIElementRef _systemWide = NULL;
 }
 
 -(CGRect) selectionBounds {
+  // query selected text range.
   AXValueRef selectedRangeValue = NULL;
-  // range
   AXError err = AXUIElementCopyAttributeValue(self.elementRef, kAXSelectedTextRangeAttribute, (CFTypeRef *)&selectedRangeValue);
   if (err != kAXErrorSuccess) {
-    // try web area range query.
-    err = AXUIElementCopyAttributeValue(elementRef, CFSTR("AXSelectedTextMarkerRange"), (CFTypeRef *)&selectedRangeValue);
     
+    // query web area selected text range.
+    err = AXUIElementCopyAttributeValue(elementRef, CFSTR("AXSelectedTextMarkerRange"), (CFTypeRef *)&selectedRangeValue);
     if (err != kAXErrorSuccess) {
+      
       // CASE Preview.app: AXGroup doesn't have the selectedTextRange, but its child AXStaticText does.
       if ([self.role isEqualToString:(__bridge NSString*)kAXGroupRole]) {
         AXUIElementRef staticText = (__bridge AXUIElementRef)(self.children[0]);
@@ -191,38 +198,40 @@ static AXUIElementRef _systemWide = NULL;
     }
   }
   
+  // query bounds of range.
+  CGRect result;
   AXValueRef selectionBoundsValue = NULL;
   if (AXUIElementCopyParameterizedAttributeValue(self.elementRef, kAXBoundsForRangeParameterizedAttribute, selectedRangeValue, (CFTypeRef *)&selectionBoundsValue) == kAXErrorSuccess) {
     // get value out
-    CGRect result;
     AXValueGetValue(selectionBoundsValue, kAXValueCGRectType, &result);
-    
-    if (selectedRangeValue) CFRelease(selectedRangeValue);
-    if (selectionBoundsValue) CFRelease(selectionBoundsValue);
-    
-    // NSLog(@"bounds: %@", [NSValue valueWithRect:selectionBounds]);
-    
-    return result;
-  }
-  else {
-    // couldn't query rect.
-    
-    CFArrayRef names = NULL;
-    AXUIElementCopyParameterizedAttributeNames(self.elementRef, &names);
-    
-    if (AXUIElementCopyParameterizedAttributeValue(self.elementRef, CFSTR("AXBoundsForTextMarkerRange"), selectedRangeValue, (CFTypeRef *)&selectionBoundsValue) == kAXErrorSuccess) {
-      // queried the webview-specific selection bounds.
-      CGRect result;
-      AXValueGetValue(selectionBoundsValue, kAXValueCGRectType, &result);
-      
-      // TODO release.
-      
-      return result;
-    }
-    return CGRectZero;
   }
   
-  //  TODO ensure all cfref's are released.
+  else {
+    // couldn't query bounds of range.
+    
+    // DEBUG
+//    id names = [self parameterisedAttributeNames];
+//    NSLog(@"parameterised attribute names for %@: %@", self, names);
+    
+    // query bounds of web area selected text range.
+    if (AXUIElementCopyParameterizedAttributeValue(self.elementRef, CFSTR("AXBoundsForTextMarkerRange"), selectedRangeValue, (CFTypeRef *)&selectionBoundsValue) == kAXErrorSuccess) {
+      AXValueGetValue(selectionBoundsValue, kAXValueCGRectType, &result);
+    }
+    else {
+      // all queries for bounds failed.
+    }
+  }
+  
+  CFRelease(selectedRangeValue);
+  CFRelease(selectionBoundsValue);
+  
+  // NSLog(@"bounds: %@", [NSValue valueWithRect:rect]);
+  
+  if (CGRectIsEmpty(result)) {
+//    @throw [NSException exceptionWithName:@"AXQueryFailedException" reason:[NSString stringWithFormat:@"couldn't retrieve bounds for selected text on element %@", self] userInfo:nil];
+  }
+  
+  return result;
 }
 
 - (NMUIElement*)firstChildElementWithSelection {
@@ -629,6 +638,12 @@ static void _enumerate(void (^block)(NMUIElement *element, NSUInteger depth, con
     }
 
     return ids;
+}
+
+-(NSArray*) parameterisedAttributeNames {
+  CFArrayRef names = NULL;
+  AXUIElementCopyParameterizedAttributeNames(self.elementRef, &names);
+  return CFBridgingRelease(names);
 }
 
 @end
