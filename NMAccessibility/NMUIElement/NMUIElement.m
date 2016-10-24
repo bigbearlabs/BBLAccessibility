@@ -230,11 +230,6 @@ static AXUIElementRef _systemWide = NULL;
   while (element) {
     id text = element.selectedText;
     
-    if (text == nil) {
-      // web area selection?
-      text = element.selectedTextForWebArea;
-    }
-    
     if (text) {
       return element;
     }
