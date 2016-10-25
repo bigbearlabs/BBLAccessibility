@@ -12,24 +12,32 @@ import BBLAccessibility
 public class GenericWatcher: BBLAccessibilityWindowWatcher {
   
   @objc
-  public var accessibilityData: NSMutableDictionary = [:]
+  public var accessibilityData: NSDictionary = [:]
   
   override public func onApplicationActivated(element: SIAccessibilityElement) {
-    accessibilityData["current_app"] = element
+    let accessibilityData = NSMutableDictionary(dictionary: self.accessibilityData)
+    accessibilityData["currentApp"] = element
+    self.accessibilityData = accessibilityData
   }
   
   override public func onFocusedWindowChanged(window: SIWindow) {
-    accessibilityData["current_window"] = window
+    let accessibilityData = NSMutableDictionary(dictionary: self.accessibilityData)
+    accessibilityData["currentWindow"] = window
+    self.accessibilityData = accessibilityData
   }
 
   override public func onTitleChanged(element: SIAccessibilityElement) {
-    accessibilityData["current_title"] = element
+    let accessibilityData = NSMutableDictionary(dictionary: self.accessibilityData)
+    accessibilityData["currentWindowTitle"] = element
+    self.accessibilityData = accessibilityData
   }
   
   override public func onWindowMinimised(window: SIWindow) {
     if let currentWindow = accessibilityData["current_window"] as? SIWindow {
       if currentWindow.windowID() == window.windowID() {
-        accessibilityData["current_window"] = NSNull()
+        let accessibilityData = NSMutableDictionary(dictionary: self.accessibilityData)
+        accessibilityData["currentWindow"] = nil
+        self.accessibilityData = accessibilityData
       }
       
     }
