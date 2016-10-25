@@ -101,9 +101,9 @@ static AXUIElementRef _systemWide = NULL;
   NSRect windowRect = NSMakeRect(origin.x, origin.y, size.width, size.height);
   info[@"windowRect"] = [NSValue valueWithRect:windowRect];
   
-//  // window id.
-//  CGWindowID windowId = [NMUIElement windowIdForElement:window.elementRef];
-//  [info setObject:[NSNumber numberWithInt:windowId] forKey:@"windowId"];
+  // window id.
+  CGWindowID windowId = [NMUIElement windowIdForElement:window.elementRef];
+  info[@"windowId"] = @(windowId);
 
   // selectedText, selectionBounds.
   NMUIElement* elementWithSelection = self.firstChildElementWithSelection;
@@ -612,10 +612,12 @@ static void _enumerate(void (^block)(NMUIElement *element, NSUInteger depth, con
 #pragma mark AX util methods
 
 + (CGWindowID)windowIdForElement:(AXUIElementRef)element {
+  // IT1 using CG private API.
   CGWindowID out;
   _AXUIElementGetWindow(element, &out);
-  
   return out;
+  
+  // IT2 for MAS compliance, consider replacing with a filtering op from CGWindowList.
 }
 
 + (NSArray*) windowIdsForPid:(pid_t)pid {

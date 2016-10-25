@@ -7,7 +7,7 @@
 		<key>BBLAccessibility.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
 		<key>BBLAccessibilityApp.xcscheme_^#shared#^_</key>
 		<dict>
@@ -17,7 +17,12 @@
 		<key>BBLAccessibilityMonolithic.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>5</integer>
+			<integer>6</integer>
+		</dict>
+		<key>BBLAccessibilitySwift.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -38,6 +43,11 @@
 			<true/>
 		</dict>
 		<key>51100F2D1CC15D540095B985</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>51A1F8F01DBEDA4B00CF6E91</key>
 		<dict>
 			<key>primary</key>
 			<true/>
