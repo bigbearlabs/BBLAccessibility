@@ -113,7 +113,7 @@
                                handler:^(SIAccessibilityElement *accessibilityElement) {
                                  [self updateAccessibilityInfoFor:accessibilityElement];
 
-                                 [self onTitleChanged:accessibilityElement];
+                                 [self onTitleChanged:(SIWindow*)accessibilityElement];
                                }];
 
       [application observeNotification:kAXWindowMiniaturizedNotification
@@ -227,8 +227,8 @@
   NSLog(@"new window: %@",window.title);  // NOTE title may not be available yet.
 }
 
--(void) onTitleChanged:(SIAccessibilityElement*)element {
-  NSLog(@"title changed: %@", element);
+-(void) onTitleChanged:(SIWindow*)window {
+  NSLog(@"title changed: %@", window);
 }
 
 -(void) onWindowMinimised:(SIWindow*)window {

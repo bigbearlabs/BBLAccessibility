@@ -203,8 +203,8 @@
 			isa = PBXGroup;
 			children = (
 				51A1F8F31DBEDA4C00CF6E91 /* BBLAccessibilitySwift.h */,
-				513527A31CC5842500E2B2B4 /* AccessibilityHelper.swift */,
 				51A1F8FF1DBEDAC800CF6E91 /* GenericWatcher.swift */,
+				513527A31CC5842500E2B2B4 /* AccessibilityHelper.swift */,
 				51A1F8F41DBEDA4C00CF6E91 /* Info.plist */,
 			);
 			path = BBLAccessibilitySwift;
