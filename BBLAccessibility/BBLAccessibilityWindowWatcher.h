@@ -35,7 +35,7 @@
 -(void) onWindowResized:(SIWindow*)window;
 
 
--(void) onTitleChanged:(SIAccessibilityElement*)element;
+-(void) onTitleChanged:(SIWindow*)window;
 
 -(void) onTextSelectionChanged:(SIAccessibilityElement*)element;
 
