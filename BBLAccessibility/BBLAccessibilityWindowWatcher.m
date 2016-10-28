@@ -24,7 +24,7 @@
   return self;
 }
 
--(NSArray*) applicationsToObserve {
+-(NSArray<NSRunningApplication*>*) applicationsToObserve {
   return [[NSWorkspace sharedWorkspace] runningApplications];
 
 //  // DEBUG selected text not reported on some safari windows, only on Sierra (10.12).
