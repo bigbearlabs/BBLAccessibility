@@ -20,14 +20,10 @@
 		51A1F9001DBEDAC800CF6E91 /* GenericWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A1F8FF1DBEDAC800CF6E91 /* GenericWatcher.swift */; };
 		51B8F2241DB5774100E79EEC /* BBLAccessibilityWindowWatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 51B8F2221DB5774100E79EEC /* BBLAccessibilityWindowWatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		51B8F2251DB5774100E79EEC /* BBLAccessibilityWindowWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B8F2231DB5774100E79EEC /* BBLAccessibilityWindowWatcher.m */; };
-		51B8F2571DB5820A00E79EEC /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51B8F2561DB5820A00E79EEC /* Silica.framework */; };
 		51B8F25D1DB582A200E79EEC /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
 		51B8F25E1DB582A200E79EEC /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		51B8F2621DB582E500E79EEC /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51B8F2561DB5820A00E79EEC /* Silica.framework */; };
-		51B8F2631DB582E500E79EEC /* Silica.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51B8F2561DB5820A00E79EEC /* Silica.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		51B8F2691DB5871300E79EEC /* NMAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51B8F2681DB5871300E79EEC /* NMAccessibility.framework */; };
-		51B8F26E1DB5873D00E79EEC /* NMAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51B8F2681DB5871300E79EEC /* NMAccessibility.framework */; };
-		51B8F26F1DB5873D00E79EEC /* NMAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51B8F2681DB5871300E79EEC /* NMAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		51D53ADC1DCA3A5800079955 /* NMAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AD91DCA3A4E00079955 /* NMAccessibility.framework */; };
+		51D53AE31DCA3A9700079955 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +48,27 @@
 			remoteGlobalIDString = 51100F0A1CC15D200095B985;
 			remoteInfo = BBLAccessibility;
 		};
+		51D53AD81DCA3A4E00079955 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 51D53AD31DCA3A4E00079955 /* NMTest001.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 51AC6CED1CE66D340078C2EE;
+			remoteInfo = NMAccessibility;
+		};
+		51D53ADA1DCA3A4E00079955 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 51D53AD31DCA3A4E00079955 /* NMTest001.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 013D8CA8143C85A100AC2A43;
+			remoteInfo = NMTest001;
+		};
+		51D53AE11DCA3A9200079955 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 51D53ADD1DCA3A9200079955 /* Silica.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 942474B517DF67D700BF9B61;
+			remoteInfo = Silica;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -63,8 +80,6 @@
 			files = (
 				51A1F8F91DBEDA4C00CF6E91 /* BBLAccessibilitySwift.framework in Embed Frameworks */,
 				51B8F25E1DB582A200E79EEC /* BBLAccessibility.framework in Embed Frameworks */,
-				51B8F26F1DB5873D00E79EEC /* NMAccessibility.framework in Embed Frameworks */,
-				51B8F2631DB582E500E79EEC /* Silica.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -92,8 +107,8 @@
 		51A1F8FF1DBEDAC800CF6E91 /* GenericWatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericWatcher.swift; sourceTree = "<group>"; };
 		51B8F2221DB5774100E79EEC /* BBLAccessibilityWindowWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBLAccessibilityWindowWatcher.h; sourceTree = "<group>"; };
 		51B8F2231DB5774100E79EEC /* BBLAccessibilityWindowWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBLAccessibilityWindowWatcher.m; sourceTree = "<group>"; };
-		51B8F2561DB5820A00E79EEC /* Silica.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Silica.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		51B8F2681DB5871300E79EEC /* NMAccessibility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NMAccessibility.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		51D53AD31DCA3A4E00079955 /* NMTest001.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = NMTest001.xcodeproj; path = NMAccessibility/NMTest001.xcodeproj; sourceTree = "<group>"; };
+		51D53ADD1DCA3A9200079955 /* Silica.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Silica.xcodeproj; path = Silica/Silica.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,8 +123,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51B8F2691DB5871300E79EEC /* NMAccessibility.framework in Frameworks */,
-				51B8F2571DB5820A00E79EEC /* Silica.framework in Frameworks */,
+				51D53ADC1DCA3A5800079955 /* NMAccessibility.framework in Frameworks */,
+				51D53AE31DCA3A9700079955 /* Silica.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,8 +134,6 @@
 			files = (
 				51A1F8F81DBEDA4C00CF6E91 /* BBLAccessibilitySwift.framework in Frameworks */,
 				51B8F25D1DB582A200E79EEC /* BBLAccessibility.framework in Frameworks */,
-				51B8F26E1DB5873D00E79EEC /* NMAccessibility.framework in Frameworks */,
-				51B8F2621DB582E500E79EEC /* Silica.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,8 +162,8 @@
 				51A1F8F21DBEDA4C00CF6E91 /* BBLAccessibilitySwift */,
 				51100F0D1CC15D200095B985 /* BBLAccessibility */,
 				51100F311CC15D540095B985 /* BBLAccessibilityAppUITests */,
-				51B8F2561DB5820A00E79EEC /* Silica.framework */,
-				51B8F2681DB5871300E79EEC /* NMAccessibility.framework */,
+				51D53AD31DCA3A4E00079955 /* NMTest001.xcodeproj */,
+				51D53ADD1DCA3A9200079955 /* Silica.xcodeproj */,
 				51100F0C1CC15D200095B985 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -208,6 +221,23 @@
 				51A1F8F41DBEDA4C00CF6E91 /* Info.plist */,
 			);
 			path = BBLAccessibilitySwift;
+			sourceTree = "<group>";
+		};
+		51D53AD41DCA3A4E00079955 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				51D53AD91DCA3A4E00079955 /* NMAccessibility.framework */,
+				51D53ADB1DCA3A4E00079955 /* NMTest001.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		51D53ADE1DCA3A9200079955 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				51D53AE21DCA3A9200079955 /* Silica.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -376,6 +406,16 @@
 			mainGroup = 51100F011CC15D200095B985;
 			productRefGroup = 51100F0C1CC15D200095B985 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 51D53AD41DCA3A4E00079955 /* Products */;
+					ProjectRef = 51D53AD31DCA3A4E00079955 /* NMTest001.xcodeproj */;
+				},
+				{
+					ProductGroup = 51D53ADE1DCA3A9200079955 /* Products */;
+					ProjectRef = 51D53ADD1DCA3A9200079955 /* Silica.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				51100F0A1CC15D200095B985 /* BBLAccessibility */,
@@ -386,6 +426,30 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		51D53AD91DCA3A4E00079955 /* NMAccessibility.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = NMAccessibility.framework;
+			remoteRef = 51D53AD81DCA3A4E00079955 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		51D53ADB1DCA3A4E00079955 /* NMTest001.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = NMTest001.app;
+			remoteRef = 51D53ADA1DCA3A4E00079955 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		51D53AE21DCA3A9200079955 /* Silica.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Silica.framework;
+			remoteRef = 51D53AE11DCA3A9200079955 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		5109F3CD1CC17CAB007E1D13 /* Resources */ = {
