@@ -8,11 +8,15 @@
 #import "BBLAccessibilityWindowWatcher.h"
 #import <NMAccessibility/NMAccessibility.h>
 
+@interface BBLAccessibilityWindowWatcher ()
+  @property(readwrite,copy) NSDictionary* accessibilityInfosByPid;
+@end
 
 @implementation BBLAccessibilityWindowWatcher
 {
   NSMutableArray* watchedApps;
 }
+
 
 - (instancetype)init
 {
@@ -24,7 +28,7 @@
   return self;
 }
 
--(NSArray*) applicationsToObserve {
+-(NSArray<NSRunningApplication*>*) applicationsToObserve {
   return [[NSWorkspace sharedWorkspace] runningApplications];
 
 //  // DEBUG selected text not reported on some safari windows, only on Sierra (10.12).
@@ -113,7 +117,7 @@
                                handler:^(SIAccessibilityElement *accessibilityElement) {
                                  [self updateAccessibilityInfoFor:accessibilityElement];
 
-                                 [self onTitleChanged:accessibilityElement];
+                                 [self onTitleChanged:(SIWindow*)accessibilityElement];
                                }];
 
       [application observeNotification:kAXWindowMiniaturizedNotification
@@ -181,7 +185,11 @@
 }
 -(void) updateAccessibilityInfoFor:(SIAccessibilityElement*)siElement {
   pid_t pid = siElement.processIdentifier;
-  ((NSMutableDictionary*) self.accessibilityInfosByPid)[@(pid)] = [self accessibilityInfoFor:siElement.axElementRef];
+  
+  NSMutableDictionary* newData = [NSMutableDictionary dictionaryWithDictionary:self.accessibilityInfosByPid];
+  newData[@(pid)] = [self accessibilityInfoFor:siElement.axElementRef];
+  
+  self.accessibilityInfosByPid = [NSDictionary dictionaryWithDictionary:newData];
 }
 
 
@@ -227,8 +235,8 @@
   NSLog(@"new window: %@",window.title);  // NOTE title may not be available yet.
 }
 
--(void) onTitleChanged:(SIAccessibilityElement*)element {
-  NSLog(@"title changed: %@", element);
+-(void) onTitleChanged:(SIWindow*)window {
+  NSLog(@"title changed: %@", window);
 }
 
 -(void) onWindowMinimised:(SIWindow*)window {

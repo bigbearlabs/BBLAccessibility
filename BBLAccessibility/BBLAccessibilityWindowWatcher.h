@@ -12,8 +12,11 @@
 
 @interface BBLAccessibilityWindowWatcher : NSObject
 
+@property(readonly) NSArray<NSRunningApplication*>* applicationsToObserve;
 
-@property(readonly) NSDictionary* accessibilityInfosByPid;  // for the focused app / window.
+
+@property(readonly,copy) NSDictionary* accessibilityInfosByPid;  // for the focused app / window.
+
 
 
 -(void) watchWindows;
@@ -34,6 +37,8 @@
 
 -(void) onWindowResized:(SIWindow*)window;
 
+
+-(void) onTitleChanged:(SIWindow*)window;
 
 -(void) onTextSelectionChanged:(SIAccessibilityElement*)element;
 
