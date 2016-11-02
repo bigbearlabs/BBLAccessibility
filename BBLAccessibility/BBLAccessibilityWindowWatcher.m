@@ -8,11 +8,15 @@
 #import "BBLAccessibilityWindowWatcher.h"
 #import <NMAccessibility/NMAccessibility.h>
 
+@interface BBLAccessibilityWindowWatcher ()
+  @property(readwrite,copy) NSDictionary* accessibilityInfosByPid;
+@end
 
 @implementation BBLAccessibilityWindowWatcher
 {
   NSMutableArray* watchedApps;
 }
+
 
 - (instancetype)init
 {
@@ -181,7 +185,11 @@
 }
 -(void) updateAccessibilityInfoFor:(SIAccessibilityElement*)siElement {
   pid_t pid = siElement.processIdentifier;
-  ((NSMutableDictionary*) self.accessibilityInfosByPid)[@(pid)] = [self accessibilityInfoFor:siElement.axElementRef];
+  
+  NSMutableDictionary* newData = [NSMutableDictionary dictionaryWithDictionary:self.accessibilityInfosByPid];
+  newData[@(pid)] = [self accessibilityInfoFor:siElement.axElementRef];
+  
+  self.accessibilityInfosByPid = [NSDictionary dictionaryWithDictionary:newData];
 }
 
 

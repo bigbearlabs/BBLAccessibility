@@ -11,42 +11,42 @@ import BBLAccessibility
 
 public class GenericWatcher: BBLAccessibilityWindowWatcher {
   
-  dynamic public var accessibilityData: NSDictionary = [:]
+//  dynamic public var accessibilityData: NSDictionary = [:]
   
-  override public func onApplicationActivated(element: SIAccessibilityElement) {
-    let accessibilityData = NSMutableDictionary(dictionary: self.accessibilityData)
-    accessibilityData["currentApp"] = element
-    accessibilityData["currentWindow"] = SIWindow.focusedWindow()
-    accessibilityData["currentWindowTitle"] = SIWindow.focusedWindow()?.title()
-    
-    self.accessibilityData = accessibilityData
-  }
-  
-  override public func onFocusedWindowChanged(window: SIWindow) {
-    let accessibilityData = NSMutableDictionary(dictionary: self.accessibilityData)
-    accessibilityData["currentWindow"] = window
-    
-    self.accessibilityData = accessibilityData
-  }
-
-  override public func onTitleChanged(window: SIWindow) {
-    let accessibilityData = NSMutableDictionary(dictionary: self.accessibilityData)
-    accessibilityData["currentWindowTitle"] = window.title()
-    
-    self.accessibilityData = accessibilityData
-  }
-  
-  override public func onWindowMinimised(window: SIWindow) {
-    if let currentWindow = accessibilityData["currentWindow"] as? SIWindow {
-      if currentWindow.windowID() == window.windowID() {
-        let accessibilityData = NSMutableDictionary(dictionary: self.accessibilityData)
-        accessibilityData["currentWindow"] = nil
-    
-        self.accessibilityData = accessibilityData
-      }
-      
-    }
-  }
+//  override public func onApplicationActivated(element: SIAccessibilityElement) {
+//    let accessibilityData = NSMutableDictionary(dictionary: self.accessibilityData)
+//    accessibilityData["currentApp"] = element
+//    accessibilityData["currentWindow"] = SIWindow.focusedWindow()
+//    accessibilityData["currentWindowTitle"] = SIWindow.focusedWindow()?.title()
+//    
+//    self.accessibilityData = accessibilityData
+//  }
+//  
+//  override public func onFocusedWindowChanged(window: SIWindow) {
+//    let accessibilityData = NSMutableDictionary(dictionary: self.accessibilityData)
+//    accessibilityData["currentWindow"] = window
+//    
+//    self.accessibilityData = accessibilityData
+//  }
+//
+//  override public func onTitleChanged(window: SIWindow) {
+//    let accessibilityData = NSMutableDictionary(dictionary: self.accessibilityData)
+//    accessibilityData["currentWindowTitle"] = window.title()
+//    
+//    self.accessibilityData = accessibilityData
+//  }
+//  
+//  override public func onWindowMinimised(window: SIWindow) {
+//    if let currentWindow = accessibilityData["currentWindow"] as? SIWindow {
+//      if currentWindow.windowID() == window.windowID() {
+//        let accessibilityData = NSMutableDictionary(dictionary: self.accessibilityData)
+//        accessibilityData["currentWindow"] = nil
+//    
+//        self.accessibilityData = accessibilityData
+//      }
+//      
+//    }
+//  }
   
   //
   //-(void) onWindowUnminimised:(SIWindow*)window;
