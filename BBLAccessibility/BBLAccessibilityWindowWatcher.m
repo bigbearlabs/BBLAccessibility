@@ -186,16 +186,22 @@
 -(void) updateAccessibilityInfoFor:(SIAccessibilityElement*)siElement {
   pid_t pid = siElement.processIdentifier;
   
-  NSMutableDictionary* newData = [NSMutableDictionary dictionaryWithDictionary:self.accessibilityInfosByPid];
-  newData[@(pid)] = [self accessibilityInfoFor:siElement.axElementRef];
+  NSMutableDictionary* axDataForPid = [self accessibilityInfoFor:siElement.axElementRef].mutableCopy;
+  axDataForPid[@"bundleId"] = [NSRunningApplication runningApplicationWithProcessIdentifier:pid].bundleIdentifier;
   
-  self.accessibilityInfosByPid = [NSDictionary dictionaryWithDictionary:newData];
+  if (![self.accessibilityInfosByPid[@(pid)] isEqual:axDataForPid]) {
+    NSMutableDictionary* newData = [NSMutableDictionary dictionaryWithDictionary:self.accessibilityInfosByPid];
+    
+    newData[@(pid)] = axDataForPid;
+    
+    self.accessibilityInfosByPid = [NSDictionary dictionaryWithDictionary:newData];
+  }
 }
 
 
 -(NSDictionary*) accessibilityInfoFor:(AXUIElementRef)element {
   NMUIElement* nmElement = [[NMUIElement alloc] initWithElement:element];
-  return nmElement.accessibilityInfo;
+  return nmElement.accessibilityInfo.mutableCopy; // appTitle, pid, role, windowId, windowRect, selectedText, selectionBounds.
 }
 
 -(void) unwatchApp:(SIApplication*)application {
