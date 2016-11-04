@@ -201,7 +201,7 @@
 
 -(NSDictionary*) accessibilityInfoFor:(AXUIElementRef)element {
   NMUIElement* nmElement = [[NMUIElement alloc] initWithElement:element];
-  return nmElement.accessibilityInfo.mutableCopy; // appTitle, pid, role, windowId, windowRect, selectedText, selectionBounds.
+  return nmElement.accessibilityInfo.mutableCopy; // appName, pid, role, windowId, windowTitle, windowRect, selectedText, selectionBounds.
 }
 
 -(void) unwatchApp:(SIApplication*)application {
