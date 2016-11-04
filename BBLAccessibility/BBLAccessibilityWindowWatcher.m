@@ -187,7 +187,13 @@
   pid_t pid = siElement.processIdentifier;
   
   NSMutableDictionary* axDataForPid = [self accessibilityInfoFor:siElement.axElementRef].mutableCopy;
-  axDataForPid[@"bundleId"] = [NSRunningApplication runningApplicationWithProcessIdentifier:pid].bundleIdentifier;
+  id bundleId = [NSRunningApplication runningApplicationWithProcessIdentifier:pid].bundleIdentifier;
+  if (bundleId != nil)  {
+    axDataForPid[@"bundleId"] = bundleId;
+  } else {
+    NSLog(@"ERR: couldn't retrieve bundle id from %@, %@", siElement, @(pid));
+    axDataForPid[@"bundleId"] = @"";
+  }
   
   if (![self.accessibilityInfosByPid[@(pid)] isEqual:axDataForPid]) {
     NSMutableDictionary* newData = [NSMutableDictionary dictionaryWithDictionary:self.accessibilityInfosByPid];
