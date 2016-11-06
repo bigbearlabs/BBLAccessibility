@@ -14,7 +14,7 @@ public class AccessibilityHelper {
   public class func complainIfNeeded() {
     let trusted = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as NSString
     let privOptions = [trusted: true]
-    let accessEnabled = AXIsProcessTrustedWithOptions(privOptions)
+    let accessEnabled = AXIsProcessTrustedWithOptions(privOptions as CFDictionary?)
     
     // work around the nasty hiding of the window!
 //    NSApp.mainWindow?.makeKeyAndOrderFront(self);

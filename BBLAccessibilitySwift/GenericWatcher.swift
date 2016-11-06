@@ -9,7 +9,7 @@
 import Foundation
 import BBLAccessibility
 
-public class GenericWatcher: BBLAccessibilityWindowWatcher {
+open class GenericWatcher: BBLAccessibilityWindowWatcher {
   
 //  dynamic public var accessibilityData: NSDictionary = [:]
   
