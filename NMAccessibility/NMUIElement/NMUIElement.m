@@ -96,7 +96,7 @@ static AXUIElementRef _systemWide = NULL;
   
   // window info.
   NMUIElement* window = self.windowElement;
-  info[@"windowTitle"] = window.title;
+  info[@"windowTitle"] = ([window.title length] == 0 ? nil : window.title);
   NSPoint origin = window.origin;
   NSSize size = window.size;
   NSRect windowRect = NSMakeRect(origin.x, origin.y, size.width, size.height);

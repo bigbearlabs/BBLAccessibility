@@ -187,6 +187,8 @@
   pid_t pid = siElement.processIdentifier;
   
   NSMutableDictionary* axDataForPid = [self accessibilityInfoFor:siElement.axElementRef].mutableCopy;
+  
+  // fill in the bundle id.
   id bundleId = [NSRunningApplication runningApplicationWithProcessIdentifier:pid].bundleIdentifier;
   if (bundleId != nil)  {
     axDataForPid[@"bundleId"] = bundleId;
@@ -195,6 +197,19 @@
     axDataForPid[@"bundleId"] = @"";
   }
   
+  // for app-level notifs, we are missing the window title. fill this in.
+  if (!axDataForPid[@"windowTitle"]) {
+    if ([siElement isKindOfClass:[SIWindow class]]) {
+      id windows = [[(SIWindow*)siElement app] windows];
+      if ([windows count] > 0) {
+        SIWindow* firstWindow = windows[0];
+      
+        id title = firstWindow.title;
+        axDataForPid[@"windowTitle"] = title;
+      }
+    }
+  }
+
   if (![self.accessibilityInfosByPid[@(pid)] isEqual:axDataForPid]) {
     NSMutableDictionary* newData = [NSMutableDictionary dictionaryWithDictionary:self.accessibilityInfosByPid];
     
@@ -207,7 +222,7 @@
 
 -(NSDictionary*) accessibilityInfoFor:(AXUIElementRef)element {
   NMUIElement* nmElement = [[NMUIElement alloc] initWithElement:element];
-  return nmElement.accessibilityInfo.mutableCopy; // appName, pid, role, windowId, windowTitle, windowRect, selectedText, selectionBounds.
+  return nmElement.accessibilityInfo.copy; // appName, pid, role, windowId, windowTitle, windowRect, selectedText, selectionBounds.
 }
 
 -(void) unwatchApp:(SIApplication*)application {
