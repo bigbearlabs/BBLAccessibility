@@ -15,7 +15,7 @@
 @property(readonly) NSArray<NSRunningApplication*>* applicationsToObserve;
 
 
-@property(readonly,copy) NSDictionary* accessibilityInfosByPid;  // for the focused app / window.
+@property(readonly,copy) NSDictionary<NSNumber*,NSDictionary<NSString*,NSObject*>*>* accessibilityInfosByPid;  // for the focused app / window.
 
 
 
