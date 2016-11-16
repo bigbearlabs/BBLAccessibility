@@ -183,7 +183,8 @@
     });
   }];
 }
--(void) updateAccessibilityInfoFor:(SIAccessibilityElement*)siElement {
+
+-(NSDictionary*) axDataFor:(SIAccessibilityElement*)siElement {
   pid_t pid = siElement.processIdentifier;
   
   NSMutableDictionary* axDataForPid = [self accessibilityInfoFor:siElement.axElementRef].mutableCopy;
@@ -203,13 +204,21 @@
       id windows = [[(SIWindow*)siElement app] windows];
       if ([windows count] > 0) {
         SIWindow* firstWindow = windows[0];
-      
+        
         id title = firstWindow.title;
         axDataForPid[@"windowTitle"] = title;
       }
     }
   }
+  
+  return axDataForPid;
+}
 
+-(void) updateAccessibilityInfoFor:(SIAccessibilityElement*)siElement {
+  pid_t pid = siElement.processIdentifier;
+  
+  NSDictionary* axDataForPid = [self axDataFor:siElement];
+  
   if (![self.accessibilityInfosByPid[@(pid)] isEqual:axDataForPid]) {
     NSMutableDictionary* newData = [NSMutableDictionary dictionaryWithDictionary:self.accessibilityInfosByPid];
     
@@ -239,12 +248,6 @@
   [watchedApps removeObject:application];
 }
 
-
--(void) concurrently:(void(^)(void))block {
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-    block();
-  });
-}
 
 #pragma mark - handlers
 
@@ -297,6 +300,12 @@
   }
 
   @throw [NSException exceptionWithName:@"invalid-state" reason:@"no suitable window to return as key" userInfo:nil];
+}
+
+-(void) concurrently:(void(^)(void))block {
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    block();
+  });
 }
 
 @end
