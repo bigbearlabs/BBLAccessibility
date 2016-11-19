@@ -6,11 +6,13 @@
 //
 
 #import "BBLAccessibilityWindowWatcher.h"
-#import <NMAccessibility/NMAccessibility.h>
+#import <Silica/Silica.h>
 
 @interface BBLAccessibilityWindowWatcher ()
-  @property(readwrite,copy) NSDictionary* accessibilityInfosByPid;
+  @property(readwrite,copy) NSDictionary<NSNumber*,AccessibilityInfo*>* accessibilityInfosByPid;
 @end
+
+
 
 @implementation BBLAccessibilityWindowWatcher
 {
@@ -89,7 +91,7 @@
       [application observeNotification:kAXApplicationActivatedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self updateAccessibilityInfoFor:accessibilityElement];
+                                 [self updateAccessibilityInfoForElement:accessibilityElement];
                                  
                                  [self onApplicationActivated:accessibilityElement];
                                }];
@@ -99,7 +101,7 @@
       [application observeNotification:kAXFocusedWindowChangedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self updateAccessibilityInfoFor:accessibilityElement];
+                                 [self updateAccessibilityInfoForElement:accessibilityElement];
                                  
                                  [self onFocusedWindowChanged:(SIWindow*)accessibilityElement];
                                }];
@@ -107,7 +109,7 @@
       [application observeNotification:kAXWindowCreatedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self updateAccessibilityInfoFor:accessibilityElement];
+                                 [self updateAccessibilityInfoForElement:accessibilityElement];
 
                                  [self onWindowCreated:(SIWindow*)accessibilityElement];
                                }];
@@ -115,7 +117,7 @@
       [application observeNotification:kAXTitleChangedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self updateAccessibilityInfoFor:accessibilityElement];
+                                 [self updateAccessibilityInfoForElement:accessibilityElement];
 
                                  [self onTitleChanged:(SIWindow*)accessibilityElement];
                                }];
@@ -123,7 +125,7 @@
       [application observeNotification:kAXWindowMiniaturizedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self updateAccessibilityInfoFor:accessibilityElement];
+                                 [self updateAccessibilityInfoForElement:accessibilityElement];
 
                                  [self onWindowMinimised:(SIWindow*)accessibilityElement];
                                }];
@@ -131,7 +133,7 @@
       [application observeNotification:kAXWindowDeminiaturizedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self updateAccessibilityInfoFor:accessibilityElement];
+                                 [self updateAccessibilityInfoForElement:accessibilityElement];
 
                                  [self onWindowUnminimised:(SIWindow*)accessibilityElement];
                                }];
@@ -139,7 +141,7 @@
       [application observeNotification:kAXWindowMovedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self updateAccessibilityInfoFor:accessibilityElement];
+                                 [self updateAccessibilityInfoForElement:accessibilityElement];
 
                                  [self onWindowMoved:(SIWindow*)accessibilityElement];
                                }];
@@ -147,7 +149,7 @@
       [application observeNotification:kAXWindowResizedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self updateAccessibilityInfoFor:accessibilityElement];
+                                 [self updateAccessibilityInfoForElement:accessibilityElement];
 
                                  [self onWindowResized:(SIWindow*)accessibilityElement];
                                }];
@@ -169,12 +171,6 @@
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
                                  // guard: xcode spams us with notifs even when no text has changed, so only notify when value has changed.
-                                 NSDictionary* newAccessibilityInfo = [self accessibilityInfoFor:accessibilityElement.axElementRef];
-                                 if ((newAccessibilityInfo[@"selectedText"]) != self.accessibilityInfosByPid[@(accessibilityElement.processIdentifier)][@"selectedText"]) {
-                                   [self updateAccessibilityInfoFor:accessibilityElement];
-
-                                   [self onTextSelectionChanged:accessibilityElement];
-                                 }
                                }];
       
       [watchedApps addObject:application];
@@ -184,55 +180,30 @@
   }];
 }
 
--(NSDictionary*) axDataFor:(SIAccessibilityElement*)siElement {
-  pid_t pid = siElement.processIdentifier;
   
-  NSMutableDictionary* axDataForPid = [self accessibilityInfoFor:siElement.axElementRef].mutableCopy;
   
-  // fill in the bundle id.
-  id bundleId = [NSRunningApplication runningApplicationWithProcessIdentifier:pid].bundleIdentifier;
-  if (bundleId != nil)  {
-    axDataForPid[@"bundleId"] = bundleId;
-  } else {
-    NSLog(@"ERR: couldn't retrieve bundle id from %@, %@", siElement, @(pid));
-    axDataForPid[@"bundleId"] = @"";
+  
   }
   
-  // for app-level notifs, we are missing the window title. fill this in.
-  if (!axDataForPid[@"windowTitle"]) {
-    if ([siElement isKindOfClass:[SIWindow class]]) {
-      id windows = [[(SIWindow*)siElement app] windows];
-      if ([windows count] > 0) {
-        SIWindow* firstWindow = windows[0];
-        
-        id title = firstWindow.title;
-        axDataForPid[@"windowTitle"] = title;
-      }
-    }
-  }
-  
-  return axDataForPid;
 }
 
--(void) updateAccessibilityInfoFor:(SIAccessibilityElement*)siElement {
+
+
+-(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement {
+  AccessibilityInfo* axDataForPid = [self axDataForElement:siElement];
+
   pid_t pid = siElement.processIdentifier;
+  AccessibilityInfo* oldData = self.accessibilityInfosByPid[@(pid)];
   
-  NSDictionary* axDataForPid = [self axDataFor:siElement];
-  
-  if (![self.accessibilityInfosByPid[@(pid)] isEqual:axDataForPid]) {
-    NSMutableDictionary* newData = [NSMutableDictionary dictionaryWithDictionary:self.accessibilityInfosByPid];
+  if (![axDataForPid isEqual:oldData]) {
+    NSMutableDictionary* newData = self.accessibilityInfosByPid.mutableCopy;
     
     newData[@(pid)] = axDataForPid;
     
-    self.accessibilityInfosByPid = [NSDictionary dictionaryWithDictionary:newData];
+    self.accessibilityInfosByPid = newData.copy;
   }
 }
 
-
--(NSDictionary*) accessibilityInfoFor:(AXUIElementRef)element {
-  NMUIElement* nmElement = [[NMUIElement alloc] initWithElement:element];
-  return nmElement.accessibilityInfo.copy; // appName, pid, role, windowId, windowTitle, windowRect, selectedText, selectionBounds.
-}
 
 -(void) unwatchApp:(SIApplication*)application {
   [application unobserveNotification:kAXSelectedTextChangedNotification withElement:application];
