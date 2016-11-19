@@ -7,6 +7,11 @@
 
 #import "BBLAccessibilityWindowWatcher.h"
 #import <Silica/Silica.h>
+#import <os/log.h>
+
+#define   __log(...) os_log_info(OS_LOG_DEFAULT, __VA_ARGS__);
+
+
 
 @interface BBLAccessibilityWindowWatcher ()
   @property(readwrite,copy) NSDictionary<NSNumber*,AccessibilityInfo*>* accessibilityInfosByPid;
@@ -47,7 +52,7 @@
       SIApplication* application = [SIApplication applicationWithRunningApplication:app];
       [self watchNotificationsForApp:application];
     } else {
-      NSLog(@"%@ is not in list of apps to observe", app);
+      __log("%@ is not in list of apps to observe", app);
     }
   }];
   
@@ -65,11 +70,11 @@
       id application = [SIApplication applicationWithRunningApplication:app];
       [self watchNotificationsForApp:application];
     } else {
-      NSLog(@"%@ is not in list of apps to observe", app);
+      __log("%@ is not in list of apps to observe", app);
     }
   }
   
-  NSLog(@"%@ is watching the windows", self);
+  __log("%@ is watching the windows", self);
   
   // NOTE it still takes a while for the notifs to actually invoke the handlers. at least with concurrent set up we don't hog the main thread as badly as before.
 }
@@ -91,7 +96,7 @@
       [application observeNotification:kAXApplicationActivatedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self updateAccessibilityInfoForElement:accessibilityElement];
+                                 [self updateAccessibilityInfoForElement:accessibilityElement forceUpdate:YES];
                                  
                                  [self onApplicationActivated:accessibilityElement];
                                }];
@@ -175,7 +180,7 @@
       
       [watchedApps addObject:application];
       
-      NSLog(@"setup observers for %@", application);
+      __log("setup observers for %@", application);
     });
   }];
 }
@@ -225,39 +230,39 @@
 -(void) onApplicationActivated:(SIAccessibilityElement*)element {
   // work around silica treatment of this event parameter as a SIWindow, when it should be an SIApplication
   id app = [element valueForKey:@"app"];
-  NSLog(@"app activated: %@", app);
+  __log("app activated: %@", app);
 }
 
 -(void) onFocusedWindowChanged:(SIWindow*)window {
-  NSLog(@"focus: %@", window);
+  __log("focus: %@", window);
 }
 
 -(void) onWindowCreated:(SIWindow*)window {
-  NSLog(@"new window: %@",window.title);  // NOTE title may not be available yet.
+  __log("new window: %@",window.title);  // NOTE title may not be available yet.
 }
 
 -(void) onTitleChanged:(SIWindow*)window {
-  NSLog(@"title changed: %@", window);
+  __log("title changed: %@", window);
 }
 
 -(void) onWindowMinimised:(SIWindow*)window {
-  NSLog(@"window minimised: %@",window.title);  // NOTE title may not be available yet.
+  __log("window minimised: %@",window.title);  // NOTE title may not be available yet.
 }
 
 -(void) onWindowUnminimised:(SIWindow*)window {
-  NSLog(@"window unminimised: %@",window.title);  // NOTE title may not be available yet.
+  __log("window unminimised: %@",window.title);  // NOTE title may not be available yet.
 }
 
 -(void) onWindowMoved:(SIWindow*)window {
-  NSLog(@"window moved: %@",window.title);  // NOTE title may not be available yet.
+  __log("window moved: %@",window.title);  // NOTE title may not be available yet.
 }
 
 -(void) onWindowResized:(SIWindow*)window {
-  NSLog(@"window resized: %@",window.title);  // NOTE title may not be available yet.
+  __log("window resized: %@",window.title);  // NOTE title may not be available yet.
 }
 
 -(void) onTextSelectionChanged:(SIAccessibilityElement*)element {
-  NSLog(@"element: %@, ax info: %@", element, self.accessibilityInfosByPid[@(element.processIdentifier)]);
+  __log("text selection changed on element: %@. selection: %@", element, element.selectedText);
 }
 
 
@@ -280,6 +285,3 @@
 }
 
 @end
-
-
-
