@@ -176,6 +176,15 @@
                            withElement:application
          handler:^(SIAccessibilityElement *accessibilityElement) {
            // guard: xcode spams us with notifs even when no text has changed, so only notify when value has changed.
+           id previousSelectedText = self.accessibilityInfosByPid[@(accessibilityElement.processIdentifier)].selectedText;
+           if (previousSelectedText == nil) {
+             previousSelectedText = @"";
+           }
+           if (![accessibilityElement.selectedText isEqualToString:previousSelectedText]) {
+             [self updateAccessibilityInfoForElement:accessibilityElement];
+    
+             [self onTextSelectionChanged:accessibilityElement];
+           }
          }];
       
       [watchedApps addObject:application];
@@ -185,7 +194,7 @@
   }];
 }
 
--(AccessibilityInfo*) accessibilityInfoForElement:(SIAccessibilityElement*)siElement {
+  {
   
 
   
@@ -201,17 +210,22 @@
 
 
 -(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement {
-  AccessibilityInfo* axDataForPid = [self axDataForElement:siElement];
+  [self updateAccessibilityInfoForElement:siElement forceUpdate:NO];
+}
+
+-(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement forceUpdate:(BOOL)forceUpdate {
+  AccessibilityInfo* newData = [self accessibilityInfoForElement:siElement];
 
   pid_t pid = siElement.processIdentifier;
   AccessibilityInfo* oldData = self.accessibilityInfosByPid[@(pid)];
   
-  if (![axDataForPid isEqual:oldData]) {
-    NSMutableDictionary* newData = self.accessibilityInfosByPid.mutableCopy;
+  if (forceUpdate
+      || ![newData isEqual:oldData]) {
+    NSMutableDictionary* dictToUpdate = self.accessibilityInfosByPid.mutableCopy;
     
-    newData[@(pid)] = axDataForPid;
+    dictToUpdate[@(pid)] = newData;
     
-    self.accessibilityInfosByPid = newData.copy;
+    self.accessibilityInfosByPid = dictToUpdate.copy;
   }
 }
 

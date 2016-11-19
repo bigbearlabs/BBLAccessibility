@@ -11,14 +11,16 @@
 @implementation SIAccessibilityElement (TextSelection)
 
 -(NSString*) selectedText {
-  id selectedText = [self stringForKey:kAXSelectedTextAttribute];
-  if (selectedText == nil) {
-    selectedText = [self selectedTextForWebArea];
+  if (self.isWebArea) {
+    return [self selectedTextForWebArea];
   }
+  
+  id selectedText = [self stringForKey:kAXSelectedTextAttribute];
   return selectedText;
 }
 
-- (NSString *)selectedTextForWebArea {
+
+- (NSString*) selectedTextForWebArea {
   CFTypeRef range = NULL;
   AXUIElementCopyAttributeValue(self.axElementRef, CFSTR("AXSelectedTextMarkerRange"), &range);
   
@@ -37,67 +39,88 @@
 }
 
 
+
 -(NSRect) selectionBounds {
+  if (self.isWebArea) {
+    return [self selectionBoundsForWebArea];
+  }
+  
+  NSRect result = NSZeroRect;
+
   // query selected text range.
   AXValueRef selectedRangeValue = NULL;
-  AXError err = AXUIElementCopyAttributeValue(self.axElementRef, kAXSelectedTextRangeAttribute, (CFTypeRef *)&selectedRangeValue);
-  if (err != kAXErrorSuccess) {
+  AXError err;
+  
+  if (AXUIElementCopyAttributeValue(self.axElementRef, kAXSelectedTextRangeAttribute, (CFTypeRef *)&selectedRangeValue) == kAXErrorSuccess) {
     
-    // query web area selected text range.
-    err = AXUIElementCopyAttributeValue(self.axElementRef, CFSTR("AXSelectedTextMarkerRange"), (CFTypeRef *)&selectedRangeValue);
-    if (err != kAXErrorSuccess) {
+    // query bounds of range.
+    AXValueRef selectionBoundsValue = NULL;
+    if (AXUIElementCopyParameterizedAttributeValue(self.axElementRef, kAXBoundsForRangeParameterizedAttribute, selectedRangeValue, (CFTypeRef *)&selectionBoundsValue) == kAXErrorSuccess) {
       
+      // get value out
+      AXValueGetValue(selectionBoundsValue, kAXValueCGRectType, &result);
+    }
+    
+    else {
+      // couldn't query bounds of range.
+    }  
+  }
+  else {
       // CASE Preview.app: AXGroup doesn't have the selectedTextRange, but its child AXStaticText does.
       if ([self.role isEqualToString:(__bridge NSString*)kAXGroupRole]) {
         AXUIElementRef staticText = (__bridge AXUIElementRef)(self.children[0]);
         SIAccessibilityElement* staticTextElem = [[SIAccessibilityElement alloc] initWithAXElement:staticText];
         CFRelease(staticText);
-        NSRect result = staticTextElem.selectionBounds;
-        return result;
+        result = staticTextElem.selectionBounds;
       }
       
       else {
         NSLog(@"query for selection ranged failed on %@", self);
         NSLog(@"diagnosis: %@", self.description);
-        return NSZeroRect;
+        result = NSZeroRect;
       }
-    }
   }
   
-  // query bounds of range.
-  NSRect result;
+  
+  // NSLog(@"bounds: %@", [NSValue valueWithRect:rect]);
+  
+  if (NSIsEmptyRect(result)) {
+//       @throw [NSException exceptionWithName:@"AXQueryFailedException" reason:[NSString stringWithFormat:@"couldn't retrieve bounds for selected text on element %@", self] userInfo:nil];
+  }
+  
+  return result;
+}
+
+
+-(NSRect) selectionBoundsForWebArea {
+  NSRect result = NSZeroRect;
+
+  AXValueRef selectedRangeValue = NULL;
   AXValueRef selectionBoundsValue = NULL;
-  if (AXUIElementCopyParameterizedAttributeValue(self.axElementRef, kAXBoundsForRangeParameterizedAttribute, selectedRangeValue, (CFTypeRef *)&selectionBoundsValue) == kAXErrorSuccess) {
-    // get value out
-    AXValueGetValue(selectionBoundsValue, kAXValueCGRectType, &result);
-  }
-  
-  else {
-    // couldn't query bounds of range.
-    
-    // DEBUG
-    //    id names = [self parameterisedAttributeNames];
-    //    NSLog(@"parameterised attribute names for %@: %@", self, names);
-    
+
+  // query web area selected text range.
+  if (AXUIElementCopyAttributeValue(self.axElementRef, CFSTR("AXSelectedTextMarkerRange"), (CFTypeRef *)&selectedRangeValue) == kAXErrorSuccess) {
+   
     // query bounds of web area selected text range.
     if (AXUIElementCopyParameterizedAttributeValue(self.axElementRef, CFSTR("AXBoundsForTextMarkerRange"), selectedRangeValue, (CFTypeRef *)&selectionBoundsValue) == kAXErrorSuccess) {
       AXValueGetValue(selectionBoundsValue, kAXValueCGRectType, &result);
     }
     else {
-      // all queries for bounds failed.
+      // query for bounds failed.
     }
   }
-  
+
   if (selectedRangeValue) CFRelease(selectedRangeValue);
   if (selectionBoundsValue) CFRelease(selectionBoundsValue);
   
-  // NSLog(@"bounds: %@", [NSValue valueWithRect:rect]);
-  
-  if (NSIsEmptyRect(result)) {
-    //    @throw [NSException exceptionWithName:@"AXQueryFailedException" reason:[NSString stringWithFormat:@"couldn't retrieve bounds for selected text on element %@", self] userInfo:nil];
-  }
-  
   return result;
+
+}
+
+
+-(BOOL) isWebArea {
+  // if i have a AXWebArea role, i am a web area.
+  return [self.role isEqualToString:@"AXWebArea"];
 }
 
 @end
