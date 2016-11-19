@@ -174,9 +174,9 @@
       // during investigation we saw that inspecting with Prefab UI Browser 'wakes up' the windows such that they send out notifications only after inspection.
       [application observeNotification:kAXSelectedTextChangedNotification
                            withElement:application
-                               handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 // guard: xcode spams us with notifs even when no text has changed, so only notify when value has changed.
-                               }];
+         handler:^(SIAccessibilityElement *accessibilityElement) {
+           // guard: xcode spams us with notifs even when no text has changed, so only notify when value has changed.
+         }];
       
       [watchedApps addObject:application];
       
@@ -185,9 +185,15 @@
   }];
 }
 
+-(AccessibilityInfo*) accessibilityInfoForElement:(SIAccessibilityElement*)siElement {
   
+
   
-  
+  if ([[siElement class] isEqual:[SIApplication class]]) {
+    return [[AccessibilityInfo alloc] initWithAppElement:(SIApplication*) siElement];
+  }
+  else {
+    return [[AccessibilityInfo alloc] initWithFocusedElement:siElement.focusedElement];
   }
   
 }
