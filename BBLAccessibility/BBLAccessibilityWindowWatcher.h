@@ -8,15 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import <Silica/Silica.h>
-
+#import "AccessibilityInfo.h"
 
 @interface BBLAccessibilityWindowWatcher : NSObject
 
+
 @property(readonly) NSArray<NSRunningApplication*>* applicationsToObserve;
 
-
-@property(readonly,copy) NSDictionary<NSNumber*,NSDictionary<NSString*,NSObject*>*>* accessibilityInfosByPid;  // for the focused app / window.
-
+@property(readonly,copy) NSDictionary<NSNumber*,AccessibilityInfo*>* accessibilityInfosByPid;  // for the focused app / window.
 
 
 -(void) watchWindows;

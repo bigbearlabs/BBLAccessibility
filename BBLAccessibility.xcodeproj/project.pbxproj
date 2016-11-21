@@ -12,6 +12,8 @@
 		51100F251CC15D540095B985 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51100F241CC15D540095B985 /* Assets.xcassets */; };
 		51100F281CC15D540095B985 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51100F261CC15D540095B985 /* MainMenu.xib */; };
 		51100F331CC15D540095B985 /* BBLAccessibilityAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51100F321CC15D540095B985 /* BBLAccessibilityAppUITests.swift */; };
+		5123E4C11DDFD62B0099D11E /* Silica-ext.h in Headers */ = {isa = PBXBuildFile; fileRef = 5123E4BF1DDFD62B0099D11E /* Silica-ext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5123E4C21DDFD62B0099D11E /* Silica-ext.m in Sources */ = {isa = PBXBuildFile; fileRef = 5123E4C01DDFD62B0099D11E /* Silica-ext.m */; };
 		51A1F8F51DBEDA4C00CF6E91 /* BBLAccessibilitySwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 51A1F8F31DBEDA4C00CF6E91 /* BBLAccessibilitySwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		51A1F8F81DBEDA4C00CF6E91 /* BBLAccessibilitySwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51A1F8F11DBEDA4B00CF6E91 /* BBLAccessibilitySwift.framework */; };
 		51A1F8F91DBEDA4C00CF6E91 /* BBLAccessibilitySwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51A1F8F11DBEDA4B00CF6E91 /* BBLAccessibilitySwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -24,6 +26,8 @@
 		51B8F25E1DB582A200E79EEC /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		51D53ADC1DCA3A5800079955 /* NMAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AD91DCA3A4E00079955 /* NMAccessibility.framework */; };
 		51D53AE31DCA3A9700079955 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
+		51D6F89B1DDF73D0003F7E31 /* AccessibilityInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 51D6F8991DDF73D0003F7E31 /* AccessibilityInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		51D6F89C1DDF73D0003F7E31 /* AccessibilityInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D6F89A1DDF73D0003F7E31 /* AccessibilityInfo.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,6 +104,8 @@
 		51100F321CC15D540095B985 /* BBLAccessibilityAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BBLAccessibilityAppUITests.swift; sourceTree = "<group>"; };
 		51100F341CC15D540095B985 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		51100F3F1CC15DA30095B985 /* BBLAccessibilityApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBLAccessibilityApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		5123E4BF1DDFD62B0099D11E /* Silica-ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Silica-ext.h"; sourceTree = "<group>"; };
+		5123E4C01DDFD62B0099D11E /* Silica-ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Silica-ext.m"; sourceTree = "<group>"; };
 		513527A31CC5842500E2B2B4 /* AccessibilityHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccessibilityHelper.swift; path = Silica/../BBLAccessibilityApp/AccessibilityHelper.swift; sourceTree = SOURCE_ROOT; };
 		51A1F8F11DBEDA4B00CF6E91 /* BBLAccessibilitySwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BBLAccessibilitySwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51A1F8F31DBEDA4C00CF6E91 /* BBLAccessibilitySwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBLAccessibilitySwift.h; sourceTree = "<group>"; };
@@ -109,6 +115,8 @@
 		51B8F2231DB5774100E79EEC /* BBLAccessibilityWindowWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBLAccessibilityWindowWatcher.m; sourceTree = "<group>"; };
 		51D53AD31DCA3A4E00079955 /* NMTest001.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = NMTest001.xcodeproj; path = NMAccessibility/NMTest001.xcodeproj; sourceTree = "<group>"; };
 		51D53ADD1DCA3A9200079955 /* Silica.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Silica.xcodeproj; path = Silica/Silica.xcodeproj; sourceTree = "<group>"; };
+		51D6F8991DDF73D0003F7E31 /* AccessibilityInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessibilityInfo.h; sourceTree = "<group>"; };
+		51D6F89A1DDF73D0003F7E31 /* AccessibilityInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessibilityInfo.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,7 +194,11 @@
 				51100F0E1CC15D200095B985 /* BBLAccessibility.h */,
 				51B8F2221DB5774100E79EEC /* BBLAccessibilityWindowWatcher.h */,
 				51B8F2231DB5774100E79EEC /* BBLAccessibilityWindowWatcher.m */,
+				5123E4BF1DDFD62B0099D11E /* Silica-ext.h */,
+				5123E4C01DDFD62B0099D11E /* Silica-ext.m */,
 				51100F101CC15D200095B985 /* Info.plist */,
+				51D6F8991DDF73D0003F7E31 /* AccessibilityInfo.h */,
+				51D6F89A1DDF73D0003F7E31 /* AccessibilityInfo.m */,
 			);
 			path = BBLAccessibility;
 			sourceTree = "<group>";
@@ -254,6 +266,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51D6F89B1DDF73D0003F7E31 /* AccessibilityInfo.h in Headers */,
+				5123E4C11DDFD62B0099D11E /* Silica-ext.h in Headers */,
 				51100F0F1CC15D200095B985 /* BBLAccessibility.h in Headers */,
 				51B8F2241DB5774100E79EEC /* BBLAccessibilityWindowWatcher.h in Headers */,
 			);
@@ -377,7 +391,7 @@
 					};
 					51100F0A1CC15D200095B985 = {
 						CreatedOnToolsVersion = 7.3;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0810;
 					};
 					51100F1F1CC15D540095B985 = {
 						CreatedOnToolsVersion = 7.3;
@@ -390,7 +404,7 @@
 					};
 					51A1F8F01DBEDA4B00CF6E91 = {
 						CreatedOnToolsVersion = 8.0;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -503,7 +517,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51D6F89C1DDF73D0003F7E31 /* AccessibilityInfo.m in Sources */,
 				51B8F2251DB5774100E79EEC /* BBLAccessibilityWindowWatcher.m in Sources */,
+				5123E4C21DDFD62B0099D11E /* Silica-ext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -694,6 +710,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -705,7 +722,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibility;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -713,6 +731,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -724,7 +743,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibility;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
