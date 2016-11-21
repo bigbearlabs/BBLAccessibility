@@ -49,7 +49,6 @@
 
   // query selected text range.
   AXValueRef selectedRangeValue = NULL;
-  AXError err;
   
   if (AXUIElementCopyAttributeValue(self.axElementRef, kAXSelectedTextRangeAttribute, (CFTypeRef *)&selectedRangeValue) == kAXErrorSuccess) {
     
@@ -68,10 +67,12 @@
   else {
       // CASE Preview.app: AXGroup doesn't have the selectedTextRange, but its child AXStaticText does.
       if ([self.role isEqualToString:(__bridge NSString*)kAXGroupRole]) {
-        AXUIElementRef staticText = (__bridge AXUIElementRef)(self.children[0]);
-        SIAccessibilityElement* staticTextElem = [[SIAccessibilityElement alloc] initWithAXElement:staticText];
-        CFRelease(staticText);
-        result = staticTextElem.selectionBounds;
+        NSArray* children = self.children;
+        if (children.count > 0) {
+          AXUIElementRef staticText = (__bridge AXUIElementRef) children[0];
+          SIAccessibilityElement* staticTextElem = [[SIAccessibilityElement alloc] initWithAXElement:staticText];
+          result = staticTextElem.selectionBounds;
+        }
       }
       
       else {
@@ -110,8 +111,6 @@
     }
   }
 
-  if (selectedRangeValue) CFRelease(selectedRangeValue);
-  if (selectionBoundsValue) CFRelease(selectionBoundsValue);
   
   return result;
 
