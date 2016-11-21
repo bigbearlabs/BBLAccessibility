@@ -194,17 +194,13 @@
   }];
 }
 
-  {
-  
-
-  
+-(AccessibilityInfo*) accessibilityInfoForElement:(SIAccessibilityElement*)siElement {
   if ([[siElement class] isEqual:[SIApplication class]]) {
     return [[AccessibilityInfo alloc] initWithAppElement:(SIApplication*) siElement];
   }
   else {
     return [[AccessibilityInfo alloc] initWithFocusedElement:siElement.focusedElement];
   }
-  
 }
 
 
@@ -212,6 +208,7 @@
 -(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement {
   [self updateAccessibilityInfoForElement:siElement forceUpdate:NO];
 }
+
 
 -(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement forceUpdate:(BOOL)forceUpdate {
   AccessibilityInfo* newData = [self accessibilityInfoForElement:siElement];
