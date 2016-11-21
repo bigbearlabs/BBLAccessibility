@@ -48,7 +48,9 @@
       _windowRect = window.frame;
       
       // TODO selection.
-      _selectedText = element.selectedText;
+      if (element.selectedText.length > 0) {
+        _selectedText = element.selectedText;
+      }
       _selectionBounds = element.selectionBounds;
 
     }
