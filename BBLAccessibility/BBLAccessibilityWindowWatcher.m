@@ -93,6 +93,9 @@
 -(void) watchNotificationsForApp:(SIApplication*)application {
   [self concurrently:^{
     dispatch_async(dispatch_get_main_queue(), ^{
+      
+      __log("%@ observing app %@", self, application);
+
       [application observeNotification:kAXApplicationActivatedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
@@ -189,7 +192,6 @@
       
       [watchedApps addObject:application];
       
-      __log("setup observers for %@", application);
     });
   }];
 }
