@@ -45,18 +45,18 @@
     return [self selectionBoundsForWebArea];
   }
   
-  NSRect result = NSZeroRect;
+  CGRect result = NSZeroRect;
 
-  // query selected text range.
-  AXValueRef selectedRangeValue = NULL;
+  CFTypeRef selectedRangeValue = NULL;
+  CFTypeRef selectionBoundsValue = NULL;
   
+  // query selected text range.
   if (AXUIElementCopyAttributeValue(self.axElementRef, kAXSelectedTextRangeAttribute, (CFTypeRef *)&selectedRangeValue) == kAXErrorSuccess) {
     
     // query bounds of range.
-    AXValueRef selectionBoundsValue = NULL;
     if (AXUIElementCopyParameterizedAttributeValue(self.axElementRef, kAXBoundsForRangeParameterizedAttribute, selectedRangeValue, (CFTypeRef *)&selectionBoundsValue) == kAXErrorSuccess) {
       
-      // get value out
+      // get value out.
       AXValueGetValue(selectionBoundsValue, kAXValueCGRectType, &result);
     }
     
@@ -76,8 +76,7 @@
       }
       
       else {
-        NSLog(@"query for selection ranged failed on %@", self);
-        NSLog(@"diagnosis: %@", self.description);
+        NSLog(@"query for selection ranged failed on %@", self.debugDescription);
         result = NSZeroRect;
       }
   }
@@ -89,7 +88,10 @@
 //       @throw [NSException exceptionWithName:@"AXQueryFailedException" reason:[NSString stringWithFormat:@"couldn't retrieve bounds for selected text on element %@", self] userInfo:nil];
   }
   
-  return result;
+  if (selectedRangeValue) CFRelease(selectedRangeValue);
+  if (selectionBoundsValue) CFRelease(selectionBoundsValue);
+  
+  return NSRectFromCGRect(result);
 }
 
 
