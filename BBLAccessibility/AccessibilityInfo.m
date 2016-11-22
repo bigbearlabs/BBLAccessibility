@@ -31,6 +31,8 @@
     _bundleId = appElement.runningApplication.bundleIdentifier;
     _pid = appElement.processIdentifier;
     
+    _role = element.role;
+    
     SIWindow* window;
     if ([[element class] isEqual:[SIWindow class]]) {
       window = (SIWindow*) element;
@@ -46,6 +48,8 @@
       _windowTitle = window.title;
       _windowId = [NSNumber numberWithUnsignedInteger:window.windowID].stringValue;
       _windowRect = window.frame;
+      _windowRole = window.role;
+      _windowSubrole = window.subrole;
       
       // TODO selection.
       if (element.selectedText.length > 0) {
@@ -60,7 +64,7 @@
 }
 
 -(NSString *)description {
-  return [NSString stringWithFormat:@"%@, %@, %@, %@, %@, %@, %@, %@", _appName, [NSNumber numberWithUnsignedInteger:_pid], _bundleId, _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], _selectedText, [NSValue valueWithRect:_selectionBounds]];
+  return [NSString stringWithFormat:@"%@, %@, %@, %@, %@, %@, %@, %@, focusedElementRole: %@, windowRole: %@, windowSubrole: %@", _appName, [NSNumber numberWithUnsignedInteger:_pid], _bundleId, _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], _selectedText, [NSValue valueWithRect:_selectionBounds], _role, _windowRole, _windowSubrole];
 }
 
 

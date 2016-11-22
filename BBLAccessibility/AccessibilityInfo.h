@@ -16,6 +16,10 @@
 @property(readonly) NSString* _Nonnull bundleId;
 @property(readonly) pid_t pid;
 
+@property(readonly) NSString* _Nullable role;
+@property(readonly) NSString* _Nullable windowRole;
+@property(readonly) NSString* _Nullable windowSubrole;
+
 @property(readonly) NSString* _Nullable windowTitle;
 @property(readonly) NSString* _Nonnull windowId;
 @property(readonly) NSRect windowRect;
