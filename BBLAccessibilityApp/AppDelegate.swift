@@ -19,7 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   var watcher: BBLAccessibilityWindowWatcher?
   
   func applicationDidFinishLaunching(aNotification: NSNotification) {
-    print("trusted: #\(AXIsProcessTrusted())")
+    print("AXIsProcessTrusted: #\(AXIsProcessTrusted())")
     
     watcher = BBLAccessibilityWindowWatcher()
     watcher!.watchWindows()
