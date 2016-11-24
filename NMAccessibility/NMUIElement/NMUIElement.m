@@ -200,7 +200,7 @@ static AXUIElementRef _systemWide = NULL;
   }
   
   // query bounds of range.
-  CGRect result;
+  CGRect result = CGRectNull;
   AXValueRef selectionBoundsValue = NULL;
   if (AXUIElementCopyParameterizedAttributeValue(self.elementRef, kAXBoundsForRangeParameterizedAttribute, selectedRangeValue, (CFTypeRef *)&selectionBoundsValue) == kAXErrorSuccess) {
     // get value out
