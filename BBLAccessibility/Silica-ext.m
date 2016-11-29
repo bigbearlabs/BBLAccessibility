@@ -96,6 +96,11 @@
 
 
 -(NSRect) selectionBoundsForWebArea {
+  // guard against empty selected text.
+  if ([self selectedTextForWebArea].length == 0) {
+    return NSZeroRect;
+  }
+  
   NSRect result = NSZeroRect;
 
   AXValueRef selectedRangeValue = NULL;
