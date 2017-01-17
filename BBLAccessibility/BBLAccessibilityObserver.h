@@ -1,16 +1,8 @@
-//
-//  BBLAccessibilityWindowWatcher.h
-//  NMTest001
-//
-//  Created by ilo on 15/04/2016.
-//
-//
-
 #import <Foundation/Foundation.h>
 #import <Silica/Silica.h>
 #import "AccessibilityInfo.h"
 
-@interface BBLAccessibilityWindowWatcher : NSObject
+@interface BBLAccessibilityObserver : NSObject
 
 
 @property(readonly) NSArray<NSRunningApplication*>* applicationsToObserve;
@@ -45,3 +37,4 @@
 -(SIWindow*) keyWindowForApplication:(SIApplication*) application;
 
 @end
+

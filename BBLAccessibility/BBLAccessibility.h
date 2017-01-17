@@ -18,4 +18,4 @@ FOUNDATION_EXPORT const unsigned char BBLAccessibilityVersionString[];
 
 
 #import <BBLAccessibility/AccessibilityInfo.h>
-#import <BBLAccessibility/BBLAccessibilityWindowWatcher.h>
+#import <BBLAccessibility/BBLAccessibilityObserver.h>

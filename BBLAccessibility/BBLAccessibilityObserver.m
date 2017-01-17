@@ -1,11 +1,4 @@
-//
-//  BBLAccessibilityWindowWatcher.m
-//
-//  Created by Andy Park on 15/04/2016.
-//
-//
-
-#import "BBLAccessibilityWindowWatcher.h"
+#import "BBLAccessibilityObserver.h"
 #import <Silica/Silica.h>
 #import <os/log.h>
 
@@ -13,13 +6,13 @@
 
 
 
-@interface BBLAccessibilityWindowWatcher ()
+@interface BBLAccessibilityObserver ()
   @property(readwrite,copy) NSDictionary<NSNumber*,AccessibilityInfo*>* accessibilityInfosByPid;
 @end
 
 
 
-@implementation BBLAccessibilityWindowWatcher
+@implementation BBLAccessibilityObserver
 {
   NSMutableArray* watchedApps;
 }

@@ -16,12 +16,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
   @IBOutlet weak var window: NSWindow!
 
-  var watcher: BBLAccessibilityWindowWatcher?
+  var watcher: BBLAccessibilityObserver?
   
   func applicationDidFinishLaunching(aNotification: NSNotification) {
     print("AXIsProcessTrusted: #\(AXIsProcessTrusted())")
     
-    watcher = BBLAccessibilityWindowWatcher()
+    watcher = BBLAccessibilityObserver()
     watcher!.watchWindows()
   }
 
