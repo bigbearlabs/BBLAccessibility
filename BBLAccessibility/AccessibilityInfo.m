@@ -45,6 +45,8 @@
     }
     
     if (window) {
+      _windowAxElement = window;
+
       _windowTitle = window.title;
       _windowId = [NSNumber numberWithUnsignedInteger:window.windowID].stringValue;
       _windowRect = window.frame;

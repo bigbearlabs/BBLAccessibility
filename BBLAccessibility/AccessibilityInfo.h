@@ -27,6 +27,7 @@
 @property(readonly) NSString* _Nullable selectedText;
 @property(readonly) NSRect selectionBounds;
 
+@property(readonly) SIWindow* _Nullable windowAxElement;
 
 -(nonnull instancetype)initWithAppElement:(nonnull SIApplication*)element;
 
