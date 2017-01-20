@@ -7,7 +7,7 @@
 
 @property(readonly) NSArray<NSRunningApplication*>* applicationsToObserve;
 
-@property(readonly,copy) NSDictionary<NSNumber*,AccessibilityInfo*>* accessibilityInfosByPid;  // for the focused app / window.
+@property(readonly,copy) NSDictionary<NSNumber*,AccessibilityInfo*>* accessibilityInfosByPid;  // a growing dict of ax infos.
 
 
 -(void) watchWindows;
