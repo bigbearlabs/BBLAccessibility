@@ -162,9 +162,9 @@
 		51100F011CC15D200095B985 = {
 			isa = PBXGroup;
 			children = (
-				51100F211CC15D540095B985 /* BBLAccessibilityApp */,
 				51A1F8F21DBEDA4C00CF6E91 /* BBLAccessibilitySwift */,
 				51100F0D1CC15D200095B985 /* BBLAccessibility */,
+				51100F211CC15D540095B985 /* BBLAccessibilityApp */,
 				51100F311CC15D540095B985 /* BBLAccessibilityAppUITests */,
 				51D53ADD1DCA3A9200079955 /* Silica.xcodeproj */,
 				51D53AD31DCA3A4E00079955 /* NMTest001.xcodeproj */,
