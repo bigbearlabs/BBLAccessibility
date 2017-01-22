@@ -169,6 +169,7 @@
 				51D53ADD1DCA3A9200079955 /* Silica.xcodeproj */,
 				51D53AD31DCA3A4E00079955 /* NMTest001.xcodeproj */,
 				51100F0C1CC15D200095B985 /* Products */,
+				5191A9401E34FFBF001B94FD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -218,6 +219,13 @@
 				51100F341CC15D540095B985 /* Info.plist */,
 			);
 			path = BBLAccessibilityAppUITests;
+			sourceTree = "<group>";
+		};
+		5191A9401E34FFBF001B94FD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		51A1F8F21DBEDA4C00CF6E91 /* BBLAccessibilitySwift */ = {
@@ -427,11 +435,11 @@
 			);
 			projectRoot = "";
 			targets = (
+				51A1F8F01DBEDA4B00CF6E91 /* BBLAccessibilitySwift */,
 				51100F0A1CC15D200095B985 /* BBLAccessibility */,
 				51100F1F1CC15D540095B985 /* BBLAccessibilityApp */,
 				51100F2D1CC15D540095B985 /* BBLAccessibilityAppUITests */,
 				5109F3CE1CC17CAB007E1D13 /* BBLAccessibilityMonolithic */,
-				51A1F8F01DBEDA4B00CF6E91 /* BBLAccessibilitySwift */,
 			);
 		};
 /* End PBXProject section */
