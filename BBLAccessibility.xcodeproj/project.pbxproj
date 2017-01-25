@@ -407,7 +407,7 @@
 					};
 					51A1F8F01DBEDA4B00CF6E91 = {
 						CreatedOnToolsVersion = 8.0;
-						LastSwiftMigration = 0810;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
 				};

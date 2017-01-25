@@ -10,8 +10,8 @@ import Foundation
 import ApplicationServices
 import Silica
 
-public class AccessibilityHelper {
-  public class func complainIfNeeded() {
+open class AccessibilityHelper {
+  open class func complainIfNeeded() {
     let trusted = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as NSString
     let privOptions = [trusted: true]
     let accessEnabled = AXIsProcessTrustedWithOptions(privOptions as CFDictionary?)
