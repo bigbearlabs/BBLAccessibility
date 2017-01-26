@@ -30,9 +30,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   }
 
   @IBAction
-  func action_showAccessibilityGrantDialog(sender: AnyObject) {
-    // OUTDATED
-//    AccessibilityHelper.complainIfNeeded()
+  func action_showAxRequestDialog(sender: AnyObject) {
+    AccessibilityHelper().maybeRequestAxPerms()
   }
 }
 

@@ -6,37 +6,69 @@
 //  Copyright © 2016 SiO2. All rights reserved.
 //
 
-import Foundation
+import AppKit
 import ApplicationServices
 import Silica
 
 open class AccessibilityHelper {
-  open class func complainIfNeeded() {
+  
+  public init() {
+  }
+  
+  open func maybeRequestAxPerms() {
+    
     let trusted = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as NSString
     let privOptions = [trusted: true]
     let accessEnabled = AXIsProcessTrustedWithOptions(privOptions as CFDictionary?)
     
-    // work around the nasty hiding of the window!
-//    NSApp.mainWindow?.makeKeyAndOrderFront(self);
-//    NSApp.resignFirstResponder()
-
-    // IT2 the deactivation behaviour means we have to launch this workflow from another popup.
+    // make a window to show the alert on.
+    let window = self.window(at:.zero, size: CGSize(width: 200, height: 80))  // add: constants for activation / positioning.
+  
+    // sporadic deactivation behaviour seen in some tests means 
+    // we have to launch this workflow from another dialog.
     
     if !accessEnabled {
-//      let alert = NSAlert()
-//      alert.messageText = "Woops."
-//      alert.informativeText = "Something went wrong."
-//      alert.beginSheetModalForWindow(NSApp.keyWindow!, completionHandler: { response in
-//        self.complainIfNeeded()
-//      })
+      let alert = NSAlert()
+      alert.messageText = "Woops."
+      alert.informativeText = "Something went wrong."
+      if true {
+        alert.beginSheetModal(for: window, completionHandler: { response in
+          self.maybeRequestAxPerms()
+        })
+
+      } else {
+        // no window, how to manage?
+      }
+
+////      self.modalQueue.async {
+//        let modalResponse = alert.runModal()
+////      }
+//      
+//      // MAYBE unless modal indicates abort...
+//      
+//      self.maybeRequestAxPerms()
+
       
-//      self.complainIfNeeded()
-      
-      // IT3 we ignore the potential failure here, as it's now unreliable.
-      // instead, the caller should check again to see if we need to be reinvoked.
+      // TODO handle the errors.
     }
-    
-    
-//    SIUniversalAccessHelper.complainIfNeeded()
+  }
+  
+  let modalQueue = DispatchQueue(label: "com.bigbearlabs.contexter.axpermission")
+
+  func window(at position: CGPoint, size: CGSize) -> NSWindow {
+    let window = NSWindow()
+    window.makeKeyAndOrderFront(self)
+    window.centre(screen: NSScreen.main()!)
+    return window
+  }
+
+}
+
+
+extension NSWindow {
+  func centre(screen: NSScreen) {
+    // IMPL
   }
 }
+
+
