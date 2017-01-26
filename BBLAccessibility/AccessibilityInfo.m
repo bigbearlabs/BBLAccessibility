@@ -54,9 +54,6 @@
       _windowSubrole = window.subrole;
       
       // TODO selection.
-      if (element.selectedText.length > 0) {
-        _selectedText = element.selectedText;
-      }
       _selectionBounds = element.selectionBounds;
 
     }

@@ -1,5 +1,6 @@
 #import "BBLAccessibilityObserver.h"
 #import <Silica/Silica.h>
+#import <AppKit/AppKit.h>
 //#import <os/log.h>
 
 //#define   __log(...) os_log_info(OS_LOG_DEFAULT, __VA_ARGS__);
@@ -194,12 +195,20 @@
       [application observeNotification:kAXSelectedTextChangedNotification
                            withElement:application
          handler:^(SIAccessibilityElement *accessibilityElement) {
+           NSString* selectedText = accessibilityElement.selectedText;
+
            // guard: xcode spams us with notifs even when no text has changed, so only notify when value has changed.
            id previousSelectedText = self.accessibilityInfosByPid[@(accessibilityElement.processIdentifier)].selectedText;
-           if (previousSelectedText == nil) {
+           if (previousSelectedText == nil || [previousSelectedText length] == 0) {
              previousSelectedText = @"";
            }
-           if (![accessibilityElement.selectedText isEqualToString:previousSelectedText]) {
+           if ( selectedText == previousSelectedText
+               ||
+               [selectedText isEqualToString:previousSelectedText]) {
+             // no need to update.
+           }
+           else {
+             
              [self updateAccessibilityInfoForElement:accessibilityElement];
     
              [self onTextSelectionChanged:accessibilityElement];
