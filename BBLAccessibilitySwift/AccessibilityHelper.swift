@@ -80,10 +80,14 @@ open class LastOnlyQueue {
   open func async(closure: @escaping ()->()) {
     queue.async { [unowned self] in
       if self.opOnStandby != nil {
-        print("will supersede op.")
+        print("will supersede standby.")
+        self.opOnStandby = closure
+      }
+      else {
+        // just run and risk the small chance of a race.
+        closure()
       }
       
-      self.opOnStandby = closure
     }
   }
 }
