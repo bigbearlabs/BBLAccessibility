@@ -37,10 +37,7 @@
       window = (SIWindow*) element;
     }
     else {
-      NSArray* visibleWindows = element.app.visibleWindows;
-      if (visibleWindows.count > 0) {
-        window = visibleWindows[0];
-      }
+      window = element.app.visibleWindows.firstObject;
     }
     
     if (window) {
@@ -51,10 +48,10 @@
       _windowRect = window.frame;
       _windowRole = window.role;
       _windowSubrole = window.subrole;
-      
-      // TODO selection.
-      _selectionBounds = element.selectionBounds;
 
+      // properties related to the selection. this part probably needs more hardening.
+      _selectedText = element.selectedText;
+      _selectionBounds = element.selectionBounds;
     }
     
   }
