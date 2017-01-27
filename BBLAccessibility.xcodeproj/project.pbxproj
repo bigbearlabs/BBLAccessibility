@@ -26,6 +26,7 @@
 		51D6F89B1DDF73D0003F7E31 /* AccessibilityInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 51D6F8991DDF73D0003F7E31 /* AccessibilityInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		51D6F89C1DDF73D0003F7E31 /* AccessibilityInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D6F89A1DDF73D0003F7E31 /* AccessibilityInfo.m */; };
 		51DDF31C1E3B914B001655CB /* AccessibilityHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DDF31B1E3B914B001655CB /* AccessibilityHelper.swift */; };
+		51DDF3211E3B9327001655CB /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51DDF3201E3B9327001655CB /* BBLBasics.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +115,7 @@
 		51D6F8991DDF73D0003F7E31 /* AccessibilityInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessibilityInfo.h; sourceTree = "<group>"; };
 		51D6F89A1DDF73D0003F7E31 /* AccessibilityInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessibilityInfo.m; sourceTree = "<group>"; };
 		51DDF31B1E3B914B001655CB /* AccessibilityHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilityHelper.swift; sourceTree = "<group>"; };
+		51DDF3201E3B9327001655CB /* BBLBasics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BBLBasics.framework; path = "../../../../../../../Volumes/ramdisk/DerivedData/contexter-diussbvhwfomebclgpkcecfnrgtm/Build/Products/Debug/BBLBasics.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +154,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51DDF3211E3B9327001655CB /* BBLBasics.framework in Frameworks */,
 				51A1F8FE1DBEDA9600CF6E91 /* BBLAccessibility.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -224,6 +227,7 @@
 		5191A9401E34FFBF001B94FD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				51DDF3201E3B9327001655CB /* BBLBasics.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
