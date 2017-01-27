@@ -226,7 +226,14 @@
     return [[AccessibilityInfo alloc] initWithAppElement:(SIApplication*) siElement];
   }
   else {
-    return [[AccessibilityInfo alloc] initWithFocusedElement:siElement.focusedElement];
+    id appElement = siElement.app;
+    if (appElement) {
+      return [[AccessibilityInfo alloc] initWithAppElement:appElement FocusedElement:siElement.focusedElement];
+    }
+    else {
+      // no app element, danger!
+      return nil;
+    }
   }
 }
 

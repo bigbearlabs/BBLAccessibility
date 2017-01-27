@@ -17,7 +17,6 @@
 		51A1F8F51DBEDA4C00CF6E91 /* BBLAccessibilitySwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 51A1F8F31DBEDA4C00CF6E91 /* BBLAccessibilitySwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		51A1F8F81DBEDA4C00CF6E91 /* BBLAccessibilitySwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51A1F8F11DBEDA4B00CF6E91 /* BBLAccessibilitySwift.framework */; };
 		51A1F8F91DBEDA4C00CF6E91 /* BBLAccessibilitySwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51A1F8F11DBEDA4B00CF6E91 /* BBLAccessibilitySwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		51A1F8FD1DBEDA7600CF6E91 /* AccessibilityHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513527A31CC5842500E2B2B4 /* AccessibilityHelper.swift */; };
 		51A1F8FE1DBEDA9600CF6E91 /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
 		51B8F2241DB5774100E79EEC /* BBLAccessibilityObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 51B8F2221DB5774100E79EEC /* BBLAccessibilityObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		51B8F2251DB5774100E79EEC /* BBLAccessibilityObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B8F2231DB5774100E79EEC /* BBLAccessibilityObserver.m */; };
@@ -26,6 +25,7 @@
 		51D53AE31DCA3A9700079955 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
 		51D6F89B1DDF73D0003F7E31 /* AccessibilityInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 51D6F8991DDF73D0003F7E31 /* AccessibilityInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		51D6F89C1DDF73D0003F7E31 /* AccessibilityInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D6F89A1DDF73D0003F7E31 /* AccessibilityInfo.m */; };
+		51DDF31C1E3B914B001655CB /* AccessibilityHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DDF31B1E3B914B001655CB /* AccessibilityHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,7 +104,6 @@
 		51100F3F1CC15DA30095B985 /* BBLAccessibilityApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBLAccessibilityApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		5123E4BF1DDFD62B0099D11E /* Silica-ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Silica-ext.h"; sourceTree = "<group>"; };
 		5123E4C01DDFD62B0099D11E /* Silica-ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Silica-ext.m"; sourceTree = "<group>"; };
-		513527A31CC5842500E2B2B4 /* AccessibilityHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccessibilityHelper.swift; path = Silica/../BBLAccessibilityApp/AccessibilityHelper.swift; sourceTree = SOURCE_ROOT; };
 		51A1F8F11DBEDA4B00CF6E91 /* BBLAccessibilitySwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BBLAccessibilitySwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51A1F8F31DBEDA4C00CF6E91 /* BBLAccessibilitySwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBLAccessibilitySwift.h; sourceTree = "<group>"; };
 		51A1F8F41DBEDA4C00CF6E91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -114,6 +113,7 @@
 		51D53ADD1DCA3A9200079955 /* Silica.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Silica.xcodeproj; path = Silica/Silica.xcodeproj; sourceTree = "<group>"; };
 		51D6F8991DDF73D0003F7E31 /* AccessibilityInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessibilityInfo.h; sourceTree = "<group>"; };
 		51D6F89A1DDF73D0003F7E31 /* AccessibilityInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessibilityInfo.m; sourceTree = "<group>"; };
+		51DDF31B1E3B914B001655CB /* AccessibilityHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilityHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,7 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				51A1F8F31DBEDA4C00CF6E91 /* BBLAccessibilitySwift.h */,
-				513527A31CC5842500E2B2B4 /* AccessibilityHelper.swift */,
+				51DDF31B1E3B914B001655CB /* AccessibilityHelper.swift */,
 				51A1F8F41DBEDA4C00CF6E91 /* Info.plist */,
 			);
 			path = BBLAccessibilitySwift;
@@ -546,7 +546,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51A1F8FD1DBEDA7600CF6E91 /* AccessibilityHelper.swift in Sources */,
+				51DDF31C1E3B914B001655CB /* AccessibilityHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
