@@ -25,6 +25,7 @@
 		51D53AE31DCA3A9700079955 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
 		51D6F89B1DDF73D0003F7E31 /* AccessibilityInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 51D6F8991DDF73D0003F7E31 /* AccessibilityInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		51D6F89C1DDF73D0003F7E31 /* AccessibilityInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D6F89A1DDF73D0003F7E31 /* AccessibilityInfo.m */; };
+		51DADAE41E3D794C0035D4EB /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51DDF3201E3B9327001655CB /* BBLBasics.framework */; };
 		51DDF31C1E3B914B001655CB /* AccessibilityHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DDF31B1E3B914B001655CB /* AccessibilityHelper.swift */; };
 		51DDF3211E3B9327001655CB /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51DDF3201E3B9327001655CB /* BBLBasics.framework */; };
 /* End PBXBuildFile section */
@@ -130,6 +131,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51DADAE41E3D794C0035D4EB /* BBLBasics.framework in Frameworks */,
 				51D53AE31DCA3A9700079955 /* Silica.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

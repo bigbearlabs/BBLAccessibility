@@ -78,8 +78,7 @@
   // naive impl that loops through the running apps
 
   for (NSRunningApplication* application in [self applicationsToObserve]) {
-    id app = [self appElementForProcessIdentifier:application.processIdentifier];
-    [self unwatchApp:app];
+    [self unwatchApp:application];
     // FIXME this may contend with the unobservation on app terminate.
   }
 }
