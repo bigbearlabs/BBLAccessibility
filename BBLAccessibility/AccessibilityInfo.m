@@ -37,23 +37,23 @@
       window = (SIWindow*) element;
     }
     else {
-      window = appElement.visibleWindows.firstObject;
+      window = appElement.focusedWindow;
+      // ASSUMES we're never interested in AccessibilityInfo belonging to other windows.
     }
+
+    _windowAxElement = window.copy;
     
-    if (window) {
-      _windowAxElement = window;
+    _windowTitle = window.title;
+    _windowId = @(window.windowID).stringValue;
+    _windowRect = window.frame;
+    _windowRole = window.role;
+    _windowSubrole = window.subrole;
 
-      _windowTitle = window.title;
-      _windowId = [NSNumber numberWithUnsignedInteger:window.windowID].stringValue;
-      _windowRect = window.frame;
-      _windowRole = window.role;
-      _windowSubrole = window.subrole;
-
-      // properties related to the selection. this part probably needs more hardening.
-      _selectedText = element.selectedText;
-      if (_selectedText) {
-        _selectionBounds = element.selectionBounds;
-      }
+    
+    // properties related to the selection. this part probably needs more hardening.
+    _selectedText = element.selectedText;
+    if (_selectedText) {
+      _selectionBounds = element.selectionBounds;
     }
     
   }
