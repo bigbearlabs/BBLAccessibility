@@ -86,6 +86,8 @@
 
 -(void) watchNotificationsForApp:(NSRunningApplication*)app {
   SIApplication* application = [SIApplication applicationWithRunningApplication:app];
+  
+  __weak BBLAccessibilityObserver* blockSelf = self;
   [self concurrently:^{
     dispatch_async(dispatch_get_main_queue(), ^{
       
@@ -104,9 +106,10 @@
       [application observeNotification:kAXFocusedWindowChangedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self updateAccessibilityInfoForElement:accessibilityElement];
+                                 SIWindow* window = application.focusedWindow;
+                                 [blockSelf updateAccessibilityInfoForElement:window];
                                  
-                                 [self onFocusedWindowChanged:(SIWindow*)accessibilityElement];
+                                 [blockSelf onFocusedWindowChanged:(SIWindow*)window];
                                }];
       
       [application observeNotification:kAXWindowCreatedNotification
@@ -206,7 +209,8 @@
   else {
     id appElement = [self appElementForProcessIdentifier:siElement.processIdentifier];
     if (appElement) {
-      return [[AccessibilityInfo alloc] initWithAppElement:appElement FocusedElement:siElement.focusedElement];
+      SIAccessibilityElement* focusedElement = siElement.focusedElement;
+      return [[AccessibilityInfo alloc] initWithAppElement:appElement FocusedElement:focusedElement];
     }
     else {
       // no app element, danger!
