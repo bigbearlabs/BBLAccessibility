@@ -64,11 +64,7 @@
   
   // observe all current apps.
   for (NSRunningApplication* app in [self applicationsToObserve]) {
-    if ([[[self applicationsToObserve] valueForKey:@"processIdentifier"] containsObject:@(app.processIdentifier)]) {
-      [self watchNotificationsForApp:app];
-    } else {
-      __log("%@ is not in list of apps to observe", app);
-    }
+    [self watchNotificationsForApp:app];
   }
   
   // react to running application change.
