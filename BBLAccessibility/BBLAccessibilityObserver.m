@@ -3,6 +3,7 @@
 #import <AppKit/AppKit.h>
 //#import <os/log.h>
 
+
 //#define   __log(...) os_log_info(OS_LOG_DEFAULT, __VA_ARGS__);
 // DISABLED until we can do base builds on 10.12...
 #define   __log(...) NSLog(@__VA_ARGS__);
@@ -44,6 +45,8 @@
 
 
 -(void) watchWindows {
+  __weak BBLAccessibilityObserver* blockSelf = self;
+  
   // on didlaunchapplication notif, observe.
   [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidLaunchApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
     
@@ -91,14 +94,14 @@
   [self concurrently:^{
     dispatch_async(dispatch_get_main_queue(), ^{
       
-      __log("%@ observing app %@", self, application);
+      __log("%@ observing app %@", blockSelf, application);
 
       [application observeNotification:kAXApplicationActivatedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self updateAccessibilityInfoForElement:accessibilityElement forceUpdate:YES];
+                                 [blockSelf updateAccessibilityInfoForElement:accessibilityElement forceUpdate:YES];
                                  
-                                 [self onApplicationActivated:accessibilityElement];
+                                 [blockSelf onApplicationActivated:accessibilityElement];
                                }];
       
       // TODO respond to kAXApplicationDeactivatedNotification since impl needs to hide overlay for improved responsiveness.
@@ -115,49 +118,49 @@
       [application observeNotification:kAXWindowCreatedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self updateAccessibilityInfoForElement:accessibilityElement];
+                                 [blockSelf updateAccessibilityInfoForElement:accessibilityElement];
 
-                                 [self onWindowCreated:(SIWindow*)accessibilityElement];
+                                 [blockSelf onWindowCreated:(SIWindow*)accessibilityElement];
                                }];
       
       [application observeNotification:kAXTitleChangedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self updateAccessibilityInfoForElement:accessibilityElement];
+                                 [blockSelf updateAccessibilityInfoForElement:accessibilityElement];
 
-                                 [self onTitleChanged:(SIWindow*)accessibilityElement];
+                                 [blockSelf onTitleChanged:(SIWindow*)accessibilityElement];
                                }];
 
       [application observeNotification:kAXWindowMiniaturizedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self updateAccessibilityInfoForElement:accessibilityElement];
+                                 [blockSelf updateAccessibilityInfoForElement:accessibilityElement];
 
-                                 [self onWindowMinimised:(SIWindow*)accessibilityElement];
+                                 [blockSelf onWindowMinimised:(SIWindow*)accessibilityElement];
                                }];
       
       [application observeNotification:kAXWindowDeminiaturizedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self updateAccessibilityInfoForElement:accessibilityElement];
+                                 [blockSelf updateAccessibilityInfoForElement:accessibilityElement];
 
-                                 [self onWindowUnminimised:(SIWindow*)accessibilityElement];
+                                 [blockSelf onWindowUnminimised:(SIWindow*)accessibilityElement];
                                }];
       
       [application observeNotification:kAXWindowMovedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self updateAccessibilityInfoForElement:accessibilityElement];
+                                 [blockSelf updateAccessibilityInfoForElement:accessibilityElement];
 
-                                 [self onWindowMoved:(SIWindow*)accessibilityElement];
+                                 [blockSelf onWindowMoved:(SIWindow*)accessibilityElement];
                                }];
       
       [application observeNotification:kAXWindowResizedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self updateAccessibilityInfoForElement:accessibilityElement];
+                                 [blockSelf updateAccessibilityInfoForElement:accessibilityElement];
 
-                                 [self onWindowResized:(SIWindow*)accessibilityElement];
+                                 [blockSelf onWindowResized:(SIWindow*)accessibilityElement];
                                }];
       
 
@@ -179,7 +182,7 @@
            NSString* selectedText = accessibilityElement.selectedText;
 
            // guard: xcode spams us with notifs even when no text has changed, so only notify when value has changed.
-           id previousSelectedText = self.accessibilityInfosByPid[@(accessibilityElement.processIdentifier)].selectedText;
+           id previousSelectedText = blockSelf.accessibilityInfosByPid[@(accessibilityElement.processIdentifier)].selectedText;
            if (previousSelectedText == nil || [previousSelectedText length] == 0) {
              previousSelectedText = @"";
            }
@@ -190,9 +193,9 @@
            }
            else {
              
-             [self updateAccessibilityInfoForElement:accessibilityElement];
+             [blockSelf updateAccessibilityInfoForElement:accessibilityElement];
     
-             [self onTextSelectionChanged:accessibilityElement];
+             [blockSelf onTextSelectionChanged:accessibilityElement];
            }
          }];
       

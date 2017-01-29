@@ -34,6 +34,7 @@
   }
   else {
     NSLog(@"err AXStringForTextMarkerRange: %d", (int)err);
+    if (val) CFRelease(val);
     return nil;
   }
 }
@@ -76,11 +77,10 @@
       }
       
       else {
-        NSLog(@"query for selection ranged failed on %@", self.debugDescription);
+        NSLog(@"query for selection range failed on %@", self.debugDescription);
         result = NSZeroRect;
       }
   }
-  
   
   // NSLog(@"bounds: %@", [NSValue valueWithRect:rect]);
   
@@ -118,6 +118,8 @@
     }
   }
 
+  if (selectedRangeValue) CFRelease(selectedRangeValue);
+  if (selectionBoundsValue) CFRelease(selectionBoundsValue);
   
   return result;
 
