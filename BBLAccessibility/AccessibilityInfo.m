@@ -37,7 +37,7 @@
       window = (SIWindow*) element;
     }
     else {
-      window = element.app.visibleWindows.firstObject;
+      window = appElement.visibleWindows.firstObject;
     }
     
     if (window) {
@@ -51,7 +51,9 @@
 
       // properties related to the selection. this part probably needs more hardening.
       _selectedText = element.selectedText;
-      _selectionBounds = element.selectionBounds;
+      if (_selectedText) {
+        _selectionBounds = element.selectionBounds;
+      }
     }
     
   }
