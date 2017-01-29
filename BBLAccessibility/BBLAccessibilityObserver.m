@@ -86,12 +86,20 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
   if ([keyPath isEqualToString:@"frontmostApplication"]) {
+    
     NSRunningApplication* frontmostApplication = change[NSKeyValueChangeNewKey];
-    id accessibilityInfo = [[AccessibilityInfo alloc] initWithAppElement:[SIApplication applicationWithRunningApplication:frontmostApplication]];
-    id data = self.accessibilityInfosByPid.mutableCopy;
-    data[@(frontmostApplication.processIdentifier)] = accessibilityInfo;
-    self.accessibilityInfosByPid = data;
-  } else {
+    
+    id bundleIdsInScope = [self.applicationsToObserve valueForKey:@"processIdentifier"];
+    if ([bundleIdsInScope containsObject:frontmostApplication.bundleIdentifier]) {
+      // this app is in in watch scope.
+    
+      id accessibilityInfo = [[AccessibilityInfo alloc] initWithAppElement:[SIApplication applicationWithRunningApplication:frontmostApplication]];
+      id data = self.accessibilityInfosByPid.mutableCopy;
+      data[@(frontmostApplication.processIdentifier)] = accessibilityInfo;
+      self.accessibilityInfosByPid = data;
+    }
+  }
+  else {
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
   }
 }
