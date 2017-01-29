@@ -17,16 +17,15 @@
 
 @implementation BBLAccessibilityObserver
 {
-  NSMutableArray* watchedApps;
+  NSMutableDictionary* watchedAppsByPid;
 }
-
 
 - (instancetype)init
 {
   self = [super init];
   if (self) {
     _accessibilityInfosByPid = [@{} mutableCopy];
-    watchedApps = [@[] mutableCopy];
+    watchedAppsByPid = [@{} mutableCopy];
   }
   return self;
 }
@@ -49,9 +48,8 @@
   [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidLaunchApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
     
     NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
-    if ([[[self applicationsToObserve] valueForKey:@"processIdentifier"] containsObject:@(app.processIdentifier)]) {
-      SIApplication* application = [SIApplication applicationWithRunningApplication:app];
-      [self watchNotificationsForApp:application];
+    if ([[[blockSelf applicationsToObserve] valueForKey:@"processIdentifier"] containsObject:@(app.processIdentifier)]) {
+      [blockSelf watchNotificationsForApp:app];
     } else {
       __log("%@ is not in list of apps to observe", app);
     }
@@ -61,15 +59,13 @@
   [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidTerminateApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
     
     NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
-    SIApplication* application = [watchedApps firstObjectCommonWithArray:@[[SIApplication applicationWithRunningApplication:app]]];
-    [self unwatchApp:application];
+    [blockSelf unwatchApp:app];
   }];
   
   // observe all current apps.
   for (NSRunningApplication* app in [self applicationsToObserve]) {
     if ([[[self applicationsToObserve] valueForKey:@"processIdentifier"] containsObject:@(app.processIdentifier)]) {
-      id application = [SIApplication applicationWithRunningApplication:app];
-      [self watchNotificationsForApp:application];
+      [self watchNotificationsForApp:app];
     } else {
       __log("%@ is not in list of apps to observe", app);
     }
@@ -93,7 +89,7 @@
     if ([bundleIdsInScope containsObject:frontmostApplication.bundleIdentifier]) {
       // this app is in in watch scope.
     
-      id accessibilityInfo = [[AccessibilityInfo alloc] initWithAppElement:[SIApplication applicationWithRunningApplication:frontmostApplication]];
+      id accessibilityInfo = [[AccessibilityInfo alloc] initWithAppElement:[self appElementForProcessIdentifier:frontmostApplication.processIdentifier]];
       id data = self.accessibilityInfosByPid.mutableCopy;
       data[@(frontmostApplication.processIdentifier)] = accessibilityInfo;
       self.accessibilityInfosByPid = data;
@@ -107,15 +103,16 @@
 -(void) unwatchWindows {
   // naive impl that loops through the running apps
 
-  for (id application in [self applicationsToObserve]) {
-    id app = [SIApplication applicationWithRunningApplication:application];
+  for (NSRunningApplication* application in [self applicationsToObserve]) {
+    id app = [self appElementForProcessIdentifier:application.processIdentifier];
     [self unwatchApp:app];
-    // FIXME this contends with the unobservation on app terminate.
+    // FIXME this may contend with the unobservation on app terminate.
   }
 }
 
 
--(void) watchNotificationsForApp:(SIApplication*)application {
+-(void) watchNotificationsForApp:(NSRunningApplication*)app {
+  SIApplication* application = [SIApplication applicationWithRunningApplication:app];
   [self concurrently:^{
     dispatch_async(dispatch_get_main_queue(), ^{
       
@@ -223,7 +220,7 @@
            }
          }];
       
-      [watchedApps addObject:application];
+      [watchedAppsByPid setObject:application forKey:@(application.processIdentifier)];
       
     });
   }];
@@ -234,7 +231,7 @@
     return [[AccessibilityInfo alloc] initWithAppElement:(SIApplication*) siElement];
   }
   else {
-    id appElement = siElement.app;
+    id appElement = [self appElementForProcessIdentifier:siElement.processIdentifier];
     if (appElement) {
       return [[AccessibilityInfo alloc] initWithAppElement:appElement FocusedElement:siElement.focusedElement];
     }
@@ -245,7 +242,9 @@
   }
 }
 
-
+-(SIApplication*) appElementForProcessIdentifier:(pid_t)processIdentifier {
+  return watchedAppsByPid[@(processIdentifier)];
+}
 
 -(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement {
   [self updateAccessibilityInfoForElement:siElement forceUpdate:NO];
@@ -269,7 +268,9 @@
 }
 
 
--(void) unwatchApp:(SIApplication*)application {
+-(void) unwatchApp:(NSRunningApplication*)app {
+  SIApplication* application = watchedAppsByPid[@(app.processIdentifier)];
+  
   [application unobserveNotification:kAXSelectedTextChangedNotification withElement:application];
   [application unobserveNotification:kAXWindowResizedNotification withElement:application];
   [application unobserveNotification:kAXWindowMovedNotification withElement:application];
@@ -280,16 +281,14 @@
   [application unobserveNotification:kAXFocusedWindowChangedNotification withElement:application];
   [application unobserveNotification:kAXApplicationActivatedNotification withElement:application];
   
-  [watchedApps removeObject:application];
+  [watchedAppsByPid removeObjectForKey:@(application.processIdentifier)];
 }
 
 
 #pragma mark - handlers
 
 -(void) onApplicationActivated:(SIAccessibilityElement*)element {
-  // work around silica treatment of this event parameter as a SIWindow, when it should be an SIApplication
-  id app = [element valueForKey:@"app"];
-  __log("app activated: %@", app);
+  __log("app activated: %@", element);
 }
 
 -(void) onFocusedWindowChanged:(SIWindow*)window {
