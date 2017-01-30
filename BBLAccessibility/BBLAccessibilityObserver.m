@@ -52,7 +52,13 @@
     
     NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
     if ([[[blockSelf applicationsToObserve] valueForKey:@"processIdentifier"] containsObject:@(app.processIdentifier)]) {
+      
       [blockSelf watchNotificationsForApp:app];
+      
+      // ensure ax info doesn't lag after new windows.
+      SIWindow* window = [SIWindow focusedWindow];
+      [blockSelf onFocusedWindowChanged:window];
+      
     } else {
       __log("%@ is not in list of apps to observe", app);
     }
@@ -70,12 +76,31 @@
     [self watchNotificationsForApp:app];
   }
   
+  // react to running application change.
+  [[NSWorkspace sharedWorkspace] addObserver:self forKeyPath:@"frontmostApplication" options:NSKeyValueObservingOptionNew context:nil];
   
   __log("%@ is watching the windows", self);
   
   // NOTE it still takes a while for the notifs to actually invoke the handlers. at least with concurrent set up we don't hog the main thread as badly as before.
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+  if ([keyPath isEqualToString:@"frontmostApplication"]) {
+    
+    NSRunningApplication* frontmostApplication = change[NSKeyValueChangeNewKey];
+    
+    id bundleIdsInScope = [self.applicationsToObserve valueForKey:@"processIdentifier"];
+    if ( ! [bundleIdsInScope containsObject:frontmostApplication.bundleIdentifier]) {
+      
+      // this app is not in watch scope -- send out a kvo without any change.
+      self.accessibilityInfosByPid = self.accessibilityInfosByPid.copy;
+    }
+  }
+  else {
+    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+  }
+}
 
 -(void) unwatchWindows {
   // naive impl that loops through the running apps
