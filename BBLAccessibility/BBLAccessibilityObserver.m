@@ -1,12 +1,7 @@
 #import "BBLAccessibilityObserver.h"
 #import <Silica/Silica.h>
 #import <AppKit/AppKit.h>
-//#import <os/log.h>
-
-
-//#define   __log(...) os_log_info(OS_LOG_DEFAULT, __VA_ARGS__);
-// DISABLED until we can do base builds on 10.12...
-#define   __log(...) NSLog(@__VA_ARGS__);
+#import "logging.h"
 
 
 

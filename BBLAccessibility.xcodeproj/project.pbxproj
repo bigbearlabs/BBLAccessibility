@@ -109,6 +109,7 @@
 		51A1F8F11DBEDA4B00CF6E91 /* BBLAccessibilitySwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BBLAccessibilitySwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51A1F8F31DBEDA4C00CF6E91 /* BBLAccessibilitySwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBLAccessibilitySwift.h; sourceTree = "<group>"; };
 		51A1F8F41DBEDA4C00CF6E91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		51B0D8C71E4BD47900EED498 /* logging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = logging.h; sourceTree = "<group>"; };
 		51B8F2221DB5774100E79EEC /* BBLAccessibilityObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBLAccessibilityObserver.h; sourceTree = "<group>"; };
 		51B8F2231DB5774100E79EEC /* BBLAccessibilityObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBLAccessibilityObserver.m; sourceTree = "<group>"; };
 		51D53AD31DCA3A4E00079955 /* NMTest001.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = NMTest001.xcodeproj; path = NMAccessibility/NMTest001.xcodeproj; sourceTree = "<group>"; };
@@ -200,6 +201,7 @@
 				51D6F89A1DDF73D0003F7E31 /* AccessibilityInfo.m */,
 				5123E4BF1DDFD62B0099D11E /* Silica-ext.h */,
 				5123E4C01DDFD62B0099D11E /* Silica-ext.m */,
+				51B0D8C71E4BD47900EED498 /* logging.h */,
 				51100F101CC15D200095B985 /* Info.plist */,
 			);
 			path = BBLAccessibility;
