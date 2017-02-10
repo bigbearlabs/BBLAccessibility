@@ -28,7 +28,6 @@
 
 - (void)dealloc
 {
-  [self unwatchWindows];
 }
 
 -(NSArray<NSRunningApplication*>*) applicationsToObserve {
@@ -113,7 +112,6 @@
   __weak BBLAccessibilityObserver* blockSelf = self;
   [self concurrently:^{
     dispatch_async(dispatch_get_main_queue(), ^{
-      
       __log("%@ observing app %@", blockSelf, application);
 
       [application observeNotification:kAXApplicationActivatedNotification
