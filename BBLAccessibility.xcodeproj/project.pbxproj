@@ -22,12 +22,11 @@
 		51B8F2251DB5774100E79EEC /* BBLAccessibilityObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B8F2231DB5774100E79EEC /* BBLAccessibilityObserver.m */; };
 		51B8F25D1DB582A200E79EEC /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
 		51B8F25E1DB582A200E79EEC /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		51D53AE31DCA3A9700079955 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
 		51D6F89B1DDF73D0003F7E31 /* AccessibilityInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 51D6F8991DDF73D0003F7E31 /* AccessibilityInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		51D6F89C1DDF73D0003F7E31 /* AccessibilityInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D6F89A1DDF73D0003F7E31 /* AccessibilityInfo.m */; };
-		51DADAE41E3D794C0035D4EB /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51DDF3201E3B9327001655CB /* BBLBasics.framework */; };
 		51DDF31C1E3B914B001655CB /* AccessibilityHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DDF31B1E3B914B001655CB /* AccessibilityHelper.swift */; };
-		51DDF3211E3B9327001655CB /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51DDF3201E3B9327001655CB /* BBLBasics.framework */; };
+		51DF495C1E4E7FA100D1DCA5 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
+		51DF495F1E4E805E00D1DCA5 /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51DF495A1E4E7F9800D1DCA5 /* BBLBasics.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,7 +116,7 @@
 		51D6F8991DDF73D0003F7E31 /* AccessibilityInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessibilityInfo.h; sourceTree = "<group>"; };
 		51D6F89A1DDF73D0003F7E31 /* AccessibilityInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessibilityInfo.m; sourceTree = "<group>"; };
 		51DDF31B1E3B914B001655CB /* AccessibilityHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilityHelper.swift; sourceTree = "<group>"; };
-		51DDF3201E3B9327001655CB /* BBLBasics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BBLBasics.framework; path = "../../../../../../../Volumes/ramdisk/DerivedData/contexter-diussbvhwfomebclgpkcecfnrgtm/Build/Products/Debug/BBLBasics.framework"; sourceTree = "<group>"; };
+		51DF495A1E4E7F9800D1DCA5 /* BBLBasics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BBLBasics.framework; path = "../../../../../../../Volumes/ramdisk/DerivedData/contexter-diussbvhwfomebclgpkcecfnrgtm/Build/Products/Debug/BBLBasics.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,8 +131,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51DADAE41E3D794C0035D4EB /* BBLBasics.framework in Frameworks */,
-				51D53AE31DCA3A9700079955 /* Silica.framework in Frameworks */,
+				51DF495C1E4E7FA100D1DCA5 /* Silica.framework in Frameworks */,
+				51DF495F1E4E805E00D1DCA5 /* BBLBasics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,7 +156,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51DDF3211E3B9327001655CB /* BBLBasics.framework in Frameworks */,
 				51A1F8FE1DBEDA9600CF6E91 /* BBLAccessibility.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -231,7 +229,7 @@
 		5191A9401E34FFBF001B94FD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				51DDF3201E3B9327001655CB /* BBLBasics.framework */,
+				51DF495A1E4E7F9800D1DCA5 /* BBLBasics.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
