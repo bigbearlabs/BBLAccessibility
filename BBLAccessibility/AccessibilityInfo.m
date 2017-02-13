@@ -61,8 +61,10 @@
 }
 
 -(NSString *)description {
-  return [NSString stringWithFormat:@"%@, %@, %@, %@, %@, %@, %@, %@, focusedElementRole: %@, windowRole: %@, windowSubrole: %@",
-          _appName, [NSNumber numberWithUnsignedInteger:_pid], _bundleId, _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], _selectedText, [NSValue valueWithRect:_selectionBounds], _role, _windowRole, _windowSubrole];
+  return [NSString stringWithFormat:
+    @"app: %@, pid: %@, bundleId: %@, title: %@, windowId: %@, windowRect: %@, selectedText: %@, selectionBounds: %@, role: %@, windowRole: %@, windowSubrole: %@",
+    _appName, @(_pid), _bundleId, _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], _selectedText, [NSValue valueWithRect:_selectionBounds], _role, _windowRole, _windowSubrole
+  ];
 }
 
 
