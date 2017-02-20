@@ -5,6 +5,8 @@ import BBLBasics
 
 open class AccessibilityHelper {
   
+  let lastOnlyQueue = LastOnlyQueue()
+
   public init() {}
   
   open func queryAxPerms(promptIfNeeded: Bool, postCheckHandler: @escaping (_ isPermissioned: Bool)->()) {
@@ -28,9 +30,9 @@ open class AccessibilityHelper {
     
   }
   
-  
-  let lastOnlyQueue = LastOnlyQueue()
-  
+  open func isAXProcessTrusted() -> (Bool) {
+    return AXIsProcessTrustedWithOptions(nil)
+  }
 
 }
 
