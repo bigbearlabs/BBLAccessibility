@@ -12,6 +12,8 @@
 
 -(void) watchWindows;
 
+-(void) unwatchWindows;
+
 
 -(void) onApplicationActivated:(SIAccessibilityElement*)element;
 

@@ -30,6 +30,9 @@
 {
 }
 
+
+#pragma mark -
+
 -(NSArray<NSRunningApplication*>*) applicationsToObserve {
   return [[NSWorkspace sharedWorkspace] runningApplications];
 
@@ -37,6 +40,8 @@
 //  return [NSRunningApplication runningApplicationsWithBundleIdentifier:@"com.apple.Safari"];
 }
 
+
+#pragma mark -
 
 -(void) watchWindows {
   __weak BBLAccessibilityObserver* blockSelf = self;
@@ -76,24 +81,6 @@
   __log("%@ is watching the windows", self);
   
   // NOTE it still takes a while for the notifs to actually invoke the handlers. at least with concurrent set up we don't hog the main thread as badly as before.
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-  if ([keyPath isEqualToString:@"frontmostApplication"]) {
-    
-    NSRunningApplication* frontmostApplication = change[NSKeyValueChangeNewKey];
-    
-    id bundleIdsInScope = [self.applicationsToObserve valueForKey:@"processIdentifier"];
-    if ( ! [bundleIdsInScope containsObject:frontmostApplication.bundleIdentifier]) {
-      
-      // this app is not in watch scope -- send out a kvo without any change.
-      self.accessibilityInfosByPid = self.accessibilityInfosByPid.copy;
-    }
-  }
-  else {
-    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-  }
 }
 
 -(void) unwatchWindows {
@@ -223,6 +210,25 @@
   }];
 }
 
+-(void) unwatchApp:(NSRunningApplication*)app {
+  SIApplication* application = watchedAppsByPid[@(app.processIdentifier)];
+  
+  [application unobserveNotification:kAXSelectedTextChangedNotification withElement:application];
+  [application unobserveNotification:kAXWindowResizedNotification withElement:application];
+  [application unobserveNotification:kAXWindowMovedNotification withElement:application];
+  [application unobserveNotification:kAXWindowDeminiaturizedNotification withElement:application];
+  [application unobserveNotification:kAXWindowMiniaturizedNotification withElement:application];
+  [application unobserveNotification:kAXTitleChangedNotification withElement:application];
+  [application unobserveNotification:kAXWindowCreatedNotification withElement:application];
+  [application unobserveNotification:kAXFocusedWindowChangedNotification withElement:application];
+  [application unobserveNotification:kAXApplicationActivatedNotification withElement:application];
+  
+  [watchedAppsByPid removeObjectForKey:@(application.processIdentifier)];
+}
+
+
+#pragma mark -
+
 -(AccessibilityInfo*) accessibilityInfoForElement:(SIAccessibilityElement*)siElement {
   if ([[siElement class] isEqual:[SIApplication class]]) {
     return [[AccessibilityInfo alloc] initWithAppElement:(SIApplication*) siElement];
@@ -266,23 +272,6 @@
 }
 
 
--(void) unwatchApp:(NSRunningApplication*)app {
-  SIApplication* application = watchedAppsByPid[@(app.processIdentifier)];
-  
-  [application unobserveNotification:kAXSelectedTextChangedNotification withElement:application];
-  [application unobserveNotification:kAXWindowResizedNotification withElement:application];
-  [application unobserveNotification:kAXWindowMovedNotification withElement:application];
-  [application unobserveNotification:kAXWindowDeminiaturizedNotification withElement:application];
-  [application unobserveNotification:kAXWindowMiniaturizedNotification withElement:application];
-  [application unobserveNotification:kAXTitleChangedNotification withElement:application];
-  [application unobserveNotification:kAXWindowCreatedNotification withElement:application];
-  [application unobserveNotification:kAXFocusedWindowChangedNotification withElement:application];
-  [application unobserveNotification:kAXApplicationActivatedNotification withElement:application];
-  
-  [watchedAppsByPid removeObjectForKey:@(application.processIdentifier)];
-}
-
-
 #pragma mark - handlers
 
 -(void) onApplicationActivated:(SIAccessibilityElement*)element {
@@ -321,6 +310,26 @@
   __log("text selection changed on element: %@. selection: %@", element, element.selectedText);
 }
 
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+  if ([keyPath isEqualToString:@"frontmostApplication"]) {
+    
+    NSRunningApplication* frontmostApplication = change[NSKeyValueChangeNewKey];
+    
+    id bundleIdsInScope = [self.applicationsToObserve valueForKey:@"processIdentifier"];
+    if ( ! [bundleIdsInScope containsObject:frontmostApplication.bundleIdentifier]) {
+      
+      // this app is not in watch scope -- send out a kvo without any change.
+      self.accessibilityInfosByPid = self.accessibilityInfosByPid.copy;
+    }
+  }
+  else {
+    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+  }
+}
 
 
 #pragma mark - util
