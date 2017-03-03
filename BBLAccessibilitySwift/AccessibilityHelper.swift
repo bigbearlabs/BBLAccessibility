@@ -11,39 +11,55 @@ open class AccessibilityHelper {
   
   /***
    queries for Accessibility permission and invokes handler based on whether the app has Accessibility permissions.
-   if query returns no permissions, `whenNoPermission` is invoked.
+   if query returns no permissions, `ifNoPermission` is invoked.
    when `shouldPoll`  = true, we repeatedly query for the permission until it is obtained.
-   when permission is eventually granted, `whenPermissioned` is invoked and all sparse polling is stopped.
-  */
-  open func queryAxPerm(promptIfNeeded: Bool, shouldPoll: Bool = false, whenNoPermission: @escaping () -> Void, whenPermissioned: @escaping () -> Void) {
+   `whenPermissioned(isNewPermission)` is called when first check was successful, or eventually in case of a polling call when the permission is obtained.
+   polling stops when permission is obtained.
+   */
+  open func queryAxPerm(promptIfNeeded: Bool, shouldPoll: Bool = false, ifNoPermission: @escaping () -> Void, whenPermissioned: @escaping(_ isNewPermission: Bool) -> Void) {
     
+    // first check if we have the perm.
+    let originalPerm = AXIsProcessTrustedWithOptions(nil)
+    if originalPerm {
+      // chiching.
+      whenPermissioned(false)
+      
+      return
+    }
+
+    ifNoPermission()
+
+    // real world situation 1.
+    // no perm, so we prompt once, then poll.
     
+    // 1. no perm + prompt option -> will fail, prompt.
+    let promptOptionKey = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String
+    let options = [
+      promptOptionKey: promptIfNeeded
+    ]
+    _ = AXIsProcessTrustedWithOptions(options as CFDictionary)
+    
+    // sparsely and repeatedly check for perm.
     lastOnlyQueue.pollingAsync { [unowned self] in
 
-      let promptOptionKey = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String
-      let options = [
-        promptOptionKey: promptIfNeeded
-      ]
+      let isPermissioned = AXIsProcessTrustedWithOptions(nil)
       
-      let isPermissioned = AXIsProcessTrustedWithOptions(options as CFDictionary)
-      
-      if !shouldPoll {
+      // since we got sent to a polling queue, we stop it after one invocation.
+      if !shouldPoll || isPermissioned {
         self.lastOnlyQueue.pollStop()
       }
       
       if isPermissioned {
-        if shouldPoll {
-          self.lastOnlyQueue.pollStop()
-        }
-          
-        whenPermissioned()
+        // we obtained the perm in the recursive call chain.
+        whenPermissioned(true)
       }
       else {
-          whenNoPermission()
+        ifNoPermission()
         
         if shouldPoll {
           // recursively invoke, so clients don't have to implement a blocking workflow.
-          self.queryAxPerm(promptIfNeeded: promptIfNeeded, shouldPoll: shouldPoll, whenNoPermission: whenNoPermission, whenPermissioned: whenPermissioned)
+          // - we don't want to poll and prompt.
+          self.queryAxPerm(promptIfNeeded: false, shouldPoll: true, ifNoPermission: ifNoPermission, whenPermissioned: whenPermissioned)
         }
       }
     }
