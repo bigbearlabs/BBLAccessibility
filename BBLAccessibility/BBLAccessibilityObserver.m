@@ -111,6 +111,14 @@
       
       // TODO respond to kAXApplicationDeactivatedNotification since impl needs to hide overlay for improved responsiveness.
       
+      [application observeNotification:kAXFocusedUIElementChangedNotification
+                           withElement:application
+                               handler:^(SIAccessibilityElement *accessibilityElement) {
+                                 [blockSelf updateAccessibilityInfoForElement:accessibilityElement];
+                                 
+                                 [blockSelf onFocusedElementChanged:accessibilityElement];
+                               }];
+      
       [application observeNotification:kAXFocusedWindowChangedNotification
                            withElement:application
                                handler:^(SIAccessibilityElement *accessibilityElement) {
@@ -179,6 +187,7 @@
 
       // observe appropriately for text selection handling.
       // NOTE some apps, e.g. iterm, seem to fail to notify observers properly.
+      // FIXME investigate why not working with Notes.app
       // INVESTIGATE sierra + safari: notifies only for some windows.
       // during investigation we saw that inspecting with Prefab UI Browser 'wakes up' the windows such that they send out notifications only after inspection.
       [application observeNotification:kAXSelectedTextChangedNotification
@@ -278,8 +287,12 @@
   __log("app activated: %@", element);
 }
 
+-(void) onFocusedElementChanged:(SIAccessibilityElement*)element {
+  __log("focused element: %@", element);
+}
+
 -(void) onFocusedWindowChanged:(SIWindow*)window {
-  __log("focus: %@", window);
+  __log("focused window: %@", window);
 }
 
 -(void) onWindowCreated:(SIWindow*)window {

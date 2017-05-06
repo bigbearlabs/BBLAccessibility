@@ -17,6 +17,8 @@
 
 -(void) onApplicationActivated:(SIAccessibilityElement*)element;
 
+-(void) onFocusedElementChanged:(SIAccessibilityElement*)element;
+
 -(void) onFocusedWindowChanged:(SIWindow*)window;
 
 
