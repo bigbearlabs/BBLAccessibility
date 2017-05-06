@@ -319,10 +319,10 @@
     
     NSRunningApplication* frontmostApplication = change[NSKeyValueChangeNewKey];
     
-    id bundleIdsInScope = [self.applicationsToObserve valueForKey:@"processIdentifier"];
-    if ( ! [bundleIdsInScope containsObject:frontmostApplication.bundleIdentifier]) {
-      
-      // this app is not in watch scope -- send out a kvo without any change.
+    id bundleIdsInScope = [self.applicationsToObserve valueForKey:@"bundleIdentifier"];
+    if ([bundleIdsInScope containsObject:frontmostApplication.bundleIdentifier]) {
+      // the new frontmost app is in watch scope -- send out a kvo without any change.
+
       self.accessibilityInfosByPid = self.accessibilityInfosByPid.copy;
     }
   }
