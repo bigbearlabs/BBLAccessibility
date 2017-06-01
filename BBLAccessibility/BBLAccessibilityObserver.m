@@ -239,19 +239,22 @@
 #pragma mark -
 
 -(AccessibilityInfo*) accessibilityInfoForElement:(SIAccessibilityElement*)siElement {
+  
+  // * case: element is an SIApplication.
   if ([[siElement class] isEqual:[SIApplication class]]) {
     return [[AccessibilityInfo alloc] initWithAppElement:(SIApplication*) siElement];
   }
+
+  id appElement = [self appElementForProcessIdentifier:siElement.processIdentifier];
+  if (appElement) {
+    
+    // * default case.
+    SIAccessibilityElement* focusedElement = siElement.focusedElement;
+    return [[AccessibilityInfo alloc] initWithAppElement:appElement FocusedElement:focusedElement];
+  }
   else {
-    id appElement = [self appElementForProcessIdentifier:siElement.processIdentifier];
-    if (appElement) {
-      SIAccessibilityElement* focusedElement = siElement.focusedElement;
-      return [[AccessibilityInfo alloc] initWithAppElement:appElement FocusedElement:focusedElement];
-    }
-    else {
-      // no app element, danger!
-      return nil;
-    }
+    // no app element, danger!
+    return nil;
   }
 }
 
@@ -265,6 +268,16 @@
 
 
 -(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement forceUpdate:(BOOL)forceUpdate {
+  
+  // * case: element's window has an AXUnknown subrole.
+  // e.g. the invisible window that gets created when the mouse pointer turns into a 'pointy hand' when overing over clickable WebKit elements.
+  if (siElement.class == [SIWindow class]
+      && [siElement.subrole isEqualToString:@"AXUnknown"]
+      ) {
+    __log("%@ is a window with subrole AXUnknown -- will not create ax info.", siElement);
+    return;
+  }
+
   AccessibilityInfo* newData = [self accessibilityInfoForElement:siElement];
 
   pid_t pid = siElement.processIdentifier;
@@ -296,7 +309,7 @@
 }
 
 -(void) onWindowCreated:(SIWindow*)window {
-  __log("new window: %@",window.title);  // NOTE title may not be available yet.
+  __log("new window: %@", window);  // NOTE title may not be available yet.
 }
 
 -(void) onTitleChanged:(SIWindow*)window {
