@@ -184,7 +184,13 @@
       //                             [self onFocusedElementChanged:accessibilityElement];
       //                           }];
       
-
+      [application observeNotification:kAXUIElementDestroyedNotification
+                           withElement:application
+                               handler:^(SIAccessibilityElement *accessibilityElement) {
+                                 [blockSelf onElementDestroyed:accessibilityElement];
+                               }];
+      
+      
       // observe appropriately for text selection handling.
       // NOTE some apps, e.g. iterm, seem to fail to notify observers properly.
       // FIXME investigate why not working with Notes.app
@@ -334,6 +340,10 @@
 
 -(void) onTextSelectionChanged:(SIAccessibilityElement*)element {
   __log("text selection changed on element: %@. selection: %@", element, element.selectedText);
+}
+
+-(void) onElementDestroyed:(SIAccessibilityElement*)element {
+  __log("element destroyed: %@", element);
 }
 
 

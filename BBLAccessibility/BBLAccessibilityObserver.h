@@ -37,6 +37,11 @@
 
 -(void) onTextSelectionChanged:(SIAccessibilityElement*)element;
 
+-(void) onElementDestroyed:(SIAccessibilityElement*)element;
+
+
+-(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement forceUpdate:(BOOL)forceUpdate;
+
 
 -(SIWindow*) keyWindowForApplication:(SIApplication*) application;
 
