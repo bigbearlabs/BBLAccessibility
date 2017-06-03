@@ -303,19 +303,27 @@
     return;
   }
 
-  AccessibilityInfo* newData = [self accessibilityInfoForElement:siElement];
+//  __block AccessibilityInfo* info = nil;
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    AccessibilityInfo* newData = [self accessibilityInfoForElement:siElement];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+      pid_t pid = siElement.processIdentifier;
+      AccessibilityInfo* oldData = self.accessibilityInfosByPid[@(pid)];
+      
+      if (forceUpdate
+          || ![newData isEqual:oldData]) {
+        NSMutableDictionary* dictToUpdate = self.accessibilityInfosByPid.mutableCopy;
+        
+        dictToUpdate[@(pid)] = newData;
+        
+        self.accessibilityInfosByPid = dictToUpdate.copy;
+      }
 
-  pid_t pid = siElement.processIdentifier;
-  AccessibilityInfo* oldData = self.accessibilityInfosByPid[@(pid)];
-  
-  if (forceUpdate
-      || ![newData isEqual:oldData]) {
-    NSMutableDictionary* dictToUpdate = self.accessibilityInfosByPid.mutableCopy;
-    
-    dictToUpdate[@(pid)] = newData;
-    
-    self.accessibilityInfosByPid = dictToUpdate.copy;
-  }
+    });
+
+  });
+
 }
 
 
@@ -342,19 +350,19 @@
 }
 
 -(void) onWindowMinimised:(SIWindow*)window {
-  __log("window minimised: %@",window.title);  // NOTE title may not be available yet.
+  __log("window minimised: %@",window);  // NOTE title may not be available yet.
 }
 
 -(void) onWindowUnminimised:(SIWindow*)window {
-  __log("window unminimised: %@",window.title);  // NOTE title may not be available yet.
+  __log("window unminimised: %@",window);  // NOTE title may not be available yet.
 }
 
 -(void) onWindowMoved:(SIWindow*)window {
-  __log("window moved: %@",window.title);  // NOTE title may not be available yet.
+  __log("window moved: %@",window);  // NOTE title may not be available yet.
 }
 
 -(void) onWindowResized:(SIWindow*)window {
-  __log("window resized: %@",window.title);  // NOTE title may not be available yet.
+  __log("window resized: %@",window);  // NOTE title may not be available yet.
 }
 
 -(void) onTextSelectionChanged:(SIAccessibilityElement*)element {

@@ -56,6 +56,8 @@
       _selectionBounds = focusedElement.selectionBounds;
     }
     
+    // * for text elements, (try to) grab the text as well. TODO
+    
   }
   return self;
 }
