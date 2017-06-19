@@ -61,9 +61,13 @@
 }
 
 -(NSString *)description {
+  id text = _selectedText;
+  if (!text) {
+    text = @"";
+  }
   return [NSString stringWithFormat:
     @"app: %@, pid: %@, bundleId: %@, title: %@, windowId: %@, windowRect: %@, selectedText: %@, selectionBounds: %@, role: %@, windowRole: %@, windowSubrole: %@",
-    _appName, @(_pid), _bundleId, _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], _selectedText, [NSValue valueWithRect:_selectionBounds], _role, _windowRole, _windowSubrole
+    _appName, @(_pid), _bundleId, _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], text, [NSValue valueWithRect:_selectionBounds], _role, _windowRole, _windowSubrole
   ];
 }
 
