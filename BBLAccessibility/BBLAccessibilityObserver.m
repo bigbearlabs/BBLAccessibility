@@ -352,15 +352,20 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
   if ([keyPath isEqualToString:@"frontmostApplication"]) {
-    
-    NSRunningApplication* frontmostApplication = change[NSKeyValueChangeNewKey];
-    
-    id bundleIdsInScope = [self.applicationsToObserve valueForKey:@"bundleIdentifier"];
-    if ([bundleIdsInScope containsObject:frontmostApplication.bundleIdentifier]) {
-      // the new frontmost app is in watch scope -- send out a kvo without any change.
 
-      self.accessibilityInfosByPid = self.accessibilityInfosByPid.copy;
-    }
+    // when NSTask results in a CF call to change frontmostApplication, we could potentially end up with a convoluted recursion.
+    // async dispath to (try to) avoid this.
+    dispatch_async(dispatch_get_main_queue(), ^{
+      NSRunningApplication* frontmostApplication = change[NSKeyValueChangeNewKey];
+      
+      id bundleIdsInScope = [self.applicationsToObserve valueForKey:@"bundleIdentifier"];
+      if ([bundleIdsInScope containsObject:frontmostApplication.bundleIdentifier]) {
+        // the new frontmost app is in watch scope -- send out a kvo without any change.
+        
+        self.accessibilityInfosByPid = self.accessibilityInfosByPid.copy;
+      }
+    });
+    
   }
   else {
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
