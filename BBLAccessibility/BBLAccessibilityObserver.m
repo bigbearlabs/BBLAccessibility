@@ -97,8 +97,13 @@
   SIApplication* application = [SIApplication applicationWithRunningApplication:app];
   
   __weak BBLAccessibilityObserver* blockSelf = self;
-  [self concurrently:^{
-    dispatch_async(dispatch_get_main_queue(), ^{
+  
+  // TODO since we can't time out due to the main thread requirement,
+  // do our best to either check for process status or to even send the pid 'kill -CONT'.
+
+    // * observe AX notifications for the app. we must register on the main queue, else callbacks don't come in.
+    dispatch_async(dispatch_get_main_queue(),
+    ^{
       __log("%@ observing app %@", blockSelf, application);
 
       [application observeNotification:kAXApplicationActivatedNotification
@@ -222,7 +227,6 @@
       [watchedAppsByPid setObject:application forKey:@(application.processIdentifier)];
       
     });
-  }];
 }
 
 -(void) unwatchApp:(NSRunningApplication*)app {
