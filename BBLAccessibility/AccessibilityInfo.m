@@ -22,7 +22,7 @@
   }
 }
 
--(instancetype)initWithAppElement:(SIApplication*)appElement FocusedElement:(SIAccessibilityElement*)element;
+-(instancetype)initWithAppElement:(SIApplication*)appElement FocusedElement:(SIAccessibilityElement*)focusedElement;
 {
   self = [super init];
   if (self) {
@@ -30,11 +30,11 @@
     _bundleId = appElement.runningApplication.bundleIdentifier;
     _pid = appElement.processIdentifier;
     
-    _role = element.role;
+    _role = focusedElement.role;
     
     SIWindow* window;
-    if ([[element class] isEqual:[SIWindow class]]) {
-      window = (SIWindow*) element;
+    if ([[focusedElement class] isEqual:[SIWindow class]]) {
+      window = (SIWindow*) focusedElement;
     }
     else {
       window = appElement.focusedWindow;
@@ -51,9 +51,9 @@
 
     
     // properties related to the selection. this part probably needs more hardening.
-    _selectedText = element.selectedText;
+    _selectedText = focusedElement.selectedText;
     if (_selectedText) {
-      _selectionBounds = element.selectionBounds;
+      _selectionBounds = focusedElement.selectionBounds;
     }
     
   }
