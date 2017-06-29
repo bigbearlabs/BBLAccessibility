@@ -272,6 +272,14 @@
   return watchedAppsByPid[@(processIdentifier)];
 }
 
+-(void) updateAccessibilityInfoForApplication:(NSRunningApplication*)runningApplication {
+  SIApplication* app = [SIApplication applicationWithRunningApplication:runningApplication];
+  SIWindow* window = app.focusedWindow;
+  if (window) {
+    [self updateAccessibilityInfoForElement:window];
+  }
+}
+
 -(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement {
   [self updateAccessibilityInfoForElement:siElement forceUpdate:NO];
 }
@@ -357,16 +365,8 @@
 {
   if ([keyPath isEqualToString:@"frontmostApplication"]) {
 
-    // when NSTask results in a CF call to change frontmostApplication, we could potentially end up with a convoluted recursion.
-    // async dispath to (try to) avoid this.
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//      NSRunningApplication* frontmostApplication = change[NSKeyValueChangeNewKey];
-//      
-//      id bundleIdsInScope = [self.applicationsToObserve valueForKey:@"bundleIdentifier"];
-//      if ([bundleIdsInScope containsObject:frontmostApplication.bundleIdentifier]) {
-//        // the new frontmost app is in watch scope -- send out a kvo without any change.
-    
-        self.accessibilityInfosByPid = self.accessibilityInfosByPid.copy;
+    NSRunningApplication* app = change[NSKeyValueChangeNewKey];
+    [self updateAccessibilityInfoForApplication:app];
     
   }
   else {
