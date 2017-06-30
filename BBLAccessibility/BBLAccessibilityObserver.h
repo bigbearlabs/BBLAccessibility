@@ -45,5 +45,10 @@
 
 -(SIWindow*) keyWindowForApplication:(SIApplication*) application;
 
+
+// util
+
+-(void) concurrentlyWithContext:(NSDictionary*)context block:(void(^)(void))block;
+
 @end
 
