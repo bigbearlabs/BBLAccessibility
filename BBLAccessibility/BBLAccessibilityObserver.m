@@ -261,16 +261,18 @@
   }
 
   id appElement = [self appElementForProcessIdentifier:siElement.processIdentifier];
-  if (appElement) {
-    
-    // * default case.
-    SIAccessibilityElement* focusedElement = siElement.focusedElement;
-    return [[AccessibilityInfo alloc] initWithAppElement:appElement FocusedElement:focusedElement];
-  }
-  else {
-    // no app element, danger!
+  if (appElement == nil) {
     return nil;
   }
+
+  // * case: no focused element.
+  SIAccessibilityElement* focusedElement = siElement.focusedElement;
+  if (focusedElement == nil) {
+    return nil;
+  }
+  
+  // * default case.
+  return [[AccessibilityInfo alloc] initWithAppElement:appElement FocusedElement:focusedElement];
 }
 
 -(SIApplication*) appElementForProcessIdentifier:(pid_t)processIdentifier {
