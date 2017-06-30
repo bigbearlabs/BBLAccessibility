@@ -14,15 +14,21 @@
   if (self.isWebArea) {
     return [self selectedTextForWebArea];
   }
-  
-  id selectedText = [self stringForKey:kAXSelectedTextAttribute];
-  return selectedText;
+  else {
+    id selectedText = [self stringForKey:kAXSelectedTextAttribute];
+    return selectedText;
+  }
 }
 
 
 - (NSString*) selectedTextForWebArea {
   CFTypeRef range = NULL;
   AXUIElementCopyAttributeValue(self.axElementRef, CFSTR("AXSelectedTextMarkerRange"), &range);
+  
+  if (range == nil) {
+    // no selected range, return nil.
+    return nil;
+  }
   
   CFTypeRef val = NULL;
   AXError err = AXUIElementCopyParameterizedAttributeValue(self.axElementRef, CFSTR("AXStringForTextMarkerRange"), range, &val);
