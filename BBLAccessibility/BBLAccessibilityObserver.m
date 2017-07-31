@@ -303,27 +303,19 @@
     return;
   }
 
-//  __block AccessibilityInfo* info = nil;
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    AccessibilityInfo* newData = [self accessibilityInfoForElement:siElement];
+  AccessibilityInfo* newData = [self accessibilityInfoForElement:siElement];
+
+  pid_t pid = siElement.processIdentifier;
+  AccessibilityInfo* oldData = self.accessibilityInfosByPid[@(pid)];
+  
+  if (forceUpdate
+      || ![newData isEqual:oldData]) {
+    NSMutableDictionary* dictToUpdate = self.accessibilityInfosByPid.mutableCopy;
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-      pid_t pid = siElement.processIdentifier;
-      AccessibilityInfo* oldData = self.accessibilityInfosByPid[@(pid)];
-      
-      if (forceUpdate
-          || ![newData isEqual:oldData]) {
-        NSMutableDictionary* dictToUpdate = self.accessibilityInfosByPid.mutableCopy;
-        
-        dictToUpdate[@(pid)] = newData;
-        
-        self.accessibilityInfosByPid = dictToUpdate.copy;
-      }
-
-    });
-
-  });
-
+    dictToUpdate[@(pid)] = newData;
+    
+    self.accessibilityInfosByPid = dictToUpdate.copy;
+  }
 }
 
 
