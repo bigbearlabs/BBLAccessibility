@@ -10,6 +10,10 @@
 
 
 @implementation AccessibilityInfo
+{
+  SIAccessibilityElement* _focusedElement;
+}
+
 
 -(instancetype)initWithAppElement:(SIApplication*)element;
 {
@@ -29,6 +33,9 @@
     _appName = appElement.title;
     _bundleId = appElement.runningApplication.bundleIdentifier;
     _pid = appElement.processIdentifier;
+    
+    _focusedElement = focusedElement;
+    
     
     _role = focusedElement.role;
     
@@ -56,12 +63,16 @@
       _selectionBounds = focusedElement.selectionBounds;
     }
     
-    // * for text elements, (try to) grab the text as well.
-    _text = focusedElement.text;
-    
   }
   return self;
 }
+
+-(NSString*) text {
+  return _focusedElement.text;
+}
+
+
+
 
 -(NSString *)description {
   id selectedText = _selectedText;

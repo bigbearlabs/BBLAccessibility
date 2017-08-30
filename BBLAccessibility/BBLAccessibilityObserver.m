@@ -322,15 +322,17 @@
 #pragma mark - handlers
 
 -(void) onApplicationActivated:(SIAccessibilityElement*)element {
+  _frontmostProcessIdentifier = element.processIdentifier;
   __log("app activated: %@", element);
+}
+
+-(void) onFocusedWindowChanged:(SIWindow*)window {
+  _frontmostProcessIdentifier = window.processIdentifier;
+  __log("focused window: %@", window);
 }
 
 -(void) onFocusedElementChanged:(SIAccessibilityElement*)element {
   __log("focused element: %@", element);
-}
-
--(void) onFocusedWindowChanged:(SIWindow*)window {
-  __log("focused window: %@", window);
 }
 
 -(void) onWindowCreated:(SIWindow*)window {

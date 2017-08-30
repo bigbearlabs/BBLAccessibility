@@ -7,7 +7,10 @@
 
 @property(readonly) NSArray<NSRunningApplication*>* applicationsToObserve;
 
+
 @property(readonly,copy) NSDictionary<NSNumber*,AccessibilityInfo*>* accessibilityInfosByPid;  // a growing dict of ax infos.
+
+@property(readonly) pid_t frontmostProcessIdentifier;
 
 
 -(void) watchWindows;

@@ -133,7 +133,8 @@
 
 
 -(BOOL) isWebArea {
-  // if i have a AXWebArea role, i am a web area.
+  // if i have a AXWebArea role (undeclared constant!), i am a web area.
+  // TODO see if should test the subrole instead?
   return [self.role isEqualToString:@"AXWebArea"];
 }
 
@@ -153,15 +154,19 @@
 //  }
 
   // TODO if text element,
-  if ([self isTextArea]) {
+  if ([self isTextContainerComponent]) {
     id text = [self stringForKey:kAXValueAttribute];
     return text;
   }
   return nil;
 }
 
--(BOOL) isTextArea {
-  return [self.role isEqualToString:@"AXTextArea"];
+-(BOOL) isTextContainerComponent {
+  return
+    [self.role isEqualToString:(NSString*)kAXTextAreaRole]
+    || [self.role isEqualToString:(NSString*)kAXTextFieldRole]
+    || [self.role isEqualToString:(NSString*)kAXStaticTextRole]
+    ;
 }
 
 
