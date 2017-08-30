@@ -80,7 +80,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5109F3CF1CC17CAB007E1D13 /* BBLAccessibilityMonolithic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BBLAccessibilityMonolithic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51100F0B1CC15D200095B985 /* BBLAccessibility.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BBLAccessibility.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51100F0E1CC15D200095B985 /* BBLAccessibility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBLAccessibility.h; sourceTree = "<group>"; };
 		51100F101CC15D200095B985 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -109,13 +108,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		5109F3CB1CC17CAB007E1D13 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		51100F071CC15D200095B985 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -162,7 +154,6 @@
 				51100F0B1CC15D200095B985 /* BBLAccessibility.framework */,
 				51100F201CC15D540095B985 /* BBLAccessibilityApp.app */,
 				51100F2E1CC15D540095B985 /* BBLAccessibilityAppUITests.xctest */,
-				5109F3CF1CC17CAB007E1D13 /* BBLAccessibilityMonolithic.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -244,13 +235,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		5109F3CC1CC17CAB007E1D13 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		51100F081CC15D200095B985 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -265,24 +249,6 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		5109F3CE1CC17CAB007E1D13 /* BBLAccessibilityMonolithic */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 5109F3D41CC17CAB007E1D13 /* Build configuration list for PBXNativeTarget "BBLAccessibilityMonolithic" */;
-			buildPhases = (
-				5109F3CA1CC17CAB007E1D13 /* Sources */,
-				5109F3CB1CC17CAB007E1D13 /* Frameworks */,
-				5109F3CC1CC17CAB007E1D13 /* Headers */,
-				5109F3CD1CC17CAB007E1D13 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = BBLAccessibilityMonolithic;
-			productName = BBLAccessibilityMonolithic;
-			productReference = 5109F3CF1CC17CAB007E1D13 /* BBLAccessibilityMonolithic.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 		51100F0A1CC15D200095B985 /* BBLAccessibility */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 51100F131CC15D200095B985 /* Build configuration list for PBXNativeTarget "BBLAccessibility" */;
@@ -348,9 +314,6 @@
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Big Bear Labs";
 				TargetAttributes = {
-					5109F3CE1CC17CAB007E1D13 = {
-						CreatedOnToolsVersion = 7.3;
-					};
 					51100F0A1CC15D200095B985 = {
 						CreatedOnToolsVersion = 7.3;
 						LastSwiftMigration = 0810;
@@ -392,7 +355,6 @@
 				51100F0A1CC15D200095B985 /* BBLAccessibility */,
 				51100F1F1CC15D540095B985 /* BBLAccessibilityApp */,
 				51100F2D1CC15D540095B985 /* BBLAccessibilityAppUITests */,
-				5109F3CE1CC17CAB007E1D13 /* BBLAccessibilityMonolithic */,
 			);
 		};
 /* End PBXProject section */
@@ -422,13 +384,6 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		5109F3CD1CC17CAB007E1D13 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		51100F091CC15D200095B985 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -455,13 +410,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		5109F3CA1CC17CAB007E1D13 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		51100F061CC15D200095B985 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -518,42 +466,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		5109F3D51CC17CAB007E1D13 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = BBLAccessibilityMonolithic/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibilityMonolithic;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		5109F3D61CC17CAB007E1D13 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = BBLAccessibilityMonolithic/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibilityMonolithic;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 		51100F111CC15D200095B985 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -749,15 +661,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5109F3D41CC17CAB007E1D13 /* Build configuration list for PBXNativeTarget "BBLAccessibilityMonolithic" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5109F3D51CC17CAB007E1D13 /* Debug */,
-				5109F3D61CC17CAB007E1D13 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		51100F051CC15D200095B985 /* Build configuration list for PBXProject "BBLAccessibility" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
