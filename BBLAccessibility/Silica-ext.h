@@ -16,3 +16,10 @@
 -(NSRect) selectionBounds;
 
 @end
+
+
+@interface SIAccessibilityElement (Text)
+
+-(NSString*) text;
+
+@end

@@ -56,20 +56,21 @@
       _selectionBounds = focusedElement.selectionBounds;
     }
     
-    // * for text elements, (try to) grab the text as well. TODO
+    // * for text elements, (try to) grab the text as well.
+    _text = focusedElement.text;
     
   }
   return self;
 }
 
 -(NSString *)description {
-  id text = _selectedText;
-  if (!text) {
-    text = @"";
+  id selectedText = _selectedText;
+  if (!selectedText) {
+    selectedText = @"";
   }
   return [NSString stringWithFormat:
     @"app: %@, pid: %@, bundleId: %@, title: %@, windowId: %@, windowRect: %@, selectedText: %@, selectionBounds: %@, role: %@, windowRole: %@, windowSubrole: %@",
-    _appName, @(_pid), _bundleId, _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], text, [NSValue valueWithRect:_selectionBounds], _role, _windowRole, _windowSubrole
+    _appName, @(_pid), _bundleId, _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], selectedText, [NSValue valueWithRect:_selectionBounds], _role, _windowRole, _windowSubrole
   ];
 }
 

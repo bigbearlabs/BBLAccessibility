@@ -138,3 +138,31 @@
 }
 
 @end
+
+
+@implementation SIAccessibilityElement (Text)
+
+-(NSString*) text {
+  // REF selectedText:
+//  if (self.isWebArea) {
+//    return [self selectedTextForWebArea];
+//  }
+//  else {
+//    id selectedText = [self stringForKey:kAXSelectedTextAttribute];
+//    return selectedText;
+//  }
+
+  // TODO if text element,
+  if ([self isTextArea]) {
+    id text = [self stringForKey:kAXValueAttribute];
+    return text;
+  }
+  return nil;
+}
+
+-(BOOL) isTextArea {
+  return [self.role isEqualToString:@"AXTextArea"];
+}
+
+
+@end
