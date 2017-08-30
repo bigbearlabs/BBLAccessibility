@@ -7,28 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		510AB0F21F025EFB006A100D /* Silica-ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510AB0F11F025EFB006A100D /* Silica-ext.swift */; };
 		51100F0F1CC15D200095B985 /* BBLAccessibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 51100F0E1CC15D200095B985 /* BBLAccessibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		51100F231CC15D540095B985 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51100F221CC15D540095B985 /* AppDelegate.swift */; };
 		51100F251CC15D540095B985 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51100F241CC15D540095B985 /* Assets.xcassets */; };
 		51100F281CC15D540095B985 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51100F261CC15D540095B985 /* MainMenu.xib */; };
 		51100F331CC15D540095B985 /* BBLAccessibilityAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51100F321CC15D540095B985 /* BBLAccessibilityAppUITests.swift */; };
-		51109EAD1F06621C00EDFA00 /* AccessibilityInfo-ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51109EAC1F06621C00EDFA00 /* AccessibilityInfo-ext.swift */; };
 		5123E4C11DDFD62B0099D11E /* Silica-ext.h in Headers */ = {isa = PBXBuildFile; fileRef = 5123E4BF1DDFD62B0099D11E /* Silica-ext.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5123E4C21DDFD62B0099D11E /* Silica-ext.m in Sources */ = {isa = PBXBuildFile; fileRef = 5123E4C01DDFD62B0099D11E /* Silica-ext.m */; };
-		51A1F8F51DBEDA4C00CF6E91 /* BBLAccessibilitySwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 51A1F8F31DBEDA4C00CF6E91 /* BBLAccessibilitySwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		51A1F8F81DBEDA4C00CF6E91 /* BBLAccessibilitySwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51A1F8F11DBEDA4B00CF6E91 /* BBLAccessibilitySwift.framework */; };
-		51A1F8F91DBEDA4C00CF6E91 /* BBLAccessibilitySwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51A1F8F11DBEDA4B00CF6E91 /* BBLAccessibilitySwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		51A1F8FE1DBEDA9600CF6E91 /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
 		51B8F2241DB5774100E79EEC /* BBLAccessibilityPublisher.h in Headers */ = {isa = PBXBuildFile; fileRef = 51B8F2221DB5774100E79EEC /* BBLAccessibilityPublisher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		51B8F2251DB5774100E79EEC /* BBLAccessibilityPublisher.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B8F2231DB5774100E79EEC /* BBLAccessibilityPublisher.m */; };
 		51B8F25D1DB582A200E79EEC /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
 		51B8F25E1DB582A200E79EEC /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		51D6F89B1DDF73D0003F7E31 /* AccessibilityInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 51D6F8991DDF73D0003F7E31 /* AccessibilityInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		51D6F89C1DDF73D0003F7E31 /* AccessibilityInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 51D6F89A1DDF73D0003F7E31 /* AccessibilityInfo.m */; };
-		51DDF31C1E3B914B001655CB /* AccessibilityHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DDF31B1E3B914B001655CB /* AccessibilityHelper.swift */; };
 		51DF495C1E4E7FA100D1DCA5 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
 		51DF495F1E4E805E00D1DCA5 /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51DF495A1E4E7F9800D1DCA5 /* BBLBasics.framework */; };
+		51FA4A271F57740E007123B0 /* Silica-ext.m in Sources */ = {isa = PBXBuildFile; fileRef = 5123E4C01DDFD62B0099D11E /* Silica-ext.m */; };
+		51FA4A2C1F5774A5007123B0 /* AccessibilityHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA4A2B1F5774A5007123B0 /* AccessibilityHelper.swift */; };
+		51FA4A2F1F5774B0007123B0 /* AccessibilityInfo-ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA4A2D1F5774B0007123B0 /* AccessibilityInfo-ext.swift */; };
+		51FA4A301F5774B0007123B0 /* Silica-ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA4A2E1F5774B0007123B0 /* Silica-ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,13 +34,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 51100F1F1CC15D540095B985;
 			remoteInfo = BBLAccessibilityApp;
-		};
-		51A1F8F61DBEDA4C00CF6E91 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 51100F021CC15D200095B985 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 51A1F8F01DBEDA4B00CF6E91;
-			remoteInfo = BBLAccessibilitySwift;
 		};
 		51B8F25F1DB582A200E79EEC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -83,7 +72,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				51A1F8F91DBEDA4C00CF6E91 /* BBLAccessibilitySwift.framework in Embed Frameworks */,
 				51B8F25E1DB582A200E79EEC /* BBLAccessibility.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -93,7 +81,6 @@
 
 /* Begin PBXFileReference section */
 		5109F3CF1CC17CAB007E1D13 /* BBLAccessibilityMonolithic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BBLAccessibilityMonolithic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		510AB0F11F025EFB006A100D /* Silica-ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Silica-ext.swift"; sourceTree = "<group>"; };
 		51100F0B1CC15D200095B985 /* BBLAccessibility.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BBLAccessibility.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51100F0E1CC15D200095B985 /* BBLAccessibility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBLAccessibility.h; sourceTree = "<group>"; };
 		51100F101CC15D200095B985 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -106,12 +93,8 @@
 		51100F321CC15D540095B985 /* BBLAccessibilityAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BBLAccessibilityAppUITests.swift; sourceTree = "<group>"; };
 		51100F341CC15D540095B985 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		51100F3F1CC15DA30095B985 /* BBLAccessibilityApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBLAccessibilityApp-Bridging-Header.h"; sourceTree = "<group>"; };
-		51109EAC1F06621C00EDFA00 /* AccessibilityInfo-ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AccessibilityInfo-ext.swift"; sourceTree = "<group>"; };
 		5123E4BF1DDFD62B0099D11E /* Silica-ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Silica-ext.h"; sourceTree = "<group>"; };
 		5123E4C01DDFD62B0099D11E /* Silica-ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Silica-ext.m"; sourceTree = "<group>"; };
-		51A1F8F11DBEDA4B00CF6E91 /* BBLAccessibilitySwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BBLAccessibilitySwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		51A1F8F31DBEDA4C00CF6E91 /* BBLAccessibilitySwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BBLAccessibilitySwift.h; sourceTree = "<group>"; };
-		51A1F8F41DBEDA4C00CF6E91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		51B0D8C71E4BD47900EED498 /* logging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = logging.h; sourceTree = "<group>"; };
 		51B8F2221DB5774100E79EEC /* BBLAccessibilityPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBLAccessibilityPublisher.h; sourceTree = "<group>"; };
 		51B8F2231DB5774100E79EEC /* BBLAccessibilityPublisher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBLAccessibilityPublisher.m; sourceTree = "<group>"; };
@@ -119,8 +102,10 @@
 		51D53ADD1DCA3A9200079955 /* Silica.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Silica.xcodeproj; path = Silica/Silica.xcodeproj; sourceTree = "<group>"; };
 		51D6F8991DDF73D0003F7E31 /* AccessibilityInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessibilityInfo.h; sourceTree = "<group>"; };
 		51D6F89A1DDF73D0003F7E31 /* AccessibilityInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessibilityInfo.m; sourceTree = "<group>"; };
-		51DDF31B1E3B914B001655CB /* AccessibilityHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilityHelper.swift; sourceTree = "<group>"; };
 		51DF495A1E4E7F9800D1DCA5 /* BBLBasics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BBLBasics.framework; path = "../../../../../../../Volumes/ramdisk/DerivedData/contexter-diussbvhwfomebclgpkcecfnrgtm/Build/Products/Debug/BBLBasics.framework"; sourceTree = "<group>"; };
+		51FA4A2B1F5774A5007123B0 /* AccessibilityHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilityHelper.swift; sourceTree = "<group>"; };
+		51FA4A2D1F5774B0007123B0 /* AccessibilityInfo-ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "AccessibilityInfo-ext.swift"; path = "BBLAccessibility/AccessibilityInfo-ext.swift"; sourceTree = SOURCE_ROOT; };
+		51FA4A2E1F5774B0007123B0 /* Silica-ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Silica-ext.swift"; path = "BBLAccessibility/Silica-ext.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,7 +129,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51A1F8F81DBEDA4C00CF6E91 /* BBLAccessibilitySwift.framework in Frameworks */,
 				51B8F25D1DB582A200E79EEC /* BBLAccessibility.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -156,21 +140,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		51A1F8ED1DBEDA4B00CF6E91 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				51A1F8FE1DBEDA9600CF6E91 /* BBLAccessibility.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		51100F011CC15D200095B985 = {
 			isa = PBXGroup;
 			children = (
-				51A1F8F21DBEDA4C00CF6E91 /* BBLAccessibilitySwift */,
 				51100F0D1CC15D200095B985 /* BBLAccessibility */,
 				51100F211CC15D540095B985 /* BBLAccessibilityApp */,
 				51100F311CC15D540095B985 /* BBLAccessibilityAppUITests */,
@@ -188,7 +163,6 @@
 				51100F201CC15D540095B985 /* BBLAccessibilityApp.app */,
 				51100F2E1CC15D540095B985 /* BBLAccessibilityAppUITests.xctest */,
 				5109F3CF1CC17CAB007E1D13 /* BBLAccessibilityMonolithic.framework */,
-				51A1F8F11DBEDA4B00CF6E91 /* BBLAccessibilitySwift.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -196,13 +170,15 @@
 		51100F0D1CC15D200095B985 /* BBLAccessibility */ = {
 			isa = PBXGroup;
 			children = (
-				51100F0E1CC15D200095B985 /* BBLAccessibility.h */,
+				51FA4A2B1F5774A5007123B0 /* AccessibilityHelper.swift */,
+				516218501F5770F00011508E /* Window Buttons */,
 				51B8F2221DB5774100E79EEC /* BBLAccessibilityPublisher.h */,
 				51B8F2231DB5774100E79EEC /* BBLAccessibilityPublisher.m */,
 				51D6F8991DDF73D0003F7E31 /* AccessibilityInfo.h */,
 				51D6F89A1DDF73D0003F7E31 /* AccessibilityInfo.m */,
 				5123E4BF1DDFD62B0099D11E /* Silica-ext.h */,
 				5123E4C01DDFD62B0099D11E /* Silica-ext.m */,
+				51100F0E1CC15D200095B985 /* BBLAccessibility.h */,
 				51B0D8C71E4BD47900EED498 /* logging.h */,
 				51100F101CC15D200095B985 /* Info.plist */,
 			);
@@ -233,11 +209,12 @@
 		516218501F5770F00011508E /* Window Buttons */ = {
 			isa = PBXGroup;
 			children = (
-				51109EAC1F06621C00EDFA00 /* AccessibilityInfo-ext.swift */,
-				510AB0F11F025EFB006A100D /* Silica-ext.swift */,
+				51FA4A2D1F5774B0007123B0 /* AccessibilityInfo-ext.swift */,
+				51FA4A2E1F5774B0007123B0 /* Silica-ext.swift */,
 			);
 			name = "Window Buttons";
-			sourceTree = "<group>";
+			path = BBLAccessibilitySwift;
+			sourceTree = SOURCE_ROOT;
 		};
 		5191A9401E34FFBF001B94FD /* Frameworks */ = {
 			isa = PBXGroup;
@@ -245,17 +222,6 @@
 				51DF495A1E4E7F9800D1DCA5 /* BBLBasics.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		51A1F8F21DBEDA4C00CF6E91 /* BBLAccessibilitySwift */ = {
-			isa = PBXGroup;
-			children = (
-				51A1F8F31DBEDA4C00CF6E91 /* BBLAccessibilitySwift.h */,
-				51DDF31B1E3B914B001655CB /* AccessibilityHelper.swift */,
-				516218501F5770F00011508E /* Window Buttons */,
-				51A1F8F41DBEDA4C00CF6E91 /* Info.plist */,
-			);
-			path = BBLAccessibilitySwift;
 			sourceTree = "<group>";
 		};
 		51D53AD41DCA3A4E00079955 /* Products */ = {
@@ -293,14 +259,6 @@
 				5123E4C11DDFD62B0099D11E /* Silica-ext.h in Headers */,
 				51100F0F1CC15D200095B985 /* BBLAccessibility.h in Headers */,
 				51B8F2241DB5774100E79EEC /* BBLAccessibilityPublisher.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		51A1F8EE1DBEDA4B00CF6E91 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				51A1F8F51DBEDA4C00CF6E91 /* BBLAccessibilitySwift.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,7 +314,6 @@
 			);
 			dependencies = (
 				51B8F2601DB582A200E79EEC /* PBXTargetDependency */,
-				51A1F8F71DBEDA4C00CF6E91 /* PBXTargetDependency */,
 			);
 			name = BBLAccessibilityApp;
 			productName = BBLAccessibilityApp;
@@ -380,24 +337,6 @@
 			productName = BBLAccessibilityAppUITests;
 			productReference = 51100F2E1CC15D540095B985 /* BBLAccessibilityAppUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
-		};
-		51A1F8F01DBEDA4B00CF6E91 /* BBLAccessibilitySwift */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 51A1F8FC1DBEDA4C00CF6E91 /* Build configuration list for PBXNativeTarget "BBLAccessibilitySwift" */;
-			buildPhases = (
-				51A1F8EC1DBEDA4B00CF6E91 /* Sources */,
-				51A1F8ED1DBEDA4B00CF6E91 /* Frameworks */,
-				51A1F8EE1DBEDA4B00CF6E91 /* Headers */,
-				51A1F8EF1DBEDA4B00CF6E91 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = BBLAccessibilitySwift;
-			productName = BBLAccessibilitySwift;
-			productReference = 51A1F8F11DBEDA4B00CF6E91 /* BBLAccessibilitySwift.framework */;
-			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -425,11 +364,6 @@
 						LastSwiftMigration = 0830;
 						TestTargetID = 51100F1F1CC15D540095B985;
 					};
-					51A1F8F01DBEDA4B00CF6E91 = {
-						CreatedOnToolsVersion = 8.0;
-						LastSwiftMigration = 0820;
-						ProvisioningStyle = Automatic;
-					};
 				};
 			};
 			buildConfigurationList = 51100F051CC15D200095B985 /* Build configuration list for PBXProject "BBLAccessibility" */;
@@ -455,7 +389,6 @@
 			);
 			projectRoot = "";
 			targets = (
-				51A1F8F01DBEDA4B00CF6E91 /* BBLAccessibilitySwift */,
 				51100F0A1CC15D200095B985 /* BBLAccessibility */,
 				51100F1F1CC15D540095B985 /* BBLAccessibilityApp */,
 				51100F2D1CC15D540095B985 /* BBLAccessibilityAppUITests */,
@@ -519,13 +452,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		51A1F8EF1DBEDA4B00CF6E91 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -540,9 +466,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51FA4A2F1F5774B0007123B0 /* AccessibilityInfo-ext.swift in Sources */,
 				51D6F89C1DDF73D0003F7E31 /* AccessibilityInfo.m in Sources */,
+				51FA4A301F5774B0007123B0 /* Silica-ext.swift in Sources */,
 				51B8F2251DB5774100E79EEC /* BBLAccessibilityPublisher.m in Sources */,
-				5123E4C21DDFD62B0099D11E /* Silica-ext.m in Sources */,
+				51FA4A2C1F5774A5007123B0 /* AccessibilityHelper.swift in Sources */,
+				51FA4A271F57740E007123B0 /* Silica-ext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -562,16 +491,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		51A1F8EC1DBEDA4B00CF6E91 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				510AB0F21F025EFB006A100D /* Silica-ext.swift in Sources */,
-				51DDF31C1E3B914B001655CB /* AccessibilityHelper.swift in Sources */,
-				51109EAD1F06621C00EDFA00 /* AccessibilityInfo-ext.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -579,11 +498,6 @@
 			isa = PBXTargetDependency;
 			target = 51100F1F1CC15D540095B985 /* BBLAccessibilityApp */;
 			targetProxy = 51100F2F1CC15D540095B985 /* PBXContainerItemProxy */;
-		};
-		51A1F8F71DBEDA4C00CF6E91 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 51A1F8F01DBEDA4B00CF6E91 /* BBLAccessibilitySwift */;
-			targetProxy = 51A1F8F61DBEDA4C00CF6E91 /* PBXContainerItemProxy */;
 		};
 		51B8F2601DB582A200E79EEC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -832,50 +746,6 @@
 			};
 			name = Release;
 		};
-		51A1F8FA1DBEDA4C00CF6E91 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = BBLAccessibilitySwift/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibilitySwift;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
-			};
-			name = Debug;
-		};
-		51A1F8FB1DBEDA4C00CF6E91 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = BBLAccessibilitySwift/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibilitySwift;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -920,15 +790,6 @@
 			buildConfigurations = (
 				51100F391CC15D540095B985 /* Debug */,
 				51100F3A1CC15D540095B985 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		51A1F8FC1DBEDA4C00CF6E91 /* Build configuration list for PBXNativeTarget "BBLAccessibilitySwift" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				51A1F8FA1DBEDA4C00CF6E91 /* Debug */,
-				51A1F8FB1DBEDA4C00CF6E91 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
