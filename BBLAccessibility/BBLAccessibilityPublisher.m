@@ -1,17 +1,17 @@
-#import "BBLAccessibilityObserver.h"
+#import "BBLAccessibilityPublisher.h"
 #import <Silica/Silica.h>
 #import <AppKit/AppKit.h>
 #import "logging.h"
 
 
 
-@interface BBLAccessibilityObserver ()
+@interface BBLAccessibilityPublisher ()
   @property(readwrite,copy) NSDictionary<NSNumber*,AccessibilityInfo*>* accessibilityInfosByPid;
 @end
 
 
 
-@implementation BBLAccessibilityObserver
+@implementation BBLAccessibilityPublisher
 {
   NSMutableDictionary* watchedAppsByPid;
 }
@@ -44,7 +44,7 @@
 #pragma mark -
 
 -(void) watchWindows {
-  __weak BBLAccessibilityObserver* blockSelf = self;
+  __weak BBLAccessibilityPublisher* blockSelf = self;
   
   // on didlaunchapplication notif, observe.
   [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidLaunchApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
@@ -96,7 +96,7 @@
 -(void) watchNotificationsForApp:(NSRunningApplication*)app {
   SIApplication* application = [SIApplication applicationWithRunningApplication:app];
   
-  __weak BBLAccessibilityObserver* blockSelf = self;
+  __weak BBLAccessibilityPublisher* blockSelf = self;
   
   // * observe ax notifications for the app asynchronously.
   // TODO timeout and alert user.
@@ -322,15 +322,17 @@
 #pragma mark - handlers
 
 -(void) onApplicationActivated:(SIAccessibilityElement*)element {
+  _frontmostProcessIdentifier = element.processIdentifier;
   __log("app activated: %@", element);
+}
+
+-(void) onFocusedWindowChanged:(SIWindow*)window {
+  _frontmostProcessIdentifier = window.processIdentifier;
+  __log("focused window: %@", window);
 }
 
 -(void) onFocusedElementChanged:(SIAccessibilityElement*)element {
   __log("focused element: %@", element);
-}
-
--(void) onFocusedWindowChanged:(SIWindow*)window {
-  __log("focused window: %@", window);
 }
 
 -(void) onWindowCreated:(SIWindow*)window {
@@ -342,19 +344,19 @@
 }
 
 -(void) onWindowMinimised:(SIWindow*)window {
-  __log("window minimised: %@",window.title);  // NOTE title may not be available yet.
+  __log("window minimised: %@",window);  // NOTE title may not be available yet.
 }
 
 -(void) onWindowUnminimised:(SIWindow*)window {
-  __log("window unminimised: %@",window.title);  // NOTE title may not be available yet.
+  __log("window unminimised: %@",window);  // NOTE title may not be available yet.
 }
 
 -(void) onWindowMoved:(SIWindow*)window {
-  __log("window moved: %@",window.title);  // NOTE title may not be available yet.
+  __log("window moved: %@",window);  // NOTE title may not be available yet.
 }
 
 -(void) onWindowResized:(SIWindow*)window {
-  __log("window resized: %@",window.title);  // NOTE title may not be available yet.
+  __log("window resized: %@",window);  // NOTE title may not be available yet.
 }
 
 -(void) onTextSelectionChanged:(SIAccessibilityElement*)element {

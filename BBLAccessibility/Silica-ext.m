@@ -10,6 +10,7 @@
 
 @implementation SIAccessibilityElement (TextSelection)
 
+
 -(NSString*) selectedText {
   if (self.isWebArea) {
     return [self selectedTextForWebArea];
@@ -17,31 +18,6 @@
   else {
     id selectedText = [self stringForKey:kAXSelectedTextAttribute];
     return selectedText;
-  }
-}
-
-
-- (NSString*) selectedTextForWebArea {
-  CFTypeRef range = NULL;
-  AXUIElementCopyAttributeValue(self.axElementRef, CFSTR("AXSelectedTextMarkerRange"), &range);
-  
-  if (range == nil) {
-    // no selected range, return nil.
-    return nil;
-  }
-  
-  CFTypeRef val = NULL;
-  AXError err = AXUIElementCopyParameterizedAttributeValue(self.axElementRef, CFSTR("AXStringForTextMarkerRange"), range, &val);
-  
-  if (range) CFRelease(range);
-  
-  if (err == kAXErrorSuccess) {
-    return (NSString*)CFBridgingRelease(val);
-  }
-  else {
-    NSLog(@"err AXStringForTextMarkerRange: %d", (int)err);
-    if (val) CFRelease(val);
-    return nil;
   }
 }
 
@@ -101,6 +77,33 @@
 }
 
 
+#pragma mark
+
+- (NSString*) selectedTextForWebArea {
+  CFTypeRef range = NULL;
+  AXUIElementCopyAttributeValue(self.axElementRef, CFSTR("AXSelectedTextMarkerRange"), &range);
+  
+  if (range == nil) {
+    // no selected range, return nil.
+    return nil;
+  }
+  
+  CFTypeRef val = NULL;
+  AXError err = AXUIElementCopyParameterizedAttributeValue(self.axElementRef, CFSTR("AXStringForTextMarkerRange"), range, &val);
+  
+  if (range) CFRelease(range);
+  
+  if (err == kAXErrorSuccess) {
+    return (NSString*)CFBridgingRelease(val);
+  }
+  else {
+    NSLog(@"err AXStringForTextMarkerRange: %d", (int)err);
+    if (val) CFRelease(val);
+    return nil;
+  }
+}
+
+
 -(NSRect) selectionBoundsForWebArea {
   // guard against empty selected text.
   if ([self selectedTextForWebArea].length == 0) {
@@ -133,8 +136,35 @@
 
 
 -(BOOL) isWebArea {
-  // if i have a AXWebArea role, i am a web area.
+  // if i have a AXWebArea role (undeclared constant!), i am a web area.
+  // TODO see if should test the subrole instead?
   return [self.role isEqualToString:@"AXWebArea"];
+}
+
+@end
+
+
+
+#pragma mark
+
+@implementation SIAccessibilityElement (Text)
+
+-(NSString*) text {
+  if ([self isTextContainerComponent]) {
+    id text = [self stringForKey:kAXValueAttribute];
+    return text;
+  }
+  return nil;
+}
+
+
+
+-(BOOL) isTextContainerComponent {
+  return
+    [self.role isEqualToString:(NSString*)kAXTextAreaRole]
+    || [self.role isEqualToString:(NSString*)kAXTextFieldRole]
+    || [self.role isEqualToString:(NSString*)kAXStaticTextRole]
+    ;
 }
 
 @end

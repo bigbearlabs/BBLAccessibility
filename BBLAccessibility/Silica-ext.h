@@ -9,10 +9,20 @@
 #import <Foundation/Foundation.h>
 #import <Silica/Silica.h>
 
+
+/// Retrieving selected text.
 @interface SIAccessibilityElement (TextSelection)
 
 -(NSString*) selectedText;
 
 -(NSRect) selectionBounds;
+
+@end
+
+
+/// Retrieving text content.
+@interface SIAccessibilityElement (Text)
+
+-(NSString*) text;
 
 @end

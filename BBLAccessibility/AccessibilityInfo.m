@@ -10,6 +10,10 @@
 
 
 @implementation AccessibilityInfo
+{
+  SIAccessibilityElement* _focusedElement;
+}
+
 
 -(instancetype)initWithAppElement:(SIApplication*)element;
 {
@@ -29,6 +33,9 @@
     _appName = appElement.title;
     _bundleId = appElement.runningApplication.bundleIdentifier;
     _pid = appElement.processIdentifier;
+    
+    _focusedElement = focusedElement;
+    
     
     _role = focusedElement.role;
     
@@ -60,14 +67,21 @@
   return self;
 }
 
+-(NSString*) text {
+  return _focusedElement.text;
+}
+
+
+
+
 -(NSString *)description {
-  id text = _selectedText;
-  if (!text) {
-    text = @"";
+  id selectedText = _selectedText;
+  if (!selectedText) {
+    selectedText = @"";
   }
   return [NSString stringWithFormat:
     @"app: %@, pid: %@, bundleId: %@, title: %@, windowId: %@, windowRect: %@, selectedText: %@, selectionBounds: %@, role: %@, windowRole: %@, windowSubrole: %@",
-    _appName, @(_pid), _bundleId, _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], text, [NSValue valueWithRect:_selectionBounds], _role, _windowRole, _windowSubrole
+    _appName, @(_pid), _bundleId, _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], selectedText, [NSValue valueWithRect:_selectionBounds], _role, _windowRole, _windowSubrole
   ];
 }
 
