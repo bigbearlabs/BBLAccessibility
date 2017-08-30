@@ -16,14 +16,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
   @IBOutlet weak var window: NSWindow!
 
-  var watcher: BBLAccessibilityObserver!
+  var watcher: BBLAccessibilityPublisher!
   
   var siApp: SIApplication!
   
   func applicationDidFinishLaunching(_ aNotification: Notification) {
     print("AXIsProcessTrusted: #\(AXIsProcessTrusted())")
     
-    watcher = AXObserver()
+    watcher = AXPublisher()
 //    watcher!.watchWindows()
     
     // PoC Silica basic usage.
@@ -64,7 +64,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 
 
-class AXObserver: BBLAccessibilityObserver {
+class AXPublisher: BBLAccessibilityPublisher {
   override var applicationsToObserve: [NSRunningApplication] {
     get {
       let pid = NSRunningApplication.current().processIdentifier
@@ -103,7 +103,7 @@ class AXObserver: BBLAccessibilityObserver {
   
   
   var excludedNames: [String] {
-//    return (NSApp.default(forKey: .axobserver_excluded_names) as? String ?? "").components(separatedBy: ",")
+//    return (NSApp.default(forKey: .axpublisher_excluded_names) as? String ?? "").components(separatedBy: ",")
     return [
 //"AirPlayUIAgent.app"
 //      Siri.app
@@ -111,7 +111,7 @@ class AXObserver: BBLAccessibilityObserver {
     ]
   }
   var excludedBundleIds: [String] {
-//    return (NSApp.default(forKey: .axobserver_excluded_bundleids) as? String ?? "").components(separatedBy: ",")
+//    return (NSApp.default(forKey: .axpublisher_excluded_bundleids) as? String ?? "").components(separatedBy: ",")
 //      +
 //      // always exclude my own bundle id.
 //      [ Bundle.main.bundleIdentifier! ]

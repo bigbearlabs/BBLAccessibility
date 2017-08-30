@@ -2,7 +2,7 @@
 #import <Silica/Silica.h>
 #import "AccessibilityInfo.h"
 
-@interface BBLAccessibilityObserver : NSObject
+@interface BBLAccessibilityPublisher : NSObject
 
 
 @property(readonly) NSArray<NSRunningApplication*>* applicationsToObserve;

@@ -16,7 +16,7 @@ open class AccessibilityHelper {
    `whenPermissioned(isNewPermission)` is called when first check was successful, or eventually in case of a polling call when the permission is obtained.
    polling stops when permission is obtained.
    */
-  open func queryAxPerm(promptIfNeeded: Bool, shouldPoll: Bool = false, ifNoPermission: @escaping () -> Void, whenPermissioned: @escaping(_ isNewPermission: Bool) -> Void) {
+  open func queryAccesibilityPermission(promptIfNeeded: Bool, shouldPoll: Bool = false, ifNoPermission: @escaping () -> Void, whenPermissioned: @escaping(_ isNewPermission: Bool) -> Void) {
     
     // first check if we have the perm.
     let originalPerm = AXIsProcessTrustedWithOptions(nil)
@@ -59,7 +59,7 @@ open class AccessibilityHelper {
         if shouldPoll {
           // recursively invoke, so clients don't have to implement a blocking workflow.
           // - we don't want to poll and prompt.
-          self.queryAxPerm(promptIfNeeded: false, shouldPoll: true, ifNoPermission: ifNoPermission, whenPermissioned: whenPermissioned)
+          self.queryAccesibilityPermission(promptIfNeeded: false, shouldPoll: true, ifNoPermission: ifNoPermission, whenPermissioned: whenPermissioned)
         }
       }
     }
