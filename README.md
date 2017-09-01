@@ -1,8 +1,8 @@
 # BBLAccessibilityApp 
 
-## A collection of current (2014-) OS X Accessibility API techniques
+## Consolidated API for macOS Accessibility 
 
-Gathers source from extremely valuable repos, such as [Silica] and [NMTest001], to showcase usage of features of the OS X Accesibility API.
+Fronts accessibility features from existing repos such as [Silica] and [NMTest001].
 
     - [x] Getting information on windows for all running apps -- using Silica.
     - [x] Getting information on the selected text -- using NMAccessibility.
@@ -12,12 +12,19 @@ This is for an app I'm building that manages working contexts on OS X. I wouldn'
 
 In the queue is refinements moved over from currently private code in the following areas. Please get in touch if you need expedited access for these features.
 
+    - [x] Getting full text content.
     - [ ] Repositioning a window to another screen or space
-    - [ ] Getting resource location information.
-    - [ ] Getting full text content.
 
 
 Your pull requests and suggestions are welcome.
 
+[Silica]: https://github.com/ianyh/Silica
+[NMTest001]: https://github.com/invariant/NMTest001/tree/master/NMTest001
 
-##post-process: add-links.
+<!-- 
+# ---
+# doit:
+#     cmd: |
+#         grep -o '\[.*\]' #{file} | uniq
+# ---
+-->
