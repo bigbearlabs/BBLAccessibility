@@ -19,14 +19,14 @@
 {
   NSArray* visibleWindows = element.visibleWindows;
   if (visibleWindows.count > 0) {
-    return [self initWithAppElement:element FocusedElement:visibleWindows[0]];
+    return [self initWithAppElement:element focusedElement:visibleWindows[0]];
   }
   else {
-    return [self initWithAppElement:element FocusedElement:element];
+    return [self initWithAppElement:element focusedElement:element];
   }
 }
 
--(instancetype)initWithAppElement:(SIApplication*)appElement FocusedElement:(SIAccessibilityElement*)focusedElement;
+-(instancetype)initWithAppElement:(SIApplication*)appElement focusedElement:(SIAccessibilityElement*)focusedElement;
 {
   self = [super init];
   if (self) {

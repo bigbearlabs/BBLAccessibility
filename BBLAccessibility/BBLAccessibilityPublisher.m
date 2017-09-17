@@ -272,7 +272,7 @@
   }
   
   // * default case.
-  return [[AccessibilityInfo alloc] initWithAppElement:appElement FocusedElement:focusedElement];
+  return [[AccessibilityInfo alloc] initWithAppElement:appElement focusedElement:focusedElement];
 }
 
 -(SIApplication*) appElementForProcessIdentifier:(pid_t)processIdentifier {
