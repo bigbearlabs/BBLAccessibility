@@ -100,12 +100,8 @@
   
   // * observe ax notifications for the app asynchronously.
   // TODO timeout and alert user.
-  id context = @{
-    @"pid": @(app.processIdentifier),
-    @"processName": app.localizedName,
-  };
   
-  [self concurrentlyWithContext:context block:^{
+  [self concurrentlyExecute:^{
     __log("%@ observing app %@", blockSelf, application);
 
     [application observeNotification:kAXApplicationActivatedNotification
@@ -395,7 +391,7 @@
   @throw [NSException exceptionWithName:@"invalid-state" reason:@"no suitable window to return as key" userInfo:nil];
 }
 
--(void) concurrentlyWithContext:(NSDictionary*)context block:(void(^)(void))block {
+-(void) concurrentlyExecute:(void(^)(void))block {
   dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
     block();
   });
