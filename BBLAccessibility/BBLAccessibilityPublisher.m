@@ -4,6 +4,9 @@
 #import "logging.h"
 
 
+// FIXME some performance problems with:
+// console.app (too frequent notifs for title change)
+// xcode.app (frequent ax event vomits)
 
 @interface BBLAccessibilityPublisher ()
   @property(readwrite,copy) NSDictionary<NSNumber*,AccessibilityInfo*>* accessibilityInfosByPid;
@@ -320,6 +323,12 @@
 -(void) onApplicationActivated:(SIAccessibilityElement*)element {
   _frontmostProcessIdentifier = element.processIdentifier;
   __log("app activated: %@", element);
+}
+
+-(void) onApplicationDeactivated:(SIAccessibilityElement*)element {
+  _frontmostProcessIdentifier = 0;
+    // ?? how can we actually get this updated?
+  __log("app deactivated: %@", element);
 }
 
 -(void) onFocusedWindowChanged:(SIWindow*)window {
