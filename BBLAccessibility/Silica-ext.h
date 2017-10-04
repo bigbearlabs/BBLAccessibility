@@ -25,4 +25,5 @@
 
 -(NSString*) text;
 
+-(BOOL) isTextContainerComponent;
 @end

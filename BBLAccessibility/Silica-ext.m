@@ -15,10 +15,11 @@
   if (self.isWebArea) {
     return [self selectedTextForWebArea];
   }
-  else {
+  else if (self.isTextContainerComponent) {
     id selectedText = [self stringForKey:kAXSelectedTextAttribute];
     return selectedText;
   }
+  return nil;
 }
 
 
