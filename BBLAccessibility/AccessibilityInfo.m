@@ -7,6 +7,7 @@
 //
 
 #import "AccessibilityInfo.h"
+#import "NSRunningApplication+Util.h"
 
 
 @implementation AccessibilityInfo
@@ -31,7 +32,7 @@
   self = [super init];
   if (self) {
     _appName = appElement.title;
-    _bundleId = appElement.runningApplication.bundleIdentifier;
+    _bundleId = appElement.runningApplication.bundleIdentifierThreadSafe;
     _pid = appElement.processIdentifier;
     
     _focusedElement = focusedElement;
@@ -102,5 +103,3 @@
 
 
 @end
-
-
