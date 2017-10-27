@@ -301,28 +301,35 @@
 
 -(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement forceUpdate:(BOOL)forceUpdate {
   
-  // * case: element's window has an AXUnknown subrole.
-  // e.g. the invisible window that gets created when the mouse pointer turns into a 'pointy hand' when overing over clickable WebKit elements.
-  if (siElement.class == [SIWindow class]
-      && [siElement.subrole isEqualToString:@"AXUnknown"]
-      ) {
-    __log("%@ is a window with subrole AXUnknown -- will not create ax info.", siElement);
-    return;
-  }
+  // * do this off the main thread, to avoid spins with some ax queries.
+  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
 
-  AccessibilityInfo* newData = [self accessibilityInfoForElement:siElement];
+    // * case: element's window has an AXUnknown subrole.
+    // e.g. the invisible window that gets created when the mouse pointer turns into a 'pointy hand' when overing over clickable WebKit elements.
+    if (siElement.class == [SIWindow class]
+        && [siElement.subrole isEqualToString:@"AXUnknown"]
+        ) {
+      __log("%@ is a window with subrole AXUnknown -- will not create ax info.", siElement);
+      return;
+    }
 
-  pid_t pid = siElement.processIdentifier;
-  AccessibilityInfo* oldData = self.accessibilityInfosByPid[@(pid)];
-  
-  if (forceUpdate
-      || ![newData isEqual:oldData]) {
-    NSMutableDictionary* dictToUpdate = self.accessibilityInfosByPid.mutableCopy;
+    AccessibilityInfo* newData = [self accessibilityInfoForElement:siElement];
+
+    pid_t pid = siElement.processIdentifier;
+    AccessibilityInfo* oldData = self.accessibilityInfosByPid[@(pid)];
     
-    dictToUpdate[@(pid)] = newData;
+    if (forceUpdate
+        || ![newData isEqual:oldData]) {
+      NSMutableDictionary* dictToUpdate = self.accessibilityInfosByPid.mutableCopy;
+      
+      dictToUpdate[@(pid)] = newData;
+      
+      dispatch_async(dispatch_get_main_queue(), ^{
+        self.accessibilityInfosByPid = dictToUpdate.copy;
+      });
+    }
     
-    self.accessibilityInfosByPid = dictToUpdate.copy;
-  }
+  });
 }
 
 
