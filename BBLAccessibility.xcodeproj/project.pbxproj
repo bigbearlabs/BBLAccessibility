@@ -13,6 +13,8 @@
 		51100F281CC15D540095B985 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51100F261CC15D540095B985 /* MainMenu.xib */; };
 		51100F331CC15D540095B985 /* BBLAccessibilityAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51100F321CC15D540095B985 /* BBLAccessibilityAppUITests.swift */; };
 		5123E4C11DDFD62B0099D11E /* Silica-ext.h in Headers */ = {isa = PBXBuildFile; fileRef = 5123E4BF1DDFD62B0099D11E /* Silica-ext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		516918A21FA1F31600199317 /* NSRunningApplication+Util.h in Headers */ = {isa = PBXBuildFile; fileRef = 516918A01FA1F31600199317 /* NSRunningApplication+Util.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		516918A31FA1F31600199317 /* NSRunningApplication+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 516918A11FA1F31600199317 /* NSRunningApplication+Util.m */; };
 		51B8F2241DB5774100E79EEC /* BBLAccessibilityPublisher.h in Headers */ = {isa = PBXBuildFile; fileRef = 51B8F2221DB5774100E79EEC /* BBLAccessibilityPublisher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		51B8F2251DB5774100E79EEC /* BBLAccessibilityPublisher.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B8F2231DB5774100E79EEC /* BBLAccessibilityPublisher.m */; };
 		51B8F25D1DB582A200E79EEC /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
@@ -94,6 +96,8 @@
 		51100F3F1CC15DA30095B985 /* BBLAccessibilityApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBLAccessibilityApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		5123E4BF1DDFD62B0099D11E /* Silica-ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Silica-ext.h"; sourceTree = "<group>"; };
 		5123E4C01DDFD62B0099D11E /* Silica-ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Silica-ext.m"; sourceTree = "<group>"; };
+		516918A01FA1F31600199317 /* NSRunningApplication+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSRunningApplication+Util.h"; sourceTree = "<group>"; };
+		516918A11FA1F31600199317 /* NSRunningApplication+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSRunningApplication+Util.m"; sourceTree = "<group>"; };
 		51B0D8C71E4BD47900EED498 /* logging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = logging.h; sourceTree = "<group>"; };
 		51B8F2221DB5774100E79EEC /* BBLAccessibilityPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBLAccessibilityPublisher.h; sourceTree = "<group>"; };
 		51B8F2231DB5774100E79EEC /* BBLAccessibilityPublisher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBLAccessibilityPublisher.m; sourceTree = "<group>"; };
@@ -169,6 +173,8 @@
 				51D6F89A1DDF73D0003F7E31 /* AccessibilityInfo.m */,
 				5123E4BF1DDFD62B0099D11E /* Silica-ext.h */,
 				5123E4C01DDFD62B0099D11E /* Silica-ext.m */,
+				516918A01FA1F31600199317 /* NSRunningApplication+Util.h */,
+				516918A11FA1F31600199317 /* NSRunningApplication+Util.m */,
 				51100F0E1CC15D200095B985 /* BBLAccessibility.h */,
 				51B0D8C71E4BD47900EED498 /* logging.h */,
 				51100F101CC15D200095B985 /* Info.plist */,
@@ -243,6 +249,7 @@
 				5123E4C11DDFD62B0099D11E /* Silica-ext.h in Headers */,
 				51100F0F1CC15D200095B985 /* BBLAccessibility.h in Headers */,
 				51B8F2241DB5774100E79EEC /* BBLAccessibilityPublisher.h in Headers */,
+				516918A21FA1F31600199317 /* NSRunningApplication+Util.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -419,6 +426,7 @@
 				51FA4A301F5774B0007123B0 /* Silica-ext.swift in Sources */,
 				51B8F2251DB5774100E79EEC /* BBLAccessibilityPublisher.m in Sources */,
 				51FA4A2C1F5774A5007123B0 /* AccessibilityHelper.swift in Sources */,
+				516918A31FA1F31600199317 /* NSRunningApplication+Util.m in Sources */,
 				51FA4A271F57740E007123B0 /* Silica-ext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

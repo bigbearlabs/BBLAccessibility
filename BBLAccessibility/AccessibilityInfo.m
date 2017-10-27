@@ -7,6 +7,7 @@
 //
 
 #import "AccessibilityInfo.h"
+#import "NSRunningApplication+Util.h"
 
 
 @implementation AccessibilityInfo
@@ -19,20 +20,23 @@
 {
   NSArray* visibleWindows = element.visibleWindows;
   if (visibleWindows.count > 0) {
-    return [self initWithAppElement:element FocusedElement:visibleWindows[0]];
+    return [self initWithAppElement:element focusedElement:visibleWindows[0]];
   }
   else {
-    return [self initWithAppElement:element FocusedElement:element];
+    return [self initWithAppElement:element focusedElement:element];
   }
 }
 
--(instancetype)initWithAppElement:(SIApplication*)appElement FocusedElement:(SIAccessibilityElement*)focusedElement;
+-(instancetype)initWithAppElement:(SIApplication*)appElement focusedElement:(SIAccessibilityElement*)focusedElement;
 {
   self = [super init];
   if (self) {
-    _appName = appElement.title;
-    _bundleId = appElement.runningApplication.bundleIdentifier;
-    _pid = appElement.processIdentifier;
+    // serialise access to appElement to relieve caller from thread-confined usage.
+    dispatch_sync(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+      _appName = appElement.title;
+      _bundleId = appElement.runningApplication.bundleIdentifierThreadSafe;
+      _pid = appElement.processIdentifier;
+    });
     
     _focusedElement = focusedElement;
     
@@ -102,5 +106,3 @@
 
 
 @end
-
-

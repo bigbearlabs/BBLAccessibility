@@ -4,6 +4,9 @@
 #import "logging.h"
 
 
+// FIXME some performance problems with:
+// console.app (too frequent notifs for title change)
+// xcode.app (frequent ax event vomits)
 
 @interface BBLAccessibilityPublisher ()
   @property(readwrite,copy) NSDictionary<NSNumber*,AccessibilityInfo*>* accessibilityInfosByPid;
@@ -100,12 +103,8 @@
   
   // * observe ax notifications for the app asynchronously.
   // TODO timeout and alert user.
-  id context = @{
-    @"pid": @(app.processIdentifier),
-    @"processName": app.localizedName,
-  };
   
-  [self concurrentlyWithContext:context block:^{
+  [self concurrentlyExecute:^{
     __log("%@ observing app %@", blockSelf, application);
 
     [application observeNotification:kAXApplicationActivatedNotification
@@ -228,14 +227,18 @@
          }
        }];
     
-    // in order for the notifications to work, we must retain the SIApplication.
-    watchedAppsByPid[@(application.processIdentifier)] = application;
-    
+      // in order for the notifications to work, we must retain the SIApplication.
+      @synchronized(watchedAppsByPid) {
+        watchedAppsByPid[@(application.processIdentifier)] = application;
+      }
     }];
 }
 
 -(void) unwatchApp:(NSRunningApplication*)app {
-  SIApplication* application = watchedAppsByPid[@(app.processIdentifier)];
+  SIApplication* application;
+  @synchronized(watchedAppsByPid) {
+    application = watchedAppsByPid[@(app.processIdentifier)];
+  }
   
   [application unobserveNotification:kAXSelectedTextChangedNotification withElement:application];
   [application unobserveNotification:kAXWindowResizedNotification withElement:application];
@@ -247,7 +250,9 @@
   [application unobserveNotification:kAXFocusedWindowChangedNotification withElement:application];
   [application unobserveNotification:kAXApplicationActivatedNotification withElement:application];
   
-  [watchedAppsByPid removeObjectForKey:@(application.processIdentifier)];
+  @synchronized(watchedAppsByPid) {
+    [watchedAppsByPid removeObjectForKey:@(application.processIdentifier)];
+  }
 }
 
 
@@ -272,11 +277,13 @@
   }
   
   // * default case.
-  return [[AccessibilityInfo alloc] initWithAppElement:appElement FocusedElement:focusedElement];
+  return [[AccessibilityInfo alloc] initWithAppElement:appElement focusedElement:focusedElement];
 }
 
 -(SIApplication*) appElementForProcessIdentifier:(pid_t)processIdentifier {
-  return watchedAppsByPid[@(processIdentifier)];
+  @synchronized(watchedAppsByPid) {
+    return watchedAppsByPid[@(processIdentifier)];
+  }
 }
 
 -(void) updateAccessibilityInfoForApplication:(NSRunningApplication*)runningApplication {
@@ -324,6 +331,12 @@
 -(void) onApplicationActivated:(SIAccessibilityElement*)element {
   _frontmostProcessIdentifier = element.processIdentifier;
   __log("app activated: %@", element);
+}
+
+-(void) onApplicationDeactivated:(SIAccessibilityElement*)element {
+  _frontmostProcessIdentifier = 0;
+    // ?? how can we actually get this updated?
+  __log("app deactivated: %@", element);
 }
 
 -(void) onFocusedWindowChanged:(SIWindow*)window {
@@ -395,7 +408,7 @@
   @throw [NSException exceptionWithName:@"invalid-state" reason:@"no suitable window to return as key" userInfo:nil];
 }
 
--(void) concurrentlyWithContext:(NSDictionary*)context block:(void(^)(void))block {
+-(void) concurrentlyExecute:(void(^)(void))block {
   dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
     block();
   });
