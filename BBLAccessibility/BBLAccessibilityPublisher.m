@@ -272,9 +272,6 @@
 
   // * case: no focused element.
   SIAccessibilityElement* focusedElement = siElement.focusedElement;
-  if (focusedElement == nil) {
-    return nil;
-  }
   
   // * default case.
   return [[AccessibilityInfo alloc] initWithAppElement:appElement focusedElement:focusedElement];
@@ -302,7 +299,7 @@
 -(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement forceUpdate:(BOOL)forceUpdate {
   
   // * do this off the main thread, to avoid spins with some ax queries.
-  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
+  dispatch_sync(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
 
     // * case: element's window has an AXUnknown subrole.
     // e.g. the invisible window that gets created when the mouse pointer turns into a 'pointy hand' when overing over clickable WebKit elements.
