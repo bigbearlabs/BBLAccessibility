@@ -18,6 +18,11 @@
 -(void) unwatchWindows;
 
 
+-(void) watchNotificationsForApp:(NSRunningApplication*)app;
+
+-(void) unwatchApp:(NSRunningApplication*)app;
+
+
 -(void) onApplicationActivated:(SIAccessibilityElement*)element;
 
 -(void) onFocusedElementChanged:(SIAccessibilityElement*)element;
