@@ -227,14 +227,18 @@
          }
        }];
     
-    // in order for the notifications to work, we must retain the SIApplication.
-    watchedAppsByPid[@(application.processIdentifier)] = application;
-    
+      // in order for the notifications to work, we must retain the SIApplication.
+      @synchronized(watchedAppsByPid) {
+        watchedAppsByPid[@(application.processIdentifier)] = application;
+      }
     }];
 }
 
 -(void) unwatchApp:(NSRunningApplication*)app {
-  SIApplication* application = watchedAppsByPid[@(app.processIdentifier)];
+  SIApplication* application;
+  @synchronized(watchedAppsByPid) {
+    application = watchedAppsByPid[@(app.processIdentifier)];
+  }
   
   [application unobserveNotification:kAXSelectedTextChangedNotification withElement:application];
   [application unobserveNotification:kAXWindowResizedNotification withElement:application];
@@ -246,7 +250,9 @@
   [application unobserveNotification:kAXFocusedWindowChangedNotification withElement:application];
   [application unobserveNotification:kAXApplicationActivatedNotification withElement:application];
   
-  [watchedAppsByPid removeObjectForKey:@(application.processIdentifier)];
+  @synchronized(watchedAppsByPid) {
+    [watchedAppsByPid removeObjectForKey:@(application.processIdentifier)];
+  }
 }
 
 
@@ -275,7 +281,9 @@
 }
 
 -(SIApplication*) appElementForProcessIdentifier:(pid_t)processIdentifier {
-  return watchedAppsByPid[@(processIdentifier)];
+  @synchronized(watchedAppsByPid) {
+    return watchedAppsByPid[@(processIdentifier)];
+  }
 }
 
 -(void) updateAccessibilityInfoForApplication:(NSRunningApplication*)runningApplication {

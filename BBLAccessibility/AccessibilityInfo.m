@@ -31,9 +31,12 @@
 {
   self = [super init];
   if (self) {
-    _appName = appElement.title;
-    _bundleId = appElement.runningApplication.bundleIdentifierThreadSafe;
-    _pid = appElement.processIdentifier;
+    // serialise access to appElement to relieve caller from thread-confined usage.
+    dispatch_sync(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+      _appName = appElement.title;
+      _bundleId = appElement.runningApplication.bundleIdentifierThreadSafe;
+      _pid = appElement.processIdentifier;
+    });
     
     _focusedElement = focusedElement;
     
