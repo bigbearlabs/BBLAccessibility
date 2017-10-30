@@ -128,10 +128,12 @@
     [application observeNotification:kAXFocusedWindowChangedNotification
                          withElement:application
                              handler:^(SIAccessibilityElement *accessibilityElement) {
-                               SIWindow* window = application.focusedWindow;
-                               [blockSelf updateAccessibilityInfoForElement:window];
-                               
-                               [blockSelf onFocusedWindowChanged:(SIWindow*)window];
+                               [blockSelf concurrentlyExecute:^{
+                                 SIWindow* window = application.focusedWindow;
+                                 [blockSelf updateAccessibilityInfoForElement:window];
+                                 
+                                 [blockSelf onFocusedWindowChanged:(SIWindow*)window];
+                               }];
                              }];
     
     [application observeNotification:kAXWindowCreatedNotification
@@ -284,11 +286,14 @@
 }
 
 -(void) updateAccessibilityInfoForApplication:(NSRunningApplication*)runningApplication {
-  SIApplication* app = [SIApplication applicationWithRunningApplication:runningApplication];
-  SIWindow* window = app.focusedWindow;
-  if (window) {
-    [self updateAccessibilityInfoForElement:window];
-  }
+  __weak BBLAccessibilityPublisher* blockSelf = self;
+  [self concurrentlyExecute:^{
+    SIApplication* app = [SIApplication applicationWithRunningApplication:runningApplication];
+    SIWindow* window = app.focusedWindow;
+    if (window) {
+      [blockSelf updateAccessibilityInfoForElement:window];
+    }
+  }];
 }
 
 -(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement {
@@ -298,32 +303,38 @@
 
 -(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement forceUpdate:(BOOL)forceUpdate {
   
-  // * do this off the main thread, to avoid spins with some ax queries.
-  dispatch_sync(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
-
-    // * case: element's window has an AXUnknown subrole.
-    // e.g. the invisible window that gets created when the mouse pointer turns into a 'pointy hand' when overing over clickable WebKit elements.
-    if (siElement.class == [SIWindow class]
-        && [siElement.subrole isEqualToString:@"AXUnknown"]
-        ) {
-      __log("%@ is a window with subrole AXUnknown -- will not create ax info.", siElement);
-      return;
-    }
-
-    AccessibilityInfo* newData = [self accessibilityInfoForElement:siElement];
-
-    pid_t pid = siElement.processIdentifier;
-    AccessibilityInfo* oldData = self.accessibilityInfosByPid[@(pid)];
+  // do this off the main thread, to avoid spins with some ax queries.
+  __weak BBLAccessibilityPublisher* blockSelf = self;
+  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
     
-    if (forceUpdate
-        || ![newData isEqual:oldData]) {
-      NSMutableDictionary* dictToUpdate = self.accessibilityInfosByPid.mutableCopy;
+    // synchronise AX calls to avoid deadlock on invocation of LS API.
+    @synchronized(self) {
       
-      dictToUpdate[@(pid)] = newData;
+      // * case: element's window has an AXUnknown subrole.
+      // e.g. the invisible window that gets created when the mouse pointer turns into a 'pointy hand' when overing over clickable WebKit elements.
+      if (siElement.class == [SIWindow class]
+          && [siElement.subrole isEqualToString:@"AXUnknown"]
+          ) {
+        __log("%@ is a window with subrole AXUnknown -- will not create ax info.", siElement);
+        return;
+      }
+
+      AccessibilityInfo* newData = [blockSelf accessibilityInfoForElement:siElement];
+
+      pid_t pid = siElement.processIdentifier;
+      AccessibilityInfo* oldData = blockSelf.accessibilityInfosByPid[@(pid)];
       
-      dispatch_async(dispatch_get_main_queue(), ^{
-        self.accessibilityInfosByPid = dictToUpdate.copy;
-      });
+      if (forceUpdate
+          || ![newData isEqual:oldData]) {
+        NSMutableDictionary* dictToUpdate = blockSelf.accessibilityInfosByPid.mutableCopy;
+        
+        dictToUpdate[@(pid)] = newData;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+          blockSelf.accessibilityInfosByPid = dictToUpdate.copy;
+        });
+      }
+      
     }
     
   });
