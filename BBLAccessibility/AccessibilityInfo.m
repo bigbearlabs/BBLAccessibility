@@ -7,7 +7,6 @@
 //
 
 #import "AccessibilityInfo.h"
-#import "NSRunningApplication+Util.h"
 
 
 @implementation AccessibilityInfo

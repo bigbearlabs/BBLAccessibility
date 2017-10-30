@@ -104,7 +104,7 @@
   // * observe ax notifications for the app asynchronously.
   // TODO timeout and alert user.
   
-  [self concurrentlyExecute:^{
+  [self execAsync:^{
     __log("%@ observing app %@", blockSelf, application);
 
     [application observeNotification:kAXApplicationActivatedNotification
@@ -128,7 +128,7 @@
     [application observeNotification:kAXFocusedWindowChangedNotification
                          withElement:application
                              handler:^(SIAccessibilityElement *accessibilityElement) {
-                               [blockSelf concurrentlyExecute:^{
+                               [blockSelf execAsync:^{
                                  SIWindow* window = application.focusedWindow;
                                  [blockSelf updateAccessibilityInfoForElement:window];
                                  
@@ -287,7 +287,7 @@
 
 -(void) updateAccessibilityInfoForApplication:(NSRunningApplication*)runningApplication {
   __weak BBLAccessibilityPublisher* blockSelf = self;
-  [self concurrentlyExecute:^{
+  [self execAsync:^{
     SIApplication* app = [SIApplication applicationWithRunningApplication:runningApplication];
     SIWindow* window = app.focusedWindow;
     if (window) {
@@ -303,9 +303,17 @@
 
 -(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement forceUpdate:(BOOL)forceUpdate {
   
+//  __block pid_t pidForUpdate;
+  
   // do this off the main thread, to avoid spins with some ax queries.
   __weak BBLAccessibilityPublisher* blockSelf = self;
   dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
+//    if (pidForUpdate == siElement.processIdentifier) {
+//      // update for is in progress by another thread, so skip.
+//      return;
+//    }
+    
+//    pidForUpdate = siElement.processIdentifier;
     
     // synchronise AX calls to avoid deadlock on invocation of LS API.
     @synchronized(self) {
@@ -332,6 +340,8 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
           blockSelf.accessibilityInfosByPid = dictToUpdate.copy;
+          
+  //        pidForUpdate = 0;
         });
       }
       
@@ -423,9 +433,12 @@
   @throw [NSException exceptionWithName:@"invalid-state" reason:@"no suitable window to return as key" userInfo:nil];
 }
 
--(void) concurrentlyExecute:(void(^)(void))block {
+/// asynchronously execute on global concurrent queue, synchronised to self to avoid deadlocks.
+-(void) execAsync:(void(^)(void))block {
   dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
-    block();
+    @synchronized(self) {
+      block();
+    }
   });
 }
 

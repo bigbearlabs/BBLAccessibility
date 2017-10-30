@@ -19,4 +19,4 @@ FOUNDATION_EXPORT const unsigned char BBLAccessibilityVersionString[];
 
 #import <BBLAccessibility/AccessibilityInfo.h>
 #import <BBLAccessibility/BBLAccessibilityPublisher.h>
-#import <BBLAccessibility/NSRunningApplication+Util.h>
+
