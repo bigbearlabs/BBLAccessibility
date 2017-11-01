@@ -17,6 +17,7 @@
 @implementation BBLAccessibilityPublisher
 {
   NSMutableDictionary* watchedAppsByPid;
+  pid_t pidForAxUpdate;
 }
 
 - (instancetype)init
@@ -305,51 +306,47 @@
 
 -(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement forceUpdate:(BOOL)forceUpdate {
   
-//  __block pid_t pidForUpdate;
-  
+  if (pidForAxUpdate == siElement.processIdentifier) {
+    // update for is in progress by another thread, so skip.
+    return;
+  }
+
   // do this off the main thread, to avoid spins with some ax queries.
   __weak BBLAccessibilityPublisher* blockSelf = self;
-  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
-//    if (pidForUpdate == siElement.processIdentifier) {
-//      // update for is in progress by another thread, so skip.
-//      return;
-//    }
+  [self execAsync:^{
+    pidForAxUpdate = siElement.processIdentifier;
     
-//    pidForUpdate = siElement.processIdentifier;
+    // * case: element's window has an AXUnknown subrole.
+    // e.g. the invisible window that gets created when the mouse pointer turns into a 'pointy hand' when overing over clickable WebKit elements.
+    if (siElement.class == [SIWindow class]
+        && [siElement.subrole isEqualToString:@"AXUnknown"]
+        ) {
+      __log("%@ is a window with subrole AXUnknown -- will not create ax info.", siElement);
+      pidForAxUpdate = 0;
+      return;
+    }
+
+    AccessibilityInfo* newData = [blockSelf accessibilityInfoForElement:siElement];
+
+    pid_t pid = siElement.processIdentifier;
+    AccessibilityInfo* oldData = blockSelf.accessibilityInfosByPid[@(pid)];
     
-    // synchronise AX calls to avoid deadlock on invocation of LS API.
-    @synchronized(self) {
+    if (forceUpdate
+        || ![newData isEqual:oldData]) {
+      NSMutableDictionary* dictToUpdate = blockSelf.accessibilityInfosByPid.mutableCopy;
       
-      // * case: element's window has an AXUnknown subrole.
-      // e.g. the invisible window that gets created when the mouse pointer turns into a 'pointy hand' when overing over clickable WebKit elements.
-      if (siElement.class == [SIWindow class]
-          && [siElement.subrole isEqualToString:@"AXUnknown"]
-          ) {
-        __log("%@ is a window with subrole AXUnknown -- will not create ax info.", siElement);
-        return;
-      }
-
-      AccessibilityInfo* newData = [blockSelf accessibilityInfoForElement:siElement];
-
-      pid_t pid = siElement.processIdentifier;
-      AccessibilityInfo* oldData = blockSelf.accessibilityInfosByPid[@(pid)];
+      dictToUpdate[@(pid)] = newData;
       
-      if (forceUpdate
-          || ![newData isEqual:oldData]) {
-        NSMutableDictionary* dictToUpdate = blockSelf.accessibilityInfosByPid.mutableCopy;
-        
-        dictToUpdate[@(pid)] = newData;
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-          blockSelf.accessibilityInfosByPid = dictToUpdate.copy;
-          
-  //        pidForUpdate = 0;
-        });
-      }
-      
+      dispatch_async(dispatch_get_main_queue(), ^{
+        blockSelf.accessibilityInfosByPid = dictToUpdate.copy;
+        pidForAxUpdate = 0;
+      });
+    }
+    else {
+      pidForAxUpdate = 0;
     }
     
-  });
+  }];
 }
 
 
@@ -421,7 +418,7 @@
 
 /// asynchronously execute on global concurrent queue, synchronised to self to avoid deadlocks.
 -(void) execAsync:(void(^)(void))block {
-  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
     @synchronized(self) {
       block();
     }
