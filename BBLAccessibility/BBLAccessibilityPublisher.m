@@ -58,7 +58,8 @@
       [blockSelf watchNotificationsForApp:app];
       
       // ensure ax info doesn't lag after new windows.
-      SIWindow* window = [SIWindow focusedWindow];
+      SIWindow* window = [SIApplication applicationWithRunningApplication:app].focusedWindow;
+      [blockSelf updateAccessibilityInfoForElement:window];
       [blockSelf onFocusedWindowChanged:window];
       
     } else {
@@ -77,9 +78,6 @@
   for (NSRunningApplication* app in [self applicationsToObserve]) {
     [self watchNotificationsForApp:app];
   }
-  
-  // react to running application change.
-  [[NSWorkspace sharedWorkspace] addObserver:self forKeyPath:@"frontmostApplication" options:NSKeyValueObservingOptionNew context:nil];
   
   __log("%@ is watching the windows", self);
   
@@ -110,7 +108,7 @@
     [application observeNotification:kAXApplicationActivatedNotification
                          withElement:application
                              handler:^(SIAccessibilityElement *accessibilityElement) {
-                               [blockSelf updateAccessibilityInfoForElement:accessibilityElement forceUpdate:YES];
+                               [blockSelf updateAccessibilityInfoForElement:application forceUpdate:YES];
                                
                                [blockSelf onApplicationActivated:accessibilityElement];
                              }];
@@ -129,10 +127,10 @@
                          withElement:application
                              handler:^(SIAccessibilityElement *accessibilityElement) {
                                [blockSelf execAsync:^{
-                                 SIWindow* window = application.focusedWindow;
+                                 SIWindow* window = (SIWindow*) accessibilityElement;
                                  [blockSelf updateAccessibilityInfoForElement:window];
                                  
-                                 [blockSelf onFocusedWindowChanged:(SIWindow*)window];
+                                 [blockSelf onFocusedWindowChanged:window];
                                }];
                              }];
     
@@ -272,9 +270,13 @@
     return nil;
   }
 
-  // * case: no focused element.
   SIAccessibilityElement* focusedElement = siElement.focusedElement;
   
+  // * case: no focused element.
+  if (focusedElement == nil) {
+    return [[AccessibilityInfo alloc] initWithAppElement:appElement focusedElement:siElement];
+  }
+
   // * default case.
   return [[AccessibilityInfo alloc] initWithAppElement:appElement focusedElement:focusedElement];
 }
@@ -403,22 +405,6 @@
 
 -(void) onElementDestroyed:(SIAccessibilityElement*)element {
   __log("element destroyed: %@", element);
-}
-
-
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-  if ([keyPath isEqualToString:@"frontmostApplication"]) {
-
-    NSRunningApplication* app = change[NSKeyValueChangeNewKey];
-    [self updateAccessibilityInfoForApplication:app];
-    
-  }
-  else {
-    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-  }
 }
 
 

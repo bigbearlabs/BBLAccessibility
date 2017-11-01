@@ -33,6 +33,6 @@
 
 -(nonnull instancetype)initWithAppElement:(nonnull SIApplication*)element;
 
--(nonnull instancetype)initWithAppElement:(nonnull SIApplication*)appElement focusedElement:(nonnull SIAccessibilityElement*)element;
+-(nonnull instancetype)initWithAppElement:(nonnull SIApplication*)appElement focusedElement:(SIAccessibilityElement* _Nullable)element;
 
 @end

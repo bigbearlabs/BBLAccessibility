@@ -15,14 +15,14 @@
 }
 
 
--(instancetype)initWithAppElement:(SIApplication*)element;
+-(instancetype)initWithAppElement:(SIApplication*)app;
 {
-  NSArray* visibleWindows = element.visibleWindows;
-  if (visibleWindows.count > 0) {
-    return [self initWithAppElement:element focusedElement:visibleWindows[0]];
+  NSArray* visibleWindows = app.visibleWindows;
+  if (visibleWindows.count != 0) {
+    return [self initWithAppElement:app focusedElement:app.focusedWindow];
   }
   else {
-    return [self initWithAppElement:element focusedElement:element];
+    return [self initWithAppElement:app focusedElement:nil];
   }
 }
 
@@ -44,8 +44,11 @@
     if ([[focusedElement class] isEqual:[SIWindow class]]) {
       window = (SIWindow*) focusedElement;
     }
+    else if ([focusedElement.role isEqualToString:(NSString*)kAXWindowRole]) {
+      window = [[SIWindow alloc] initWithAXElement:focusedElement.axElementRef];
+    }
     else {
-      window = appElement.focusedWindow;
+      window = focusedElement.window;
       // ASSUMES we're never interested in AccessibilityInfo belonging to other windows.
     }
 
