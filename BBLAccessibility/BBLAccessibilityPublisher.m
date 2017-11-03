@@ -103,7 +103,10 @@
       [blockSelf onApplicationActivated:accessibilityElement];
     },
     
-    // TODO respond to kAXApplicationDeactivatedNotification since impl needs to hide overlay for improved responsiveness.
+    (NSString*)kAXApplicationDeactivatedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+      [blockSelf updateAccessibilityInfoForElement:application forceUpdate:YES];
+      [blockSelf onApplicationDeactivated:accessibilityElement];
+    },
     
     (NSString*)kAXFocusedWindowChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
       SIWindow* window = (SIWindow*) accessibilityElement;
@@ -335,8 +338,7 @@
 }
 
 -(void) onApplicationDeactivated:(SIAccessibilityElement*)element {
-  _frontmostProcessIdentifier = 0;
-    // ?? how can we actually get this updated?
+  _frontmostProcessIdentifier = [SIApplication focusedApplication].processIdentifier; // ?? too slow?
   __log("app deactivated: %@", element);
 }
 
