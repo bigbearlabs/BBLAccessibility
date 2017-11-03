@@ -159,12 +159,16 @@
     // during investigation we saw that inspecting with Prefab UI Browser 'wakes up' the windows such that they send out notifications only after inspection.
     (NSString*)kAXSelectedTextChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
       NSString* selectedText = accessibilityElement.selectedText;
+      if (selectedText == nil) {
+        selectedText = @"";
+      }
       
       // guard: xcode spams us with notifs even when no text has changed, so only notify when value has changed.
       id previousSelectedText = blockSelf.accessibilityInfosByPid[@(accessibilityElement.processIdentifier)].selectedText;
-      if (previousSelectedText == nil || [previousSelectedText length] == 0) {
+      if (previousSelectedText == nil) {
         previousSelectedText = @"";
       }
+
       if ( selectedText == previousSelectedText
           ||
           [selectedText isEqualToString:previousSelectedText]) {
