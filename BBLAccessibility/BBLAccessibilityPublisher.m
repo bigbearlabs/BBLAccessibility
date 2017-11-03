@@ -289,28 +289,21 @@
   // do this off the main thread, to avoid spins with some ax queries.
   __weak BBLAccessibilityPublisher* blockSelf = self;
   [self execAsync:^{
-    pidForAxUpdate = siElement.processIdentifier;
-    
     // * case: element's window has an AXUnknown subrole.
     // e.g. the invisible window that gets created when the mouse pointer turns into a 'pointy hand' when overing over clickable WebKit elements.
     if (siElement.class == [SIWindow class]
         && [siElement.subrole isEqualToString:@"AXUnknown"]
         ) {
       __log("%@ is a window with subrole AXUnknown -- will not create ax info.", siElement);
-      pidForAxUpdate = 0;
       return;
     }
 
-    AccessibilityInfo* newData = [blockSelf accessibilityInfoForElement:siElement];
-
-    pid_t pid = siElement.processIdentifier;
-    AccessibilityInfo* oldData = blockSelf.accessibilityInfosByPid[@(pid)];
+    pidForAxUpdate = siElement.processIdentifier;
+    
+    NSDictionary* dictToUpdate = [blockSelf newAccessibilityInfosUsingElement:siElement];
     
     if (forceUpdate
-        || ![newData isEqual:oldData]) {
-      NSMutableDictionary* dictToUpdate = blockSelf.accessibilityInfosByPid.mutableCopy;
-      
-      dictToUpdate[@(pid)] = newData;
+        || ![dictToUpdate isEqual:blockSelf.accessibilityInfosByPid]) {
       
       dispatch_async(dispatch_get_main_queue(), ^{
         blockSelf.accessibilityInfosByPid = dictToUpdate.copy;
@@ -324,6 +317,15 @@
   }];
 }
 
+-(NSDictionary*) newAccessibilityInfosUsingElement:(SIAccessibilityElement*)siElement {
+  id pid = @(siElement.processIdentifier);
+  
+  AccessibilityInfo* newData = [self accessibilityInfoForElement:siElement];
+  
+  NSMutableDictionary* dictToUpdate = self.accessibilityInfosByPid.mutableCopy;
+  dictToUpdate[pid] = newData;
+  return dictToUpdate;
+}
 
 #pragma mark - handlers
 
