@@ -109,14 +109,15 @@
     },
     
     (NSString*)kAXFocusedWindowChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      SIWindow* window = (SIWindow*) accessibilityElement;
+      SIWindow* window = [[SIWindow alloc] initWithAXElement:accessibilityElement.axElementRef];
       [blockSelf updateAccessibilityInfoForElement:window];
       [blockSelf onFocusedWindowChanged:window];
     },
     
     (NSString*)kAXWindowCreatedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      [blockSelf updateAccessibilityInfoForElement:accessibilityElement];
-      [blockSelf onWindowCreated:(SIWindow*)accessibilityElement];
+      SIWindow* window = [[SIWindow alloc] initWithAXElement:accessibilityElement.axElementRef];
+      [blockSelf updateAccessibilityInfoForElement:window];
+      [blockSelf onWindowCreated:(SIWindow*)window];
     },
     
     (NSString*)kAXTitleChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
