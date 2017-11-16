@@ -65,7 +65,7 @@ open class AccessibilityHelper {
         if shouldPoll {
           // recursively invoke, so clients don't have to implement a blocking workflow.
           // - we don't want to poll and prompt.
-          self.queryAccesibilityPermission(promptIfNeeded: false, shouldPoll: true, ifNoPermission: ifNoPermission, whenPermissioned: whenPermissioned)
+          let _ = self.queryAccesibilityPermission(promptIfNeeded: false, shouldPoll: true, ifNoPermission: ifNoPermission, whenPermissioned: whenPermissioned)
         }
       }
     }
