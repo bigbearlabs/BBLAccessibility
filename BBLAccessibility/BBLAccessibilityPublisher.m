@@ -152,7 +152,8 @@
     },
     
     (NSString*)kAXUIElementDestroyedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      [blockSelf updateAccessibilityInfoForElement:accessibilityElement];
+      SIWindow* window = [application focusedWindow];
+      [blockSelf updateAccessibilityInfoForElement:window];
       [blockSelf onElementDestroyed:accessibilityElement];
     },
 
@@ -295,8 +296,9 @@
   [self execAsync:^{
     // * case: element's window has an AXUnknown subrole.
     // e.g. the invisible window that gets created when the mouse pointer turns into a 'pointy hand' when overing over clickable WebKit elements.
-    if (siElement.class == [SIWindow class]
-        && [siElement.subrole isEqualToString:@"AXUnknown"]
+    if (
+        (siElement.class == [SIWindow class] || [siElement.role isEqualToString:(NSString*)kAXWindowRole])
+        && [siElement.subrole isEqualToString:(NSString*)kAXUnknownSubrole]
         ) {
       __log("%@ is a window with subrole AXUnknown -- will not create ax info.", siElement);
       return;
