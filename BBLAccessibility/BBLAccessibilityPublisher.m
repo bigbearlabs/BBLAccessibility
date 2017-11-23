@@ -303,6 +303,12 @@
       __log("%@ is a window with subrole AXUnknown -- will not create ax info.", siElement);
       return;
     }
+    
+    // * case: safari flashing temporary windows with id 0.
+    if (siElement.class == [SIWindow class]
+         && ((SIWindow*)siElement).windowID == 0) {
+      __log("%@ appears to be a temporary window, ignore.", siElement)
+    }
 
     pidForAxUpdate = siElement.processIdentifier;
     
