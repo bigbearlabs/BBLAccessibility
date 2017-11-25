@@ -12,6 +12,8 @@
 
 @interface AccessibilityInfo : NSObject
 
+@property(readonly) CFStringRef _Nonnull axNotification;
+
 @property(readonly) NSString* _Nullable appName;
 @property(readonly) NSString* _Nonnull bundleId;
 @property(readonly) pid_t pid;
@@ -31,8 +33,8 @@
 
 @property(readonly) SIWindow* _Nullable windowAxElement;
 
--(nonnull instancetype)initWithAppElement:(nonnull SIApplication*)element;
+-(nonnull instancetype)initWithAppElement:(nonnull SIApplication*)element axNotification:(CFStringRef _Nonnull )axNotification;
 
--(nonnull instancetype)initWithAppElement:(nonnull SIApplication*)appElement focusedElement:(SIAccessibilityElement* _Nullable)element;
+-(nonnull instancetype)initWithAppElement:(nonnull SIApplication*)appElement focusedElement:(SIAccessibilityElement* _Nullable)element axNotification:(CFStringRef _Nonnull )axNotification;
 
 @end

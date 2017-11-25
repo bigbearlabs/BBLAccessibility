@@ -15,29 +15,33 @@
 }
 
 
--(instancetype)initWithAppElement:(SIApplication*)app;
+-(instancetype)initWithAppElement:(SIApplication*)app axNotification:(CFStringRef)axNotification;
 {
   NSArray* visibleWindows = app.visibleWindows;
   if (visibleWindows.count != 0) {
-    return [self initWithAppElement:app focusedElement:app.focusedWindow];
+    return [self initWithAppElement:app focusedElement:app.focusedWindow axNotification:axNotification];
   }
   else {
-    return [self initWithAppElement:app focusedElement:nil];
+    return [self initWithAppElement:app focusedElement:nil axNotification:axNotification];
   }
 }
 
+
+// TODO keep reference of element and maybe even the notif responsible for creation, to better keep track of the context of ax events.
 /// not thread-safe -- caller must ensure thread confinement.
--(instancetype)initWithAppElement:(SIApplication*)appElement focusedElement:(SIAccessibilityElement*)focusedElement;
+-(instancetype)initWithAppElement:(SIApplication*)appElement
+                   focusedElement:(SIAccessibilityElement*)focusedElement
+                   axNotification:(CFStringRef)axNotification
 {
   self = [super init];
   if (self) {
+    _axNotification = axNotification;
+    
     _appName = appElement.title;
     _bundleId = appElement.runningApplication.bundleIdentifier;
     _pid = appElement.processIdentifier;
     
     _focusedElement = focusedElement;
-    
-    
     _role = focusedElement.role;
     
     SIWindow* window;
@@ -84,8 +88,8 @@
     selectedText = @"";
   }
   return [NSString stringWithFormat:
-    @"app: %@, pid: %@, bundleId: %@, title: %@, windowId: %@, windowRect: %@, selectedText: %@, selectionBounds: %@, role: %@, windowRole: %@, windowSubrole: %@",
-    _appName, @(_pid), _bundleId, _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], selectedText, [NSValue valueWithRect:_selectionBounds], _role, _windowRole, _windowSubrole
+          @"ax: %@, app: %@, pid: %@, bundleId: %@, title: %@, windowId: %@, windowRect: %@, selectedText: %@, selectionBounds: %@, role: %@, windowRole: %@, windowSubrole: %@",
+    _axNotification, _appName, @(_pid), _bundleId, _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], selectedText, [NSValue valueWithRect:_selectionBounds], _role, _windowRole, _windowSubrole
   ];
 }
 

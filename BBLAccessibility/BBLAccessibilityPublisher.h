@@ -48,7 +48,7 @@
 -(void) onElementDestroyed:(SIAccessibilityElement*)element;
 
 
--(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement forceUpdate:(BOOL)forceUpdate;
+-(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement axNotification:(CFStringRef)axNotification forceUpdate:(BOOL)forceUpdate;
 
 
 -(SIWindow*) keyWindowForApplication:(SIApplication*) application;

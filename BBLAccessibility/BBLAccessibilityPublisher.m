@@ -60,7 +60,7 @@
       
       // ensure ax info doesn't lag after new windows.
       SIWindow* window = [SIApplication applicationWithRunningApplication:app].focusedWindow;
-      [blockSelf updateAccessibilityInfoForElement:window];
+      [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXFocusedWindowChangedNotification];
       [blockSelf onFocusedWindowChanged:window];
       
     } else {
@@ -99,61 +99,61 @@
   __weak BBLAccessibilityPublisher* blockSelf = self;
   return @{
     (NSString*)kAXApplicationActivatedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      [blockSelf updateAccessibilityInfoForElement:application forceUpdate:YES];
-      [blockSelf onApplicationActivated:accessibilityElement];
+      [blockSelf updateAccessibilityInfoForElement:application axNotification:kAXApplicationActivatedNotification forceUpdate:YES];
+      [blockSelf onApplicationActivated:application];
     },
     
     (NSString*)kAXApplicationDeactivatedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      [blockSelf updateAccessibilityInfoForElement:application forceUpdate:YES];
+      [blockSelf updateAccessibilityInfoForElement:application axNotification:kAXApplicationDeactivatedNotification forceUpdate:YES];
       [blockSelf onApplicationDeactivated:accessibilityElement];
     },
     
     (NSString*)kAXFocusedWindowChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
       SIWindow* window = [[SIWindow alloc] initWithAXElement:accessibilityElement.axElementRef];
-      [blockSelf updateAccessibilityInfoForElement:window];
+      [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXFocusedWindowChangedNotification];
       [blockSelf onFocusedWindowChanged:window];
     },
     
     (NSString*)kAXWindowCreatedNotification: ^(SIAccessibilityElement *accessibilityElement) {
       SIWindow* window = [[SIWindow alloc] initWithAXElement:accessibilityElement.axElementRef];
-      [blockSelf updateAccessibilityInfoForElement:window];
+      [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXWindowCreatedNotification];
       [blockSelf onWindowCreated:(SIWindow*)window];
     },
     
     (NSString*)kAXTitleChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      [blockSelf updateAccessibilityInfoForElement:accessibilityElement];
+      [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXTitleChangedNotification];
       [blockSelf onTitleChanged:(SIWindow*)accessibilityElement];
     },
     
     (NSString*)kAXWindowMiniaturizedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      [blockSelf updateAccessibilityInfoForElement:accessibilityElement];
+      [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXWindowMiniaturizedNotification];
       [blockSelf onWindowMinimised:(SIWindow*)accessibilityElement];
     },
     
     (NSString*)kAXWindowDeminiaturizedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      [blockSelf updateAccessibilityInfoForElement:accessibilityElement];
+      [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXWindowDeminiaturizedNotification];
       
       [blockSelf onWindowUnminimised:(SIWindow*)accessibilityElement];
     },
     
     (NSString*)kAXWindowMovedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      [blockSelf updateAccessibilityInfoForElement:accessibilityElement];
+      [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXWindowMovedNotification];
       [blockSelf onWindowMoved:(SIWindow*)accessibilityElement];
     },
     
     (NSString*)kAXWindowResizedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      [blockSelf updateAccessibilityInfoForElement:accessibilityElement];
+      [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXWindowResizedNotification];
       [blockSelf onWindowResized:(SIWindow*)accessibilityElement];
     },
     
     (NSString*)kAXFocusedUIElementChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      [blockSelf updateAccessibilityInfoForElement:accessibilityElement];
+      [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXFocusedWindowChangedNotification];
       [blockSelf onFocusedElementChanged:accessibilityElement];
     },
     
     (NSString*)kAXUIElementDestroyedNotification: ^(SIAccessibilityElement *accessibilityElement) {
       SIWindow* window = [application focusedWindow];
-      [blockSelf updateAccessibilityInfoForElement:window];
+      [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXUIElementDestroyedNotification];
       [blockSelf onElementDestroyed:accessibilityElement];
     },
 
@@ -181,12 +181,13 @@
       }
       else {
         
-        [blockSelf updateAccessibilityInfoForElement:accessibilityElement];
+        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXSelectedTextChangedNotification];
         
         [blockSelf onTextSelectionChanged:accessibilityElement];
       }
     },
 
+//    kAXMainWindowChangedNotification
   };
 
 }
@@ -239,11 +240,11 @@
 
 #pragma mark -
 
--(AccessibilityInfo*) accessibilityInfoForElement:(SIAccessibilityElement*)siElement {
+-(AccessibilityInfo*) accessibilityInfoForElement:(SIAccessibilityElement*)siElement axNotification:(CFStringRef)axNotification {
   
   // * case: element is an SIApplication.
   if ([[siElement class] isEqual:[SIApplication class]]) {
-    return [[AccessibilityInfo alloc] initWithAppElement:(SIApplication*) siElement];
+    return [[AccessibilityInfo alloc] initWithAppElement:(SIApplication*) siElement axNotification:axNotification];
   }
 
   id appElement = [self appElementForProcessIdentifier:siElement.processIdentifier];
@@ -255,11 +256,11 @@
   
   // * case: no focused element.
   if (focusedElement == nil) {
-    return [[AccessibilityInfo alloc] initWithAppElement:appElement focusedElement:siElement];
+    return [[AccessibilityInfo alloc] initWithAppElement:appElement focusedElement:siElement axNotification:axNotification];
   }
 
   // * default case.
-  return [[AccessibilityInfo alloc] initWithAppElement:appElement focusedElement:focusedElement];
+  return [[AccessibilityInfo alloc] initWithAppElement:appElement focusedElement:focusedElement axNotification:axNotification];
 }
 
 -(SIApplication*) appElementForProcessIdentifier:(pid_t)processIdentifier {
@@ -268,24 +269,30 @@
   }
 }
 
--(void) updateAccessibilityInfoForApplication:(NSRunningApplication*)runningApplication {
+-(void) updateAccessibilityInfoForApplication:(NSRunningApplication*)runningApplication
+                               axNotification:(CFStringRef)axNotification
+{
   __weak BBLAccessibilityPublisher* blockSelf = self;
   [self execAsync:^{
     SIApplication* app = [SIApplication applicationWithRunningApplication:runningApplication];
     SIWindow* window = app.focusedWindow;
     if (window) {
-      [blockSelf updateAccessibilityInfoForElement:window];
+      [blockSelf updateAccessibilityInfoForElement:window axNotification:axNotification];
     }
   }];
 }
 
--(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement {
-  [self updateAccessibilityInfoForElement:siElement forceUpdate:NO];
+-(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement
+                           axNotification:(CFStringRef)axNotification
+{
+  [self updateAccessibilityInfoForElement:siElement axNotification:axNotification forceUpdate:NO];
 }
 
 
--(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement forceUpdate:(BOOL)forceUpdate {
-  
+-(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement
+                           axNotification:(CFStringRef)axNotification
+                              forceUpdate:(BOOL)forceUpdate
+{
   if (pidForAxUpdate == siElement.processIdentifier) {
     // update for is in progress by another thread, so skip.
     return;
@@ -312,12 +319,13 @@
 
     pidForAxUpdate = siElement.processIdentifier;
     
-    NSDictionary* dictToUpdate = [blockSelf newAccessibilityInfosUsingElement:siElement];
+    NSDictionary* dictToUpdate = [blockSelf newAccessibilityInfosUsingElement:siElement axNotification:axNotification];
     
     if (forceUpdate
         || ![dictToUpdate isEqual:blockSelf.accessibilityInfosByPid]) {
       
       dispatch_async(dispatch_get_main_queue(), ^{
+        __log("siElement: %@", siElement);
         blockSelf.accessibilityInfosByPid = dictToUpdate.copy;
         pidForAxUpdate = 0;
       });
@@ -329,10 +337,10 @@
   }];
 }
 
--(NSDictionary*) newAccessibilityInfosUsingElement:(SIAccessibilityElement*)siElement {
+-(NSDictionary*) newAccessibilityInfosUsingElement:(SIAccessibilityElement*)siElement axNotification:(CFStringRef)axNotification {
   id pid = @(siElement.processIdentifier);
   
-  AccessibilityInfo* newData = [self accessibilityInfoForElement:siElement];
+  AccessibilityInfo* newData = [self accessibilityInfoForElement:siElement axNotification:axNotification];
   
   NSMutableDictionary* dictToUpdate = self.accessibilityInfosByPid.mutableCopy;
   dictToUpdate[pid] = newData;
