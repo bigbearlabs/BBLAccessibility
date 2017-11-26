@@ -35,7 +35,7 @@
 {
   self = [super init];
   if (self) {
-    _axNotification = axNotification;
+    _axNotification = (__bridge CFStringRef _Nonnull)([(__bridge NSString*)axNotification copy]);
     
     _appName = appElement.title;
     _bundleId = appElement.runningApplication.bundleIdentifier;

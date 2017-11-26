@@ -48,11 +48,14 @@
 -(void) onElementDestroyed:(SIAccessibilityElement*)element;
 
 
+-(AccessibilityInfo*) accessibilityInfoForElement:(SIAccessibilityElement*)siElement axNotification:(CFStringRef)axNotification;
+
 -(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement axNotification:(CFStringRef)axNotification forceUpdate:(BOOL)forceUpdate;
 
 
 -(SIWindow*) keyWindowForApplication:(SIApplication*) application;
 
+@property(readonly) AccessibilityInfo* focusedWindowAccessibilityInfo;
 
 @end
 

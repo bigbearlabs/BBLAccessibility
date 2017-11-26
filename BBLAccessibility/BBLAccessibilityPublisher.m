@@ -152,8 +152,8 @@
     },
     
     (NSString*)kAXUIElementDestroyedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      SIWindow* window = [application focusedWindow];
-      [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXUIElementDestroyedNotification];
+      SIWindow* window = accessibilityElement.window;
+      [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXUIElementDestroyedNotification forceUpdate:YES];
       [blockSelf onElementDestroyed:accessibilityElement];
     },
 
@@ -311,11 +311,6 @@
       return;
     }
     
-    // * case: safari flashing temporary windows with id 0.
-    if (siElement.class == [SIWindow class]
-         && ((SIWindow*)siElement).windowID == 0) {
-      __log("%@ appears to be a temporary window, ignore.", siElement)
-    }
 
     pidForAxUpdate = siElement.processIdentifier;
     
@@ -400,6 +395,12 @@
   __log("element destroyed: %@", element);
 }
 
+
+-(AccessibilityInfo*) focusedWindowAccessibilityInfo {
+  id app = [SIApplication focusedApplication];
+  id window = [app focusedWindow];
+  return [[AccessibilityInfo alloc] initWithAppElement:app focusedElement:window axNotification:kAXFocusedWindowChangedNotification];
+}
 
 #pragma mark - util
 
