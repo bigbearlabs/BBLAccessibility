@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import BBLBasics
 
 
 
@@ -24,7 +25,7 @@ extension AccessibilityInfo {
       .union(window.zoomButton?.frame() ?? .zero)
       ?? .zero
     
-    return revealFrame
+    return revealFrame.toCocoaFrame()
   }
   
 }
