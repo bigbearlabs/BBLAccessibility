@@ -12,6 +12,7 @@
 @implementation AccessibilityInfo
 {
   SIAccessibilityElement* _focusedElement;
+  NSString* _bundleId;
 }
 
 
@@ -38,7 +39,6 @@
     _axNotification = (__bridge CFStringRef _Nonnull)([(__bridge NSString*)axNotification copy]);
     
     _appName = appElement.title;
-    _bundleId = appElement.runningApplication.bundleIdentifier;
     _pid = appElement.processIdentifier;
     
     _focusedElement = focusedElement;
@@ -73,6 +73,13 @@
     
   }
   return self;
+}
+
+-(NSString*) bundleId {
+  if (_bundleId == nil) {
+    _bundleId = [NSRunningApplication runningApplicationWithProcessIdentifier:_pid].bundleIdentifier;
+  }
+  return _bundleId;
 }
 
 -(NSString*) text {
