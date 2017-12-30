@@ -13,7 +13,7 @@ import BBLBasics
 
 extension AccessibilityInfo {
   
-  public var buttonGroupFrame: CGRect {
+  public var buttonGroupRect: CGRect {
     guard let window = self.windowAxElement else {
       // there's no window!?
       
