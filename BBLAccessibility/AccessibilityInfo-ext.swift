@@ -20,12 +20,15 @@ extension AccessibilityInfo {
       return .zero
     }
     
-    let revealFrame = window.closeButton?.frame()
-      .union(window.minimiseButton?.frame() ?? .zero)
-      .union(window.zoomButton?.frame() ?? .zero)
-      ?? .zero
+    var revealFrame = window.closeButton?.frame()
+    if let minimiseFrame = window.minimiseButton?.frame() {
+      revealFrame = revealFrame?.union(minimiseFrame)
+    }
+    if let zoomFrame = window.zoomButton?.frame() {
+      revealFrame = revealFrame?.union(zoomFrame)
+    }
     
-    return revealFrame.toCocoaFrame()
+    return revealFrame?.toCocoaFrame() ?? .zero
   }
   
 }
