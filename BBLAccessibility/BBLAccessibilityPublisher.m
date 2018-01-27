@@ -55,7 +55,7 @@
     
     NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
     if ([[[blockSelf applicationsToObserve] valueForKey:@"processIdentifier"] containsObject:@(app.processIdentifier)]) {
-      
+
       [blockSelf watchNotificationsForApp:app];
       
       // ensure ax info doesn't lag after new windows.
@@ -153,7 +153,8 @@
     
     (NSString*)kAXUIElementDestroyedNotification: ^(SIAccessibilityElement *accessibilityElement) {
       SIWindow* window = accessibilityElement.window;
-      [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXUIElementDestroyedNotification forceUpdate:YES];
+      id element = window != nil ? window : accessibilityElement;
+      [blockSelf updateAccessibilityInfoForElement:element axNotification:kAXUIElementDestroyedNotification forceUpdate:YES];
       [blockSelf onElementDestroyed:accessibilityElement];
     },
 
@@ -197,10 +198,10 @@
   
   // * observe ax notifications for the app asynchronously.
   // TODO timeout and alert user.
-  
-  [self execAsync:^{
+  __weak BBLAccessibilityPublisher* blockSelf = self;
+  [self execAsyncSynchronisingOn:application block:^{
 
-    id handlersByNotificationTypes = [self handlersByNotificationTypesForApplication:application];
+    id handlersByNotificationTypes = [blockSelf handlersByNotificationTypesForApplication:application];
     for (NSString* notification in handlersByNotificationTypes) {
       SIAXNotificationHandler handler = (SIAXNotificationHandler) handlersByNotificationTypes[notification];
       [application observeNotification:(__bridge CFStringRef)(notification) withElement:application handler:handler];
@@ -216,8 +217,8 @@
 }
 
 -(void) unwatchApp:(NSRunningApplication*)app {
-  // synchronise to avoid contending with #execAsync
-  @synchronized(self) {
+
+  [self execAsyncSynchronisingOn:app block:^{
     @synchronized(watchedAppsByPid) {
       id pid = @(app.processIdentifier);
       SIApplication* application = watchedAppsByPid[pid];
@@ -234,7 +235,7 @@
       
       __log("%@ deregistered observation for app %@", self, application);
     }
-  }
+  }];
 }
 
 
@@ -272,14 +273,11 @@
 -(void) updateAccessibilityInfoForApplication:(NSRunningApplication*)runningApplication
                                axNotification:(CFStringRef)axNotification
 {
-  __weak BBLAccessibilityPublisher* blockSelf = self;
-  [self execAsync:^{
-    SIApplication* app = [SIApplication applicationWithRunningApplication:runningApplication];
-    SIWindow* window = app.focusedWindow;
-    if (window) {
-      [blockSelf updateAccessibilityInfoForElement:window axNotification:axNotification];
-    }
-  }];
+  SIApplication* app = [SIApplication applicationWithRunningApplication:runningApplication];
+  SIWindow* window = app.focusedWindow;
+  if (window) {
+    [self updateAccessibilityInfoForElement:window axNotification:axNotification];
+  }
 }
 
 -(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement
@@ -299,8 +297,13 @@
   }
 
   // do this off the main thread, to avoid spins with some ax queries.
+  id application = watchedAppsByPid[@(siElement.processIdentifier)];
+  if (application == nil) {
+    // impossible!!?
+    return;
+  }
   __weak BBLAccessibilityPublisher* blockSelf = self;
-  [self execAsync:^{
+  [self execAsyncSynchronisingOn:application block:^{
     // * case: element's window has an AXUnknown subrole.
     // e.g. the invisible window that gets created when the mouse pointer turns into a 'pointy hand' when overing over clickable WebKit elements.
     if (
@@ -413,10 +416,10 @@
   @throw [NSException exceptionWithName:@"invalid-state" reason:@"no suitable window to return as key" userInfo:nil];
 }
 
-/// asynchronously execute on global concurrent queue, synchronised to self to avoid deadlocks.
--(void) execAsync:(void(^)(void))block {
-  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
-    @synchronized(self) {
+/// asynchronously execute on global concurrent queue, synchronised onn object to avoid deadlocks.
+-(void) execAsyncSynchronisingOn:(id)object block:(void(^)(void))block {
+  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+    @synchronized(object) {
       block();
     }
   });
