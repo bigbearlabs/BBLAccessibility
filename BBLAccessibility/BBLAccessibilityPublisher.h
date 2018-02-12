@@ -18,9 +18,9 @@
 -(void) unwatchWindows;
 
 
--(void) watchNotificationsForApp:(NSRunningApplication*)app;
+-(void) observeAxEventsForApplication:(NSRunningApplication*)app;
 
--(void) unwatchApp:(NSRunningApplication*)app;
+-(void) unobserveAxEventsForApplication:(NSRunningApplication*)app;
 
 
 -(void) onApplicationActivated:(SIAccessibilityElement*)element;

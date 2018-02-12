@@ -16,8 +16,11 @@
 
 @implementation BBLAccessibilityPublisher
 {
-  NSMutableDictionary* watchedAppsByPid;
+  NSMutableDictionary<NSNumber*, SIApplication*>* watchedAppsByPid;  // RENAME -> observedAppsByPid
   pid_t pidForAxUpdate;
+  
+  id launchObservation;
+  id terminateObservation;
 }
 
 - (instancetype)init
@@ -50,48 +53,74 @@
 -(void) watchWindows {
   __weak BBLAccessibilityPublisher* blockSelf = self;
   
-  // on didlaunchapplication notif, observe.
-  [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidLaunchApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+  [self execAsyncSynchronisingOn:self block:^{
     
-    NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
-    if ([[[blockSelf applicationsToObserve] valueForKey:@"processIdentifier"] containsObject:@(app.processIdentifier)]) {
+    // on didlaunchapplication notif, observe.
+    launchObservation = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidLaunchApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+      
+      NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
+      if ([[[blockSelf applicationsToObserve] valueForKey:@"bundleIdentifier"] containsObject:app.bundleIdentifier]) {
 
-      [blockSelf watchNotificationsForApp:app];
-      
-      // ensure ax info doesn't lag after new windows.
-      SIWindow* window = [SIApplication applicationWithRunningApplication:app].focusedWindow;
-      [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXFocusedWindowChangedNotification];
-      [blockSelf onFocusedWindowChanged:window];
-      
-    } else {
-      __log("%@ is not in list of apps to observe", app);
-    }
-  }];
-  
-  // on terminateapplication notif, unobserve.
-  [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidTerminateApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        [blockSelf observeAxEventsForApplication:app];
+        
+        // ensure ax info doesn't lag after new windows.
+        SIWindow* window = [SIApplication applicationWithRunningApplication:app].focusedWindow;
+        [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXFocusedWindowChangedNotification];
+        [blockSelf onFocusedWindowChanged:window];
+        
+      } else {
+        __log("%@ is not in list of apps to observe", app);
+      }
+    }];
     
-    NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
-    [blockSelf unwatchApp:app];
+    // on terminateapplication notif, unobserve.
+    terminateObservation = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidTerminateApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+      
+      NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
+      [blockSelf unobserveAxEventsForApplication:app];
+    }];
+
   }];
-  
+
   // observe all current apps.
-  for (NSRunningApplication* app in [self applicationsToObserve]) {
-    [self watchNotificationsForApp:app];
-  }
-  
-  __log("%@ is watching the windows", self);
-  
   // NOTE it still takes a while for the notifs to actually invoke the handlers. at least with concurrent set up we don't hog the main thread as badly as before.
+  for (NSRunningApplication* app in [self applicationsToObserve]) {
+    [self execAsyncSynchronisingOn:app block:^{
+      [blockSelf observeAxEventsForApplication:app];
+    }];
+  }
+    
+  __log("%@ is watching the windows", self);
+    
+    
 }
 
+// RENAME -> observeAxEvents
 -(void) unwatchWindows {
   // naive impl that loops through the running apps
+  
+  __weak id blockSelf = self;
 
-  for (NSRunningApplication* application in [self applicationsToObserve]) {
-    [self unwatchApp:application];
-    // FIXME this may contend with the unobservation on app terminate.
+  for (NSRunningApplication* app in [blockSelf applicationsToObserve]) {
+    [self execAsyncSynchronisingOn:app block:^{
+      [blockSelf unobserveAxEventsForApplication:app];
+      // FIXME this may contend with the unobservation on app terminate.
+    }];
   }
+  
+  [self execAsyncSynchronisingOn:self block:^{
+  
+    if (launchObservation) {
+      [[[NSWorkspace sharedWorkspace] notificationCenter]
+        removeObserver:launchObservation];
+    }
+    
+    if (terminateObservation) {
+      [[[NSWorkspace sharedWorkspace] notificationCenter]
+        removeObserver:terminateObservation];
+    }
+  }];
+
 }
 
 
@@ -193,49 +222,45 @@
 
 }
 
--(void) watchNotificationsForApp:(NSRunningApplication*)app {
-  SIApplication* application = [SIApplication applicationWithRunningApplication:app];
+-(void) observeAxEventsForApplication:(NSRunningApplication*)application {
+  SIApplication* siApp = [SIApplication applicationWithRunningApplication:application];
   
   // * observe ax notifications for the app asynchronously.
   // TODO timeout and alert user.
-  __weak BBLAccessibilityPublisher* blockSelf = self;
-  [self execAsyncSynchronisingOn:application block:^{
 
-    id handlersByNotificationTypes = [blockSelf handlersByNotificationTypesForApplication:application];
-    for (NSString* notification in handlersByNotificationTypes) {
-      SIAXNotificationHandler handler = (SIAXNotificationHandler) handlersByNotificationTypes[notification];
-      [application observeNotification:(__bridge CFStringRef)(notification) withElement:application handler:handler];
-    }
-    
-    // in order for the notifications to work, we must retain the SIApplication.
-    @synchronized(watchedAppsByPid) {
-      watchedAppsByPid[@(application.processIdentifier)] = application;
-    }
-    
-    __log("%@ registered observation for app %@", self, application);
-  }];
+  id handlersByNotificationTypes = [self handlersByNotificationTypesForApplication:siApp];
+  for (NSString* notification in handlersByNotificationTypes) {
+    SIAXNotificationHandler handler = (SIAXNotificationHandler) handlersByNotificationTypes[notification];
+    [siApp observeNotification:(__bridge CFStringRef)(notification) withElement:siApp handler:handler];
+  }
+  
+  // in order for the notifications to work, we must retain the SIApplication.
+  @synchronized(watchedAppsByPid) {
+    watchedAppsByPid[@(application.processIdentifier)] = siApp;
+  }
+  
+  __log("%@ registered observation for app %@", self, application);
 }
 
--(void) unwatchApp:(NSRunningApplication*)app {
+-(void) unobserveAxEventsForApplication:(NSRunningApplication*)application {
 
-  [self execAsyncSynchronisingOn:app block:^{
-    @synchronized(watchedAppsByPid) {
-      id pid = @(app.processIdentifier);
-      SIApplication* application = watchedAppsByPid[pid];
-      if (application == nil) {
-        __log("no application for pid %@", pid);
-        return;
-      }
-      
-      for (NSString* notification in [self handlersByNotificationTypesForApplication:application]) {
-        [application unobserveNotification:(__bridge CFStringRef)notification withElement:application];
-      }
+  @synchronized(watchedAppsByPid) {
     
-      [watchedAppsByPid removeObjectForKey:@(application.processIdentifier)];
-      
-      __log("%@ deregistered observation for app %@", self, application);
+    id pid = @(application.processIdentifier);
+    SIApplication* siApp = watchedAppsByPid[pid];
+    if (siApp == nil) {
+      __log("no application for pid %@", pid);
+      return;
     }
-  }];
+    
+    for (NSString* notification in [self handlersByNotificationTypesForApplication:siApp]) {
+      [siApp unobserveNotification:(__bridge CFStringRef)notification withElement:siApp];
+    }
+  
+    [watchedAppsByPid removeObjectForKey:@(siApp.processIdentifier)];
+    
+    __log("%@ deregistered observation for app %@", self, application);
+  }
 }
 
 
@@ -297,11 +322,12 @@
   }
 
   // do this off the main thread, to avoid spins with some ax queries.
-  id application = watchedAppsByPid[@(siElement.processIdentifier)];
+  SIApplication* application = watchedAppsByPid[@(siElement.processIdentifier)];
   if (application == nil) {
     // impossible!!?
     return;
   }
+  
   __weak BBLAccessibilityPublisher* blockSelf = self;
   [self execAsyncSynchronisingOn:application block:^{
     // * case: element's window has an AXUnknown subrole.
@@ -418,7 +444,7 @@
 
 /// asynchronously execute on global concurrent queue, synchronised onn object to avoid deadlocks.
 -(void) execAsyncSynchronisingOn:(id)object block:(void(^)(void))block {
-  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
     @synchronized(object) {
       block();
     }
