@@ -246,10 +246,10 @@
 
   @synchronized(watchedAppsByPid) {
     
-    id pid = @(application.processIdentifier);
+    NSNumber* pid = @(application.processIdentifier);
     SIApplication* siApp = watchedAppsByPid[pid];
     if (siApp == nil) {
-      __log("no application for pid %@", pid);
+        __log("%@ %@ was not being observed.", application.bundleIdentifier, pid);
       return;
     }
     
@@ -257,7 +257,7 @@
       [siApp unobserveNotification:(__bridge CFStringRef)notification withElement:siApp];
     }
   
-    [watchedAppsByPid removeObjectForKey:@(siApp.processIdentifier)];
+    [watchedAppsByPid removeObjectForKey:pid];
     
     __log("%@ deregistered observation for app %@", self, application);
   }
