@@ -181,7 +181,7 @@
     },
     
     (NSString*)kAXUIElementDestroyedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      SIWindow* window = accessibilityElement.window;
+      SIWindow* window = [SIWindow windowForElement:accessibilityElement];
       id element = window != nil ? window : accessibilityElement;
       [blockSelf updateAccessibilityInfoForElement:element axNotification:kAXUIElementDestroyedNotification forceUpdate:YES];
       [blockSelf onElementDestroyed:accessibilityElement];
@@ -231,7 +231,7 @@
   id handlersByNotificationTypes = [self handlersByNotificationTypesForApplication:siApp];
   for (NSString* notification in handlersByNotificationTypes) {
     SIAXNotificationHandler handler = (SIAXNotificationHandler) handlersByNotificationTypes[notification];
-    [siApp observeNotification:(__bridge CFStringRef)(notification) withElement:siApp handler:handler];
+    [siApp observeNotification:(__bridge CFStringRef)notification withElement:siApp handler:handler];
   }
   
   // in order for the notifications to work, we must retain the SIApplication.

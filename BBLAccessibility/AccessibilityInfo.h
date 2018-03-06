@@ -31,7 +31,7 @@
 
 @property(readonly) NSString* _Nullable text;
 
-@property(readonly) SIWindow* _Nullable windowAxElement;
+@property(readonly) SIWindow* _Nullable windowElement;
 
 -(nonnull instancetype)initWithAppElement:(nonnull SIApplication*)element axNotification:(CFStringRef _Nonnull )axNotification;
 

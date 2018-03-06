@@ -44,25 +44,15 @@
     _focusedElement = focusedElement;
     _role = focusedElement.role;
     
-    SIWindow* window;
-    if ([[focusedElement class] isEqual:[SIWindow class]]) {
-      window = (SIWindow*) focusedElement;
+    if (focusedElement != nil) {
+      _windowElement = [SIWindow windowForElement:focusedElement];
     }
-    else if ([focusedElement.role isEqualToString:(NSString*)kAXWindowRole]) {
-      window = [[SIWindow alloc] initWithAXElement:focusedElement.axElementRef];
-    }
-    else {
-      window = focusedElement.window;
-      // ASSUMES we're never interested in AccessibilityInfo belonging to other windows.
-    }
-
-    _windowAxElement = window.copy;
     
-    _windowTitle = window.title;
-    _windowId = @(window.windowID).stringValue;
-    _windowRect = window.frame;
-    _windowRole = window.role;
-    _windowSubrole = window.subrole;
+    _windowTitle = _windowElement.title;
+    _windowId = @(_windowElement.windowID).stringValue;
+    _windowRect = _windowElement.frame;
+    _windowRole = _windowElement.role;
+    _windowSubrole = _windowElement.subrole;
 
     
     // properties related to the selection. this part probably needs more hardening.
