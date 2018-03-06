@@ -13,13 +13,18 @@ import Silica
 
 extension SIApplication {
   
-  static public func application(bundleId: String) -> SIApplication? {
+  class public func application(bundleId: String) -> SIApplication? {
     if let app = NSRunningApplication.runningApplications(withBundleIdentifier: bundleId).last {
       return SIApplication(runningApplication: app)
     }
     else {
       return nil
     }
+  }
+  
+  public var uncachedWindows: [SIWindow] {
+    self.dropWindowsCache()
+    return self.windows
   }
   
 }
