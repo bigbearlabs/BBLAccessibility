@@ -137,12 +137,20 @@
       [blockSelf onApplicationDeactivated:accessibilityElement];
     },
     
+    
     (NSString*)kAXFocusedWindowChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
       SIWindow* window = [[SIWindow alloc] initWithAXElement:accessibilityElement.axElementRef];
       [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXFocusedWindowChangedNotification];
       [blockSelf onFocusedWindowChanged:window];
     },
     
+    (NSString*)kAXMainWindowChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+      SIWindow* window = [SIWindow windowForElement:accessibilityElement];
+      [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXMainWindowChangedNotification forceUpdate:YES];
+      //      [blockSelf onMainWindowChanged:accessibilityElement];
+    },
+    
+
     (NSString*)kAXWindowCreatedNotification: ^(SIAccessibilityElement *accessibilityElement) {
       SIWindow* window = [[SIWindow alloc] initWithAXElement:accessibilityElement.axElementRef];
       [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXWindowCreatedNotification];
@@ -216,8 +224,6 @@
         [blockSelf onTextSelectionChanged:accessibilityElement];
       }
     },
-
-//    kAXMainWindowChangedNotification
   };
 
 }
