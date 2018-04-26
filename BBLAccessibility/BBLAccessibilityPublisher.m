@@ -139,13 +139,24 @@
     
     
     (NSString*)kAXFocusedWindowChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      SIWindow* window = [[SIWindow alloc] initWithAXElement:accessibilityElement.axElementRef];
-      [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXFocusedWindowChangedNotification];
+      SIWindow* window = [SIWindow windowForElement:accessibilityElement];
+      if (window == nil) {
+        SIApplication* app = [SIApplication applicationForProcessIdentifier:accessibilityElement.processIdentifier];
+        window = app.focusedWindow;
+
+      }
+      [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXFocusedWindowChangedNotification forceUpdate:YES];
       [blockSelf onFocusedWindowChanged:window];
     },
     
     (NSString*)kAXMainWindowChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      SIWindow* window = [SIWindow windowForElement:accessibilityElement];
+      SIWindow* window =
+        [SIWindow windowForElement:accessibilityElement];
+      if (window == nil) {
+        SIApplication* app = [SIApplication applicationForProcessIdentifier: accessibilityElement.processIdentifier];
+        window = app.focusedWindow;
+      }
+      
       [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXMainWindowChangedNotification forceUpdate:YES];
       //      [blockSelf onMainWindowChanged:accessibilityElement];
     },
@@ -322,18 +333,14 @@
                            axNotification:(CFStringRef)axNotification
                               forceUpdate:(BOOL)forceUpdate
 {
-  if (pidForAxUpdate == siElement.processIdentifier) {
-    // update for is in progress by another thread, so skip.
-    return;
-  }
 
-  // do this off the main thread, to avoid spins with some ax queries.
   SIApplication* application = watchedAppsByPid[@(siElement.processIdentifier)];
   if (application == nil) {
     // impossible!!?
     return;
   }
   
+  // do this off the main thread, to avoid spins with some ax queries.
   __weak BBLAccessibilityPublisher* blockSelf = self;
   [self execAsyncSynchronisingOn:application block:^{
     // * case: element's window has an AXUnknown subrole.

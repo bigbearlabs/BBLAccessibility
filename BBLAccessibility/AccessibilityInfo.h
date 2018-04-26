@@ -12,7 +12,7 @@
 
 @interface AccessibilityInfo : NSObject
 
-@property(readonly) CFStringRef _Nonnull axNotification;
+@property(readonly) NSString* _Nonnull axNotification;
 
 @property(readonly) NSString* _Nullable appName;
 @property(readonly) NSString* _Nonnull bundleId;

@@ -18,13 +18,8 @@
 
 -(instancetype)initWithAppElement:(SIApplication*)app axNotification:(CFStringRef)axNotification;
 {
-  NSArray* visibleWindows = app.visibleWindows;
-  if (visibleWindows.count != 0) {
-    return [self initWithAppElement:app focusedElement:app.focusedWindow axNotification:axNotification];
-  }
-  else {
-    return [self initWithAppElement:app focusedElement:nil axNotification:axNotification];
-  }
+  SIWindow* focusedWindow = app.focusedWindow;
+  return [self initWithAppElement:app focusedElement:focusedWindow axNotification:axNotification];
 }
 
 
@@ -36,7 +31,7 @@
 {
   self = [super init];
   if (self) {
-    _axNotification = (__bridge CFStringRef _Nonnull)([(__bridge NSString*)axNotification copy]);
+    _axNotification = (__bridge NSString*)axNotification;
     
     _appName = appElement.title;
     _pid = appElement.processIdentifier;
