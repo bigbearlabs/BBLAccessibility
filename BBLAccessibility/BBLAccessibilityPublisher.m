@@ -346,7 +346,7 @@
     return;
   }
   
-  // do this off the main thread, to avoid spins with some ax queries.
+  // dispatch to a queue, to avoid spins with some ax queries.
   __weak BBLAccessibilityPublisher* blockSelf = self;
   [self execAsyncSynchronisingOn:application block:^{
     // * case: element's window has an AXUnknown subrole.
