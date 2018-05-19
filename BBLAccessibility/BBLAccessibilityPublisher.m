@@ -17,7 +17,6 @@
 @implementation BBLAccessibilityPublisher
 {
   NSMutableDictionary<NSNumber*, SIApplication*>* watchedAppsByPid;  // RENAME -> observedAppsByPid
-  pid_t pidForAxUpdate;
   
   id launchObservation;
   id terminateObservation;
@@ -354,8 +353,6 @@
     }
     
 
-    pidForAxUpdate = siElement.processIdentifier;
-    
     NSDictionary* dictToUpdate = [blockSelf newAccessibilityInfosUsingElement:siElement axNotification:axNotification];
     
     if (forceUpdate
@@ -364,11 +361,9 @@
       dispatch_async(dispatch_get_main_queue(), ^{
         __log("siElement: %@", siElement);
         blockSelf.accessibilityInfosByPid = dictToUpdate.copy;
-        pidForAxUpdate = 0;
       });
     }
     else {
-      pidForAxUpdate = 0;
     }
     
   }];
