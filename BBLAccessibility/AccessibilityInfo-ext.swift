@@ -13,11 +13,11 @@ import BBLBasics
 
 extension AccessibilityInfo {
   
-  public var buttonGroupRect: CGRect {
+  public var buttonGroupRect: CGRect? {
     guard let window = self.windowElement else {
       // there's no window!?
       
-      return .zero
+      return nil
     }
     
     var revealFrame = window.closeButton?.frame()
@@ -28,7 +28,7 @@ extension AccessibilityInfo {
       revealFrame = revealFrame?.union(zoomFrame)
     }
     
-    return revealFrame?.toCocoaFrame() ?? .zero
+    return revealFrame?.toCocoaFrame()
   }
   
 }
