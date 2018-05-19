@@ -200,8 +200,15 @@
     
     (NSString*)kAXUIElementDestroyedNotification: ^(SIAccessibilityElement *accessibilityElement) {
       SIWindow* window = [SIWindow windowForElement:accessibilityElement];
-      id element = window != nil ? window : accessibilityElement;
-      [blockSelf updateAccessibilityInfoForElement:element axNotification:kAXUIElementDestroyedNotification forceUpdate:YES];
+//      id element = window != nil ? window : accessibilityElement;
+//      [blockSelf updateAccessibilityInfoForElement:element axNotification:kAXUIElementDestroyedNotification forceUpdate:YES];
+      
+      // IT2 the above ended up being too noisy w/ xcode.
+      // test out updating ax only when widnow destroyed.
+      if (window) {
+        [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXUIElementDestroyedNotification forceUpdate:YES];
+      }
+      
       [blockSelf onElementDestroyed:accessibilityElement];
     },
 
