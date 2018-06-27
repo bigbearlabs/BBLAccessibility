@@ -194,7 +194,7 @@
     },
     
     (NSString*)kAXFocusedUIElementChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXFocusedWindowChangedNotification];
+      [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXFocusedUIElementChangedNotification];
       [blockSelf onFocusedElementChanged:accessibilityElement];
     },
     
