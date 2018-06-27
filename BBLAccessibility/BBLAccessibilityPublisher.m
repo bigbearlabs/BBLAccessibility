@@ -200,14 +200,10 @@
     
     (NSString*)kAXUIElementDestroyedNotification: ^(SIAccessibilityElement *accessibilityElement) {
       SIWindow* window = [SIWindow windowForElement:accessibilityElement];
-//      id element = window != nil ? window : accessibilityElement;
-//      [blockSelf updateAccessibilityInfoForElement:element axNotification:kAXUIElementDestroyedNotification forceUpdate:YES];
+
+      id element = window != nil ? window : accessibilityElement;
+      [blockSelf updateAccessibilityInfoForElement:element axNotification:kAXUIElementDestroyedNotification];
       
-      // IT2 the above ended up being too noisy w/ xcode.
-      // test out updating ax only when widnow destroyed.
-      if (window) {
-        [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXUIElementDestroyedNotification forceUpdate:YES];
-      }
       
       [blockSelf onElementDestroyed:accessibilityElement];
     },
@@ -345,21 +341,23 @@
     // impossible!!?
     return;
   }
+
+  // * case: element's window has an AXUnknown subrole.
+  // e.g. the invisible window that gets created when the mouse pointer turns into a 'pointy hand' when overing over clickable WebKit elements.
+  if (
+      (siElement.class == [SIWindow class] || [siElement.role isEqualToString:(NSString*)kAXWindowRole])
+      && [siElement.subrole isEqualToString:(NSString*)kAXUnknownSubrole]
+      ) {
+    __log("%@ is a window with subrole AXUnknown -- will not create ax info.", siElement);
+    return;
+  }
+  
+  // * updated the published property.
   
   // dispatch to a queue, to avoid spins with some ax queries.
   __weak BBLAccessibilityPublisher* blockSelf = self;
   [self execAsyncSynchronisingOn:application block:^{
-    // * case: element's window has an AXUnknown subrole.
-    // e.g. the invisible window that gets created when the mouse pointer turns into a 'pointy hand' when overing over clickable WebKit elements.
-    if (
-        (siElement.class == [SIWindow class] || [siElement.role isEqualToString:(NSString*)kAXWindowRole])
-        && [siElement.subrole isEqualToString:(NSString*)kAXUnknownSubrole]
-        ) {
-      __log("%@ is a window with subrole AXUnknown -- will not create ax info.", siElement);
-      return;
-    }
     
-
     NSDictionary* dictToUpdate = [blockSelf newAccessibilityInfosUsingElement:siElement axNotification:axNotification];
     
     if (forceUpdate
