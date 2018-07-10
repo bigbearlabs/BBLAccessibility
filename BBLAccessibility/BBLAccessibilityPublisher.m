@@ -55,7 +55,7 @@
   [self execAsyncSynchronisingOn:self block:^{
     
     // on didlaunchapplication notif, observe.
-    launchObservation = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidLaunchApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    self->launchObservation = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidLaunchApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
       
       NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
       if ([[[blockSelf applicationsToObserve] valueForKey:@"bundleIdentifier"] containsObject:app.bundleIdentifier]) {
@@ -73,7 +73,7 @@
     }];
     
     // on terminateapplication notif, unobserve.
-    terminateObservation = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidTerminateApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    self->terminateObservation = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidTerminateApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
       
       NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
       [blockSelf unobserveAxEventsForApplication:app];
@@ -98,25 +98,23 @@
 -(void) unwatchWindows {
   // naive impl that loops through the running apps
   
-  __weak id blockSelf = self;
-
-  for (NSRunningApplication* app in [blockSelf applicationsToObserve]) {
+  for (NSRunningApplication* app in [self applicationsToObserve]) {
     [self execAsyncSynchronisingOn:app block:^{
-      [blockSelf unobserveAxEventsForApplication:app];
+      [self unobserveAxEventsForApplication:app];
       // FIXME this may contend with the unobservation on app terminate.
     }];
   }
   
   [self execAsyncSynchronisingOn:self block:^{
   
-    if (launchObservation) {
+    if (self->launchObservation) {
       [[[NSWorkspace sharedWorkspace] notificationCenter]
-        removeObserver:launchObservation];
+        removeObserver:self->launchObservation];
     }
     
-    if (terminateObservation) {
+    if (self->terminateObservation) {
       [[[NSWorkspace sharedWorkspace] notificationCenter]
-        removeObserver:terminateObservation];
+        removeObserver:self->terminateObservation];
     }
   }];
 
@@ -345,8 +343,8 @@
   // * case: element's window has an AXUnknown subrole.
   // e.g. the invisible window that gets created when the mouse pointer turns into a 'pointy hand' when overing over clickable WebKit elements.
   if (
-      (siElement.class == [SIWindow class] || [siElement.role isEqualToString:(NSString*)kAXWindowRole])
-      && [siElement.subrole isEqualToString:(NSString*)kAXUnknownSubrole]
+      (siElement.class == [SIWindow class] || [siElement.role isEqual:(NSString*)kAXWindowRole])
+      && [siElement.subrole isEqual:(NSString*)kAXUnknownSubrole]
       ) {
     __log("%@ is a window with subrole AXUnknown -- will not create ax info.", siElement);
     return;

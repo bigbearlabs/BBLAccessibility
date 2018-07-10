@@ -34,15 +34,15 @@ extension SIApplication {
 extension SIWindow {
   
   public var closeButton: SIAccessibilityElement? {
-    return self.forKey(kAXCloseButtonAttribute as CFString!)
+    return self.forKey(kAXCloseButtonAttribute as CFString)
   }
   
   public var minimiseButton: SIAccessibilityElement? {
-    return self.forKey(kAXMinimizeButtonSubrole as CFString!)
+    return self.forKey(kAXMinimizeButtonSubrole as CFString)
   }
   
   public var zoomButton: SIAccessibilityElement? {
-    return self.forKey(kAXZoomButtonAttribute as CFString!)
+    return self.forKey(kAXZoomButtonAttribute as CFString)
   }
   
 }
