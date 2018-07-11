@@ -42,20 +42,6 @@
 			remoteGlobalIDString = 51100F0A1CC15D200095B985;
 			remoteInfo = BBLAccessibility;
 		};
-		51D53AD81DCA3A4E00079955 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 51D53AD31DCA3A4E00079955 /* NMTest001.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 51AC6CED1CE66D340078C2EE;
-			remoteInfo = NMAccessibility;
-		};
-		51D53ADA1DCA3A4E00079955 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 51D53AD31DCA3A4E00079955 /* NMTest001.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 013D8CA8143C85A100AC2A43;
-			remoteInfo = NMTest001;
-		};
 		51D53AE11DCA3A9200079955 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 51D53ADD1DCA3A9200079955 /* Silica.xcodeproj */;
@@ -94,10 +80,10 @@
 		51100F3F1CC15DA30095B985 /* BBLAccessibilityApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBLAccessibilityApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		5123E4BF1DDFD62B0099D11E /* Silica-ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Silica-ext.h"; sourceTree = "<group>"; };
 		5123E4C01DDFD62B0099D11E /* Silica-ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Silica-ext.m"; sourceTree = "<group>"; };
+		5183AAAF20F53038004388C3 /* lab */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lab; sourceTree = "<group>"; };
 		51B0D8C71E4BD47900EED498 /* logging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = logging.h; sourceTree = "<group>"; };
 		51B8F2221DB5774100E79EEC /* BBLAccessibilityPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBLAccessibilityPublisher.h; sourceTree = "<group>"; };
 		51B8F2231DB5774100E79EEC /* BBLAccessibilityPublisher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBLAccessibilityPublisher.m; sourceTree = "<group>"; };
-		51D53AD31DCA3A4E00079955 /* NMTest001.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = NMTest001.xcodeproj; path = NMAccessibility/NMTest001.xcodeproj; sourceTree = "<group>"; };
 		51D53ADD1DCA3A9200079955 /* Silica.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Silica.xcodeproj; path = Silica/Silica.xcodeproj; sourceTree = "<group>"; };
 		51D6F8991DDF73D0003F7E31 /* AccessibilityInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessibilityInfo.h; sourceTree = "<group>"; };
 		51D6F89A1DDF73D0003F7E31 /* AccessibilityInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessibilityInfo.m; sourceTree = "<group>"; };
@@ -142,7 +128,7 @@
 				51100F211CC15D540095B985 /* BBLAccessibilityApp */,
 				51100F311CC15D540095B985 /* BBLAccessibilityAppUITests */,
 				51D53ADD1DCA3A9200079955 /* Silica.xcodeproj */,
-				51D53AD31DCA3A4E00079955 /* NMTest001.xcodeproj */,
+				5183AAAF20F53038004388C3 /* lab */,
 				51100F0C1CC15D200095B985 /* Products */,
 				5191A9401E34FFBF001B94FD /* Frameworks */,
 			);
@@ -213,15 +199,6 @@
 				51DF495A1E4E7F9800D1DCA5 /* BBLBasics.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		51D53AD41DCA3A4E00079955 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				51D53AD91DCA3A4E00079955 /* NMAccessibility.framework */,
-				51D53ADB1DCA3A4E00079955 /* NMTest001.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		51D53ADE1DCA3A9200079955 /* Products */ = {
@@ -342,10 +319,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 51D53AD41DCA3A4E00079955 /* Products */;
-					ProjectRef = 51D53AD31DCA3A4E00079955 /* NMTest001.xcodeproj */;
-				},
-				{
 					ProductGroup = 51D53ADE1DCA3A9200079955 /* Products */;
 					ProjectRef = 51D53ADD1DCA3A9200079955 /* Silica.xcodeproj */;
 				},
@@ -360,20 +333,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		51D53AD91DCA3A4E00079955 /* NMAccessibility.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = NMAccessibility.framework;
-			remoteRef = 51D53AD81DCA3A4E00079955 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		51D53ADB1DCA3A4E00079955 /* NMTest001.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = NMTest001.app;
-			remoteRef = 51D53ADA1DCA3A4E00079955 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		51D53AE21DCA3A9200079955 /* Silica.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
