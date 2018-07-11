@@ -114,7 +114,7 @@ class AXPublisher: BBLAccessibilityPublisher {
 //    return (NSApp.default(forKey: .axpublisher_excluded_bundleids) as? String ?? "").components(separatedBy: ",")
 //      +
 //      // always exclude my own bundle id.
-//      [ Bundle.main.bundleIdentifier! ]
+//      [ NSApp.bundleIdentifier ]
     return []
   }
 
