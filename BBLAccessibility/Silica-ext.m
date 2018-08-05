@@ -139,7 +139,7 @@
 -(BOOL) isWebArea {
   // if i have a AXWebArea role (undeclared constant!), i am a web area.
   // TODO see if should test the subrole instead?
-  return [self.role isEqualToString:@"AXWebArea"];
+  return [self.role isEqual:@"AXWebArea"];
 }
 
 @end
