@@ -20,6 +20,9 @@
   
   id launchObservation;
   id terminateObservation;
+
+  // control load of concurrent queue.
+  dispatch_semaphore_t semaphore;
 }
 
 - (instancetype)init
@@ -28,6 +31,9 @@
   if (self) {
     _accessibilityInfosByPid = [@{} mutableCopy];
     watchedAppsByPid = [@{} mutableCopy];
+    
+    NSUInteger processorCount = NSProcessInfo.processInfo.processorCount;
+    semaphore = dispatch_semaphore_create(processorCount - 1);
   }
   return self;
 }
@@ -455,9 +461,12 @@
 
 /// asynchronously execute on global concurrent queue, synchronised onn object to avoid deadlocks.
 -(void) execAsyncSynchronisingOn:(id)object block:(void(^)(void))block {
+  __block dispatch_semaphore_t _semaphore = semaphore;
   dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
     @synchronized(object) {
+      dispatch_semaphore_wait(_semaphore, dispatch_time(DISPATCH_TIME_NOW, 10 * NSEC_PER_SEC));
       block();
+      dispatch_semaphore_signal(_semaphore);
     }
   });
 }
