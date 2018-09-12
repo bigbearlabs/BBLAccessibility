@@ -31,7 +31,7 @@
 {
   self = [super init];
   if (self) {
-    _axNotification = (__bridge NSString*)axNotification;
+    _axNotification = [(__bridge NSString*)axNotification copy];
     
     _appName = appElement.title;
     _pid = appElement.processIdentifier;
@@ -61,10 +61,12 @@
 }
 
 -(NSString*) bundleId {
-  if (_bundleId == nil) {
-    _bundleId = [NSRunningApplication runningApplicationWithProcessIdentifier:_pid].bundleIdentifier;
+  @synchronized(self) {
+    if (_bundleId == nil) {
+      _bundleId = [NSRunningApplication runningApplicationWithProcessIdentifier:_pid].bundleIdentifier;
+    }
+    return _bundleId;
   }
-  return _bundleId;
 }
 
 -(NSString*) text {
@@ -75,14 +77,14 @@
 
 
 -(NSString *)description {
-  id selectedText = _selectedText;
-  if (!selectedText) {
-    selectedText = @"";
+  id selectedText = _selectedText ? _selectedText : @"";
+
+  @synchronized(self) {
+    return [NSString stringWithFormat:
+            @"ax: %@, app: %@, pid: %@, bundleId: %@, title: %@, windowId: %@, windowRect: %@, selectedText: %@, selectionBounds: %@, role: %@, windowRole: %@, windowSubrole: %@",
+      _axNotification, _appName, @(_pid), _bundleId, _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], selectedText, [NSValue valueWithRect:_selectionBounds], _role, _windowRole, _windowSubrole
+    ];
   }
-  return [NSString stringWithFormat:
-          @"ax: %@, app: %@, pid: %@, bundleId: %@, title: %@, windowId: %@, windowRect: %@, selectedText: %@, selectionBounds: %@, role: %@, windowRole: %@, windowSubrole: %@",
-    _axNotification, _appName, @(_pid), _bundleId, _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], selectedText, [NSValue valueWithRect:_selectionBounds], _role, _windowRole, _windowSubrole
-  ];
 }
 
 

@@ -29,7 +29,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // PoC Silica basic usage.
     DispatchQueue.global().async {
       if let finder = NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.finder").last {
-        self.siApp = SIApplication(runningApplication: finder)!
+        self.siApp = SIApplication(runningApplication: finder)
         self.siApp.observeNotification(kAXApplicationActivatedNotification as CFString, with: self.siApp, handler: { (element) in
           print("bing")
         })
@@ -58,7 +58,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   // PoC requesting perms.
   @IBAction
   func action_showAxRequestDialog(_ sender: AnyObject) {
-    AccessibilityHelper().maybeRequestAxPerms()
+//    AccessibilityHelper().maybeRequestAxPerms()
   }
 }
 

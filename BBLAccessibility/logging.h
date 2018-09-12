@@ -6,6 +6,8 @@
 
 #define logging_h
 
+//#define BBL_LOG_AX
+
 #ifndef BBL_LOG_AX
 
   // opt4. silent.

@@ -23,6 +23,7 @@
 
   // control load of concurrent queue.
   dispatch_semaphore_t semaphore;
+  dispatch_queue_t serialQueue;
 }
 
 - (instancetype)init
@@ -32,8 +33,9 @@
     _accessibilityInfosByPid = [@{} mutableCopy];
     watchedAppsByPid = [@{} mutableCopy];
     
+    serialQueue = dispatch_queue_create("BBLAccessiblityPublisher-serial", DISPATCH_QUEUE_SERIAL);
     NSUInteger processorCount = NSProcessInfo.processInfo.processorCount;
-    semaphore = dispatch_semaphore_create(processorCount - 1);
+    semaphore = dispatch_semaphore_create(processorCount);
   }
   return self;
 }
@@ -58,13 +60,15 @@
 -(void) watchWindows {
   __weak BBLAccessibilityPublisher* blockSelf = self;
   
+  id applicationsToObserve = [blockSelf applicationsToObserve];
+  
   [self execAsyncSynchronisingOn:self block:^{
     
     // on didlaunchapplication notif, observe.
     self->launchObservation = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidLaunchApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
       
       NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
-      if ([[[blockSelf applicationsToObserve] valueForKey:@"bundleIdentifier"] containsObject:app.bundleIdentifier]) {
+      if ([[applicationsToObserve valueForKey:@"bundleIdentifier"] containsObject:app.bundleIdentifier]) {
 
         [blockSelf observeAxEventsForApplication:app];
         
@@ -89,14 +93,14 @@
 
   // observe all current apps.
   // NOTE it still takes a while for the notifs to actually invoke the handlers. at least with concurrent set up we don't hog the main thread as badly as before.
-  for (NSRunningApplication* app in [self applicationsToObserve]) {
+  for (NSRunningApplication* app in applicationsToObserve) {
     [self execAsyncSynchronisingOn:app block:^{
       [blockSelf observeAxEventsForApplication:app];
     }];
   }
-    
+  
   __log("%@ is watching the windows", self);
-    
+  
     
 }
 
@@ -340,7 +344,10 @@
                               forceUpdate:(BOOL)forceUpdate
 {
 
-  SIApplication* application = watchedAppsByPid[@(siElement.processIdentifier)];
+  SIApplication* application = nil;
+  @synchronized(watchedAppsByPid) {
+    application = watchedAppsByPid[@(siElement.processIdentifier)];
+  }
   if (application == nil) {
     // impossible!!?
     return;
@@ -461,14 +468,16 @@
 
 /// asynchronously execute on global concurrent queue, synchronised onn object to avoid deadlocks.
 -(void) execAsyncSynchronisingOn:(id)object block:(void(^)(void))block {
-  __block dispatch_semaphore_t _semaphore = semaphore;
-  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
-    @synchronized(object) {
-      dispatch_semaphore_wait(_semaphore, dispatch_time(DISPATCH_TIME_NOW, 10 * NSEC_PER_SEC));
-      block();
+  __weak dispatch_semaphore_t _semaphore = semaphore;
+  dispatch_async(serialQueue, ^{
+    dispatch_semaphore_wait(_semaphore, dispatch_time(DISPATCH_TIME_NOW, 20 * NSEC_PER_SEC));
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
+      @synchronized(object) {
+        block();
+      }
       dispatch_semaphore_signal(_semaphore);
-    }
-  });
+    });
+ });
 }
 
 @end
