@@ -3,11 +3,69 @@ import ApplicationServices
 import BBLBasics
 
 
+
 open class AccessibilityHelper {
   
   let lastOnlyQueue = LastOnlyQueue()
 
   public init() {}
+  
+  
+  open func showSystemAxRequestDialog() {
+    let promptOptionKey = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String
+    let options = [
+      promptOptionKey: true
+    ]
+    _ = AXIsProcessTrustedWithOptions(options as CFDictionary)
+  }
+  
+  
+  @discardableResult
+  open func queryAccessibilityPermission(
+    onPermissionFound: () -> Void,
+    onPermissionReceived: @escaping () -> Void,
+    onPollFindsNoPermission: @escaping () -> Void) -> Bool {
+    
+    // first check if we have the perm.
+    let originalPerm = AXIsProcessTrustedWithOptions(nil)
+    if originalPerm {
+      onPermissionFound()
+      return true
+    }
+    
+    // real world situation 1.
+    // no perm, so we prompt once, then poll.
+    
+    // 1. no perm + prompt option -> will fail, prompt.
+    let promptOptionKey = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String
+    let options = [
+      promptOptionKey: true
+    ]
+    _ = AXIsProcessTrustedWithOptions(options as CFDictionary)
+    
+    // sparsely and repeatedly check for perm.
+    let shouldPoll = true
+    lastOnlyQueue.pollingAsync { [unowned self] in
+      
+      let isPermissioned = AXIsProcessTrustedWithOptions(nil)
+      
+      // since we got sent to a polling queue, we stop it after one invocation.
+      if !shouldPoll || isPermissioned {
+        self.lastOnlyQueue.pollStop()
+      }
+      
+      if isPermissioned {
+        // we obtained the perm in the recursive call chain.
+        onPermissionReceived()
+      }
+      else {
+        onPollFindsNoPermission()
+      }
+    }
+    
+    return false
+  }
+
   
   /***
    queries for Accessibility permission and invokes handler based on whether the app has Accessibility permissions.
@@ -16,7 +74,7 @@ open class AccessibilityHelper {
    `whenPermissioned(isNewPermission)` is called when first check was successful, or eventually in case of a polling call when the permission is obtained.
    polling stops when permission is obtained.
    */
-  open func queryAccesibilityPermission(
+  open func queryAccesibilityPermission(  // OBSOLETE
     promptIfNeeded: Bool,
     shouldPoll: Bool = false,
     ifNoPermission: @escaping () -> Void,
@@ -33,7 +91,7 @@ open class AccessibilityHelper {
       return true
     }
     
-    ifNoPermission()
+//    ifNoPermission()
     
     // real world situation 1.
     // no perm, so we prompt once, then poll.
