@@ -57,38 +57,38 @@
 
 #pragma mark -
 
+// RENAME -> observeAxEvents
 -(void) watchWindows {
   __weak BBLAccessibilityPublisher* blockSelf = self;
-  
   id applicationsToObserve = [blockSelf applicationsToObserve];
-  
-  [self execAsyncSynchronisingOn:self block:^{
-    
-    // on didlaunchapplication notif, observe.
-    self->launchObservation = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidLaunchApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-      
-      NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
-      if ([[applicationsToObserve valueForKey:@"bundleIdentifier"] containsObject:app.bundleIdentifier]) {
 
-        [blockSelf observeAxEventsForApplication:app];
-        
-        // ensure ax info doesn't lag after new windows.
-        SIWindow* window = [SIApplication applicationWithRunningApplication:app].focusedWindow;
-        [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXFocusedWindowChangedNotification];
-        [blockSelf onFocusedWindowChanged:window];
-        
-      } else {
-        __log("%@ is not in list of apps to observe", app);
-      }
-    }];
+  // on didlaunchapplication notif, observe.
+  self->launchObservation = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidLaunchApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
     
-    // on terminateapplication notif, unobserve.
-    self->terminateObservation = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidTerminateApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
+    if ([[applicationsToObserve valueForKey:@"bundleIdentifier"] containsObject:app.bundleIdentifier]) {
+
+      [blockSelf execAsyncSynchronisingOn:app block:^{
+        [blockSelf observeAxEventsForApplication:app];
+      }];
       
-      NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
+      // ensure ax info doesn't lag after new windows.
+      SIWindow* window = [SIApplication applicationWithRunningApplication:app].focusedWindow;
+      [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXFocusedWindowChangedNotification];
+      [blockSelf onFocusedWindowChanged:window];
+      
+    } else {
+      __log("%@ is not in list of apps to observe", app);
+    }
+  }];
+    
+  // on terminateapplication notif, unobserve.
+  self->terminateObservation = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidTerminateApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    
+    NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
+    [blockSelf execAsyncSynchronisingOn:app block:^{
       [blockSelf unobserveAxEventsForApplication:app];
     }];
-
   }];
 
   // observe all current apps.
@@ -100,33 +100,25 @@
   }
   
   __log("%@ is watching the windows", self);
-  
-    
 }
 
-// RENAME -> observeAxEvents
 -(void) unwatchWindows {
-  // naive impl that loops through the running apps
-  
-  for (NSRunningApplication* app in [self applicationsToObserve]) {
-    [self execAsyncSynchronisingOn:app block:^{
-      [self unobserveAxEventsForApplication:app];
-      // FIXME this may contend with the unobservation on app terminate.
-    }];
+
+  @synchronized(watchedAppsByPid) {
+    for (SIApplication* app in watchedAppsByPid.allValues) {
+      [self unobserveAxEventsForApplication:app.runningApplication];
+    }
   }
   
-  [self execAsyncSynchronisingOn:self block:^{
+  if (self->launchObservation) {
+    [[[NSWorkspace sharedWorkspace] notificationCenter]
+      removeObserver:self->launchObservation];
+  }
   
-    if (self->launchObservation) {
-      [[[NSWorkspace sharedWorkspace] notificationCenter]
-        removeObserver:self->launchObservation];
-    }
-    
-    if (self->terminateObservation) {
-      [[[NSWorkspace sharedWorkspace] notificationCenter]
-        removeObserver:self->terminateObservation];
-    }
-  }];
+  if (self->terminateObservation) {
+    [[[NSWorkspace sharedWorkspace] notificationCenter]
+      removeObserver:self->terminateObservation];
+  }
 
 }
 
@@ -365,23 +357,26 @@
   
   // * updated the published property.
   
-  // dispatch to a queue, to avoid spins with some ax queries.
+//   dispatch to a queue, to avoid spins if ax query of the target app takes a long time.
   __weak BBLAccessibilityPublisher* blockSelf = self;
   [self execAsyncSynchronisingOn:application block:^{
+  
+    id axInfo = [blockSelf accessibilityInfoForElement:siElement axNotification:axNotification];
+    id pid = @(siElement.processIdentifier);
     
-    NSDictionary* dictToUpdate = [blockSelf newAccessibilityInfosUsingElement:siElement axNotification:axNotification];
-    
-    if (forceUpdate
-        || ![dictToUpdate isEqual:blockSelf.accessibilityInfosByPid]) {
+    // synchronise state access.
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if (forceUpdate
+          || ![blockSelf.accessibilityInfosByPid[pid] isEqual:axInfo]) {
+        
+        __log("update ax info dict with: %@", siElement);
       
-      dispatch_async(dispatch_get_main_queue(), ^{
-        __log("siElement: %@", siElement);
-        blockSelf.accessibilityInfosByPid = dictToUpdate.copy;
-      });
-    }
-    else {
-    }
-    
+        NSMutableDictionary* updatedAccessibilityInfosByPid = blockSelf.accessibilityInfosByPid.mutableCopy;
+        updatedAccessibilityInfosByPid[pid] = axInfo;
+
+        blockSelf.accessibilityInfosByPid = updatedAccessibilityInfosByPid;
+      }
+    });
   }];
 }
 
