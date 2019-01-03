@@ -13,9 +13,10 @@ open class AccessibilityHelper {
   
   @discardableResult
   open func queryAccessibilityPermission(
-    onPermissionFound: () -> Void,
-    onPermissionReceived: @escaping () -> Void,
-    onPollFindsNoPermission: @escaping () -> Void) -> Bool {
+    systemPromptIfNotFound: Bool = true,
+    onPermissionFound: () -> Void = {},
+    onPermissionReceived: @escaping () -> Void = {},
+    onPollFindsNoPermission: @escaping () -> Void = {}) -> Bool {
     
     // first check if we have the perm.
     let isOriginallyPermissioned = AXIsProcessTrustedWithOptions(nil)
@@ -26,6 +27,10 @@ open class AccessibilityHelper {
     
     // real world situation 1.
     // no perm, so we prompt once, then poll.
+    
+    guard systemPromptIfNotFound else {
+      return false
+    }
     
     // 1. no perm + prompt option -> will fail, prompt.
     let promptOptionKey = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String
@@ -65,9 +70,9 @@ open class AccessibilityHelper {
     ]
     let isPermissioned = AXIsProcessTrustedWithOptions(options as CFDictionary)
     
-    if isPermissioned {
-      fatalError("invalid call -- can't show system ax request dialog when we already have perms")
-    }
+//    if isPermissioned {
+//      fatalError("invalid call -- can't show system ax request dialog when we already have perms")
+//    }
   }
 
 }
