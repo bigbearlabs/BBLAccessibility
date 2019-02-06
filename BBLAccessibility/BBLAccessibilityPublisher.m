@@ -25,7 +25,7 @@
   dispatch_semaphore_t semaphore;
   dispatch_queue_t serialQueue;
   
-  id observation;
+  id notificationCenterObserverToken;
 }
 
 - (instancetype)init
@@ -59,30 +59,35 @@
 
 #pragma mark -
 
-
--(void) registerForNotifications {
+-(void) registerForNotification {
   __weak id blockSelf = self;
-  observation = [NSNotificationCenter.defaultCenter addObserverForName:NOTIF_AX object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+  notificationCenterObserverToken = [NSNotificationCenter.defaultCenter addObserverForName:AX_EVENT_NOTIFICATION object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
     
 //    NSLog(@"!!notif: %@", note);
     
-    NSDictionary* axData = note.userInfo;
-    NSString* notification = axData[@"notification"];
-    SIAccessibilityElement* siElement = axData[@"element"];
+    SIAXNotificationData* axData = note.userInfo[AX_EVENT_NOTIFICATION_DATA];
+    CFStringRef notification = axData.axNotification;
+    SIAccessibilityElement* siElement = axData.siElement;
     SIApplication* siApp = [SIApplication applicationForProcessIdentifier:siElement.processIdentifier];
 
     NSDictionary* handlers = [blockSelf handlersByNotificationTypesForApplication:siApp];
-    SIAXNotificationHandler handler = handlers[notification];
+    SIAXNotificationHandler handler = handlers[(__bridge NSString*)notification];
     handler(siElement);
   }];
 }
 
+-(void) deregisterForNotification {
+  if (notificationCenterObserverToken) {
+    [NSNotificationCenter.defaultCenter removeObserver:notificationCenterObserverToken];
+  }
+}
+
 // RENAME -> observeAxEvents
 -(void) watchWindows {
+  [self registerForNotification];
+
   __weak BBLAccessibilityPublisher* blockSelf = self;
   id applicationsToObserve = [blockSelf applicationsToObserve];
-
-  [self registerForNotifications];
   
   // on didlaunchapplication notif, observe.
   self->launchObservation = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidLaunchApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
@@ -142,6 +147,7 @@
       removeObserver:self->terminateObservation];
   }
 
+  [self deregisterForNotification];
 }
 
 // FIXME 'application' is a slightly dodgy parameter. consider replacing with the siElement that generated the ax event.
