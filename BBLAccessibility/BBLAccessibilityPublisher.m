@@ -60,7 +60,7 @@
 #pragma mark -
 
 -(void) registerForNotification {
-  __weak id blockSelf = self;
+  NSDictionary* handlers = [self handlersByNotificationTypes];
   notificationCenterObserverToken = [NSNotificationCenter.defaultCenter addObserverForName:AX_EVENT_NOTIFICATION object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
     
 //    NSLog(@"!!notif: %@", note);
@@ -68,9 +68,7 @@
     SIAXNotificationData* axData = note.userInfo[AX_EVENT_NOTIFICATION_DATA];
     CFStringRef notification = axData.axNotification;
     SIAccessibilityElement* siElement = axData.siElement;
-    SIApplication* siApp = [SIApplication applicationForProcessIdentifier:siElement.processIdentifier];
 
-    NSDictionary* handlers = [blockSelf handlersByNotificationTypesForApplication:siApp];
     SIAXNotificationHandler handler = handlers[(__bridge NSString*)notification];
     handler(siElement);
   }];
@@ -151,15 +149,17 @@
 }
 
 // FIXME 'application' is a slightly dodgy parameter. consider replacing with the siElement that generated the ax event.
--(NSDictionary*) handlersByNotificationTypesForApplication:(SIApplication*)application {
+-(NSDictionary*) handlersByNotificationTypes {
   __weak BBLAccessibilityPublisher* blockSelf = self;
   return @{
     (NSString*)kAXApplicationActivatedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+      id application = (SIApplication*) accessibilityElement;
       [blockSelf updateAccessibilityInfoForElement:application axNotification:kAXApplicationActivatedNotification forceUpdate:YES];
       [blockSelf onApplicationActivated:application];
     },
     
     (NSString*)kAXApplicationDeactivatedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+      id application = (SIApplication*) accessibilityElement;
       [blockSelf updateAccessibilityInfoForElement:application axNotification:kAXApplicationDeactivatedNotification forceUpdate:YES];
       [blockSelf onApplicationDeactivated:accessibilityElement];
     },
@@ -275,14 +275,9 @@
   // * observe ax notifications for the app asynchronously.
   // TODO timeout and alert user.
 
-  id handlersByNotificationTypes = [self handlersByNotificationTypesForApplication:siApp];
-  for (NSString* notification in handlersByNotificationTypes) {
-//    SIAXNotificationHandler handler = (SIAXNotificationHandler) handlersByNotificationTypes[notification];
-//    [siApp observeNotification:(__bridge CFStringRef)notification withElement:siApp handler:handler];
-    
-    // IT2 avoid refcon casting.
+  for (NSString* notification in [self handlersByNotificationTypes]) {
 
-    [siApp observeNotification_2:(__bridge CFStringRef)notification withElement:siApp];
+    [siApp observeNotification:(__bridge CFStringRef)notification withElement:siApp];
   }
   
   
@@ -306,7 +301,7 @@
       return;
     }
     
-    for (NSString* notification in [self handlersByNotificationTypesForApplication:siApp]) {
+    for (NSString* notification in [self handlersByNotificationTypes]) {
       [siApp unobserveNotification:(__bridge CFStringRef)notification withElement:siApp];
     }
   
