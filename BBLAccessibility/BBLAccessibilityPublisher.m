@@ -24,6 +24,8 @@
   // control load of concurrent queue.
   dispatch_semaphore_t semaphore;
   dispatch_queue_t serialQueue;
+  
+  id observation;
 }
 
 - (instancetype)init
@@ -57,11 +59,31 @@
 
 #pragma mark -
 
+
+-(void) registerForNotifications {
+  __weak id blockSelf = self;
+  observation = [NSNotificationCenter.defaultCenter addObserverForName:NOTIF_AX object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    
+//    NSLog(@"!!notif: %@", note);
+    
+    NSDictionary* axData = note.userInfo;
+    NSString* notification = axData[@"notification"];
+    SIAccessibilityElement* siElement = axData[@"element"];
+    SIApplication* siApp = [SIApplication applicationForProcessIdentifier:siElement.processIdentifier];
+
+    NSDictionary* handlers = [blockSelf handlersByNotificationTypesForApplication:siApp];
+    SIAXNotificationHandler handler = handlers[notification];
+    handler(siElement);
+  }];
+}
+
 // RENAME -> observeAxEvents
 -(void) watchWindows {
   __weak BBLAccessibilityPublisher* blockSelf = self;
   id applicationsToObserve = [blockSelf applicationsToObserve];
 
+  [self registerForNotifications];
+  
   // on didlaunchapplication notif, observe.
   self->launchObservation = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidLaunchApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
     
@@ -122,7 +144,7 @@
 
 }
 
-
+// FIXME 'application' is a slightly dodgy parameter. consider replacing with the siElement that generated the ax event.
 -(NSDictionary*) handlersByNotificationTypesForApplication:(SIApplication*)application {
   __weak BBLAccessibilityPublisher* blockSelf = self;
   return @{
@@ -249,9 +271,15 @@
 
   id handlersByNotificationTypes = [self handlersByNotificationTypesForApplication:siApp];
   for (NSString* notification in handlersByNotificationTypes) {
-    SIAXNotificationHandler handler = (SIAXNotificationHandler) handlersByNotificationTypes[notification];
-    [siApp observeNotification:(__bridge CFStringRef)notification withElement:siApp handler:handler];
+//    SIAXNotificationHandler handler = (SIAXNotificationHandler) handlersByNotificationTypes[notification];
+//    [siApp observeNotification:(__bridge CFStringRef)notification withElement:siApp handler:handler];
+    
+    // IT2 avoid refcon casting.
+
+    [siApp observeNotification_2:(__bridge CFStringRef)notification withElement:siApp];
   }
+  
+  
   
   // in order for the notifications to work, we must retain the SIApplication.
   @synchronized(watchedAppsByPid) {
