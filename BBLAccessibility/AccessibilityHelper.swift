@@ -67,12 +67,14 @@ open class AccessibilityHelper {
     let promptOptionKey = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String
     let options = [
       promptOptionKey: true
-    ]
-    let isPermissioned = AXIsProcessTrustedWithOptions(options as CFDictionary)
+    ] as CFDictionary
     
-//    if isPermissioned {
+    let isPermissioned = AXIsProcessTrustedWithOptions(options)
+    
+    if isPermissioned {
 //      fatalError("invalid call -- can't show system ax request dialog when we already have perms")
-//    }
+    }
+    
   }
 
 }
