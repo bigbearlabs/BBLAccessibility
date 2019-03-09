@@ -12,6 +12,7 @@
 
 @property(readonly) pid_t frontmostProcessIdentifier;
 
+@property(readonly, nonnull)  NSDictionary<NSNumber*, NSString*>* bundleIdsByPid; // cache bundle ids as the processes come and go, to avoid hot path to NSRunningApplication.bundleIdentifier / its backing LS function (which showed up a few times as suspicious)
 
 -(void) watchWindows;
 

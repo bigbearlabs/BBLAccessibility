@@ -12,14 +12,16 @@
 @implementation AccessibilityInfo
 {
   SIAccessibilityElement* _focusedElement;
-  NSString* _bundleId;
 }
 
 
--(instancetype)initWithAppElement:(SIApplication*)app axNotification:(CFStringRef)axNotification;
+-(instancetype)initWithAppElement:(SIApplication*)app axNotification:(CFStringRef)axNotification bundleId:(NSString*)bundleId;
 {
   SIWindow* focusedWindow = app.focusedWindow;
-  return [self initWithAppElement:app focusedElement:focusedWindow axNotification:axNotification];
+  return [self initWithAppElement:app
+                   focusedElement:focusedWindow
+                   axNotification:axNotification
+                          bundleId: bundleId];
 }
 
 
@@ -28,6 +30,7 @@
 -(instancetype)initWithAppElement:(SIApplication*)appElement
                    focusedElement:(SIAccessibilityElement*)focusedElement
                    axNotification:(CFStringRef)axNotification
+                         bundleId:(NSString*)bundleId
 {
   self = [super init];
   if (self) {
@@ -49,6 +52,7 @@
     _windowRole = _windowElement.role;
     _windowSubrole = _windowElement.subrole;
 
+    _bundleId = bundleId;
     
     // properties related to the selection. this part probably needs more hardening.
     _selectedText = focusedElement.selectedText;
@@ -60,14 +64,6 @@
   return self;
 }
 
--(NSString*) bundleId {
-  @synchronized(self) {
-    if (_bundleId == nil) {
-      _bundleId = [NSRunningApplication runningApplicationWithProcessIdentifier:_pid].bundleIdentifier;
-    }
-    return _bundleId;
-  }
-}
 
 -(NSString*) text {
   return _focusedElement.text;
@@ -79,12 +75,10 @@
 -(NSString *)description {
   id selectedText = _selectedText ? _selectedText : @"";
 
-  @synchronized(self) {
     return [NSString stringWithFormat:
             @"ax: %@, app: %@, pid: %@, bundleId: %@, title: %@, windowId: %@, windowRect: %@, selectedText: %@, selectionBounds: %@, role: %@, windowRole: %@, windowSubrole: %@",
       _axNotification, _appName, @(_pid), _bundleId, _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], selectedText, [NSValue valueWithRect:_selectionBounds], _role, _windowRole, _windowSubrole
     ];
-  }
 }
 
 
