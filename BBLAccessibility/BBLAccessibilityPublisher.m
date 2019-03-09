@@ -26,6 +26,8 @@
   dispatch_queue_t serialQueue;
   
   id notificationCenterObserverToken;
+  
+  NSDictionary* _handlersByNotificationTypes;
 }
 
 - (instancetype)init
@@ -60,17 +62,14 @@
 #pragma mark -
 
 -(void) registerForNotification {
-  NSDictionary* handlers = [self handlersByNotificationTypes];
+  __weak BBLAccessibilityPublisher* blockSelf = self;
   notificationCenterObserverToken = [NSNotificationCenter.defaultCenter addObserverForName:AX_EVENT_NOTIFICATION object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
     
 //    NSLog(@"!!notif: %@", note);
     
     SIAXNotificationData* axData = note.userInfo[AX_EVENT_NOTIFICATION_DATA];
-    CFStringRef notification = axData.axNotification;
-    SIAccessibilityElement* siElement = axData.siElement;
-
-    SIAXNotificationHandler handler = handlers[(__bridge NSString*)notification];
-    handler(siElement);
+    
+    [blockSelf invokeHandlerForAxNotificationData:axData];
   }];
 }
 
@@ -78,6 +77,18 @@
   if (notificationCenterObserverToken) {
     [NSNotificationCenter.defaultCenter removeObserver:notificationCenterObserverToken];
   }
+}
+
+-(void) invokeHandlerForAxNotificationData:(SIAXNotificationData*) axData {
+  CFStringRef notification = axData.axNotification;
+  SIAccessibilityElement* siElement = axData.siElement;
+  
+  NSDictionary* handlers = [self handlersByNotificationTypes];
+  SIAXNotificationHandler handler = handlers[(__bridge NSString*)notification];
+  NSRunningApplication* app = [NSRunningApplication runningApplicationWithProcessIdentifier:siElement.processIdentifier];
+  [self execAsyncSynchronisingOn:app block:^{
+    handler(siElement);
+  }];
 }
 
 // RENAME -> observeAxEvents
@@ -150,123 +161,126 @@
 
 // FIXME 'application' is a slightly dodgy parameter. consider replacing with the siElement that generated the ax event.
 -(NSDictionary*) handlersByNotificationTypes {
-  __weak BBLAccessibilityPublisher* blockSelf = self;
-  return @{
-    (NSString*)kAXApplicationActivatedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      id application = (SIApplication*) accessibilityElement;
-      [blockSelf updateAccessibilityInfoForElement:application axNotification:kAXApplicationActivatedNotification forceUpdate:YES];
-      [blockSelf onApplicationActivated:application];
-    },
-    
-    (NSString*)kAXApplicationDeactivatedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      id application = (SIApplication*) accessibilityElement;
-      [blockSelf updateAccessibilityInfoForElement:application axNotification:kAXApplicationDeactivatedNotification forceUpdate:YES];
-      [blockSelf onApplicationDeactivated:accessibilityElement];
-    },
-    
-    
-    (NSString*)kAXFocusedWindowChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      SIWindow* window = [SIWindow windowForElement:accessibilityElement];
-      if (window == nil) {
-        SIApplication* app = [SIApplication applicationForProcessIdentifier:accessibilityElement.processIdentifier];
-        window = app.focusedWindow;
-
-      }
-      [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXFocusedWindowChangedNotification forceUpdate:YES];
-      [blockSelf onFocusedWindowChanged:window];
-    },
-    
-    (NSString*)kAXMainWindowChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      SIWindow* window =
-        [SIWindow windowForElement:accessibilityElement];
-      if (window == nil) {
-        SIApplication* app = [SIApplication applicationForProcessIdentifier: accessibilityElement.processIdentifier];
-        window = app.focusedWindow;
-      }
+  if (!_handlersByNotificationTypes) {
+    __weak BBLAccessibilityPublisher* blockSelf = self;
+    _handlersByNotificationTypes = @{
+      (NSString*)kAXApplicationActivatedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+        id application = (SIApplication*) accessibilityElement;
+        [blockSelf updateAccessibilityInfoForElement:application axNotification:kAXApplicationActivatedNotification forceUpdate:YES];
+        [blockSelf onApplicationActivated:application];
+      },
       
-      [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXMainWindowChangedNotification forceUpdate:YES];
-      //      [blockSelf onMainWindowChanged:accessibilityElement];
-    },
-    
-
-    (NSString*)kAXWindowCreatedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      SIWindow* window = [[SIWindow alloc] initWithAXElement:accessibilityElement.axElementRef];
-      [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXWindowCreatedNotification];
-      [blockSelf onWindowCreated:(SIWindow*)window];
-    },
-    
-    (NSString*)kAXTitleChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXTitleChangedNotification];
-      [blockSelf onTitleChanged:(SIWindow*)accessibilityElement];
-    },
-    
-    (NSString*)kAXWindowMiniaturizedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXWindowMiniaturizedNotification];
-      [blockSelf onWindowMinimised:(SIWindow*)accessibilityElement];
-    },
-    
-    (NSString*)kAXWindowDeminiaturizedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXWindowDeminiaturizedNotification];
-      
-      [blockSelf onWindowUnminimised:(SIWindow*)accessibilityElement];
-    },
-    
-    (NSString*)kAXWindowMovedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXWindowMovedNotification];
-      [blockSelf onWindowMoved:(SIWindow*)accessibilityElement];
-    },
-    
-    (NSString*)kAXWindowResizedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXWindowResizedNotification];
-      [blockSelf onWindowResized:(SIWindow*)accessibilityElement];
-    },
-    
-    (NSString*)kAXFocusedUIElementChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXFocusedUIElementChangedNotification];
-      [blockSelf onFocusedElementChanged:accessibilityElement];
-    },
-    
-    (NSString*)kAXUIElementDestroyedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      SIWindow* window = [SIWindow windowForElement:accessibilityElement];
-
-      id element = window != nil ? window : accessibilityElement;
-      [blockSelf updateAccessibilityInfoForElement:element axNotification:kAXUIElementDestroyedNotification];
+      (NSString*)kAXApplicationDeactivatedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+        id application = (SIApplication*) accessibilityElement;
+        [blockSelf updateAccessibilityInfoForElement:application axNotification:kAXApplicationDeactivatedNotification forceUpdate:YES];
+        [blockSelf onApplicationDeactivated:accessibilityElement];
+      },
       
       
-      [blockSelf onElementDestroyed:accessibilityElement];
-    },
+      (NSString*)kAXFocusedWindowChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+        SIWindow* window = [SIWindow windowForElement:accessibilityElement];
+        if (window == nil) {
+          SIApplication* app = [SIApplication applicationForProcessIdentifier:accessibilityElement.processIdentifier];
+          window = app.focusedWindow;
 
-    // observe appropriately for text selection handling.
-    // NOTE some apps, e.g. iterm, seem to fail to notify observers properly.
-    // FIXME investigate why not working with Notes.app
-    // INVESTIGATE sierra + safari: notifies only for some windows.
-    // during investigation we saw that inspecting with Prefab UI Browser 'wakes up' the windows such that they send out notifications only after inspection.
-    (NSString*)kAXSelectedTextChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-      NSString* selectedText = accessibilityElement.selectedText;
-      if (selectedText == nil) {
-        selectedText = @"";
-      }
+        }
+        [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXFocusedWindowChangedNotification forceUpdate:YES];
+        [blockSelf onFocusedWindowChanged:window];
+      },
       
-      // guard: xcode spams us with notifs even when no text has changed, so only notify when value has changed.
-      id previousSelectedText = blockSelf.accessibilityInfosByPid[@(accessibilityElement.processIdentifier)].selectedText;
-      if (previousSelectedText == nil) {
-        previousSelectedText = @"";
-      }
-
-      if ( selectedText == previousSelectedText
-          ||
-          [selectedText isEqualToString:previousSelectedText]) {
-        // no need to update.
-      }
-      else {
+      (NSString*)kAXMainWindowChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+        SIWindow* window =
+          [SIWindow windowForElement:accessibilityElement];
+        if (window == nil) {
+          SIApplication* app = [SIApplication applicationForProcessIdentifier: accessibilityElement.processIdentifier];
+          window = app.focusedWindow;
+        }
         
-        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXSelectedTextChangedNotification];
-        
-        [blockSelf onTextSelectionChanged:accessibilityElement];
-      }
-    },
-  };
+        [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXMainWindowChangedNotification forceUpdate:YES];
+        //      [blockSelf onMainWindowChanged:accessibilityElement];
+      },
+      
 
+      (NSString*)kAXWindowCreatedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+        SIWindow* window = [[SIWindow alloc] initWithAXElement:accessibilityElement.axElementRef];
+        [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXWindowCreatedNotification];
+        [blockSelf onWindowCreated:(SIWindow*)window];
+      },
+      
+      (NSString*)kAXTitleChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXTitleChangedNotification];
+        [blockSelf onTitleChanged:(SIWindow*)accessibilityElement];
+      },
+      
+      (NSString*)kAXWindowMiniaturizedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXWindowMiniaturizedNotification];
+        [blockSelf onWindowMinimised:(SIWindow*)accessibilityElement];
+      },
+      
+      (NSString*)kAXWindowDeminiaturizedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXWindowDeminiaturizedNotification];
+        
+        [blockSelf onWindowUnminimised:(SIWindow*)accessibilityElement];
+      },
+      
+      (NSString*)kAXWindowMovedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXWindowMovedNotification];
+        [blockSelf onWindowMoved:(SIWindow*)accessibilityElement];
+      },
+      
+      (NSString*)kAXWindowResizedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXWindowResizedNotification];
+        [blockSelf onWindowResized:(SIWindow*)accessibilityElement];
+      },
+      
+      (NSString*)kAXFocusedUIElementChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXFocusedUIElementChangedNotification];
+        [blockSelf onFocusedElementChanged:accessibilityElement];
+      },
+      
+      (NSString*)kAXUIElementDestroyedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+        SIWindow* window = [SIWindow windowForElement:accessibilityElement];
+
+        id element = window != nil ? window : accessibilityElement;
+        [blockSelf updateAccessibilityInfoForElement:element axNotification:kAXUIElementDestroyedNotification];
+        
+        
+        [blockSelf onElementDestroyed:accessibilityElement];
+      },
+
+      // observe appropriately for text selection handling.
+      // NOTE some apps, e.g. iterm, seem to fail to notify observers properly.
+      // FIXME investigate why not working with Notes.app
+      // INVESTIGATE sierra + safari: notifies only for some windows.
+      // during investigation we saw that inspecting with Prefab UI Browser 'wakes up' the windows such that they send out notifications only after inspection.
+      (NSString*)kAXSelectedTextChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+        NSString* selectedText = accessibilityElement.selectedText;
+        if (selectedText == nil) {
+          selectedText = @"";
+        }
+        
+        // guard: xcode spams us with notifs even when no text has changed, so only notify when value has changed.
+        id previousSelectedText = blockSelf.accessibilityInfosByPid[@(accessibilityElement.processIdentifier)].selectedText;
+        if (previousSelectedText == nil) {
+          previousSelectedText = @"";
+        }
+
+        if ( selectedText == previousSelectedText
+            ||
+            [selectedText isEqualToString:previousSelectedText]) {
+          // no need to update.
+        }
+        else {
+          
+          [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXSelectedTextChangedNotification];
+          
+          [blockSelf onTextSelectionChanged:accessibilityElement];
+        }
+      },
+    };
+  }
+  
+  return _handlersByNotificationTypes;
 }
 
 -(void) observeAxEventsForApplication:(NSRunningApplication*)application {
