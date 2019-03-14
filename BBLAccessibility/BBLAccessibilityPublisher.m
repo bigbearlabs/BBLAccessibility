@@ -421,12 +421,14 @@
     
     // synchronise state access.
     dispatch_async(dispatch_get_main_queue(), ^{
+      NSDictionary* accessibilityInfosByPid = blockSelf.accessibilityInfosByPid;
+      
       if (forceUpdate
-          || ![blockSelf.accessibilityInfosByPid[pid] isEqual:axInfo]) {
+          || ![accessibilityInfosByPid[pid] isEqual:axInfo]) {
         
         __log("update ax info dict with: %@", siElement);
       
-        NSMutableDictionary* updatedAccessibilityInfosByPid = blockSelf.accessibilityInfosByPid.mutableCopy;
+        NSMutableDictionary* updatedAccessibilityInfosByPid = accessibilityInfosByPid.mutableCopy;
         updatedAccessibilityInfosByPid[pid] = axInfo;
 
         blockSelf.accessibilityInfosByPid = updatedAccessibilityInfosByPid;

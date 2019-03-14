@@ -89,16 +89,18 @@
 {
   if (other == self) {
     return YES;
-  } else {
-    AccessibilityInfo* theOther = (AccessibilityInfo*) other;
-    return [_focusedElement isEqual:theOther->_focusedElement]
-      && [_windowElement isEqual:theOther->_focusedElement];
   }
+  
+  AccessibilityInfo* theOther = (AccessibilityInfo*) other;
+  return [_axNotification isEqual:theOther->_axNotification]
+    && [_bundleId isEqual:theOther->_bundleId]
+    && [_focusedElement isEqual:theOther->_focusedElement]
+    && [_windowElement isEqual:theOther->_focusedElement];
 }
 
 - (NSUInteger)hash
 {
-  return @[_focusedElement, _windowElement].hash;
+  return @[_axNotification, _bundleId, _focusedElement, _windowElement].hash;
 }
 
 
