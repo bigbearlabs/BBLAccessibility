@@ -92,15 +92,27 @@
   }
   
   AccessibilityInfo* theOther = (AccessibilityInfo*) other;
-  return [_axNotification isEqual:theOther->_axNotification]
-    && [_bundleId isEqual:theOther->_bundleId]
-    && [_focusedElement isEqual:theOther->_focusedElement]
-    && [_windowElement isEqual:theOther->_focusedElement];
+  return
+    [_axNotification isEqual:theOther->_axNotification]
+      && NSEqualRects(_windowRect, theOther->_windowRect)
+      && [_focusedElement isEqual:theOther->_focusedElement]
+        // should cover bundle id, pid
+      && [_role isEqual:theOther->_role]
+      && [_windowElement isEqual:theOther->_windowElement]
+        // should cover window id, window role, window subrole
+      && [_windowTitle isEqual:theOther->_windowTitle];
 }
 
 - (NSUInteger)hash
 {
-  return @[_axNotification, _bundleId, _focusedElement, _windowElement].hash;
+  return @[
+           _axNotification,
+           @(_windowRect),
+           _focusedElement,
+           _role,
+           _windowElement,
+           _windowTitle
+           ].hash;
 }
 
 
