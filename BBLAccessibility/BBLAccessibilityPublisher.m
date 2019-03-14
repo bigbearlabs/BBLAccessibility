@@ -118,8 +118,9 @@
       
       // ensure ax info doesn't lag after new windows.
       SIWindow* window = [SIApplication applicationWithRunningApplication:app].focusedWindow;
-      [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXFocusedWindowChangedNotification];
-      [blockSelf onFocusedWindowChanged:window];
+      
+      SIAXNotificationHandler handler = [blockSelf handlersByNotificationTypes][(__bridge NSString*)kAXFocusedWindowChangedNotification];
+      handler(window);
       
     } else {
       __log("%@ is not in list of apps to observe", app);
