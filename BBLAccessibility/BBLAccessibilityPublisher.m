@@ -132,6 +132,9 @@
     
     [blockSelf unobserveAxEventsForApplication:app];
     
+    NSMutableDictionary* axInfos = blockSelf.accessibilityInfosByPid.mutableCopy;
+    [axInfos removeObjectForKey:@(app.processIdentifier)];
+    
     [bundleIdsByPid removeObjectForKey:@(app.processIdentifier)];
   }];
 
