@@ -523,7 +523,7 @@
 -(void) execAsyncSynchronisingOn:(id)object block:(void(^)(void))block {
   __weak dispatch_semaphore_t _semaphore = semaphore;
   dispatch_async(serialQueue, ^{
-    dispatch_semaphore_wait(_semaphore, dispatch_time(DISPATCH_TIME_NOW, 20 * NSEC_PER_SEC));
+    dispatch_semaphore_wait(_semaphore, dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC));
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
       @synchronized(object) {
         block();
