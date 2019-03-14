@@ -89,10 +89,17 @@
   
   NSDictionary* handlers = [self handlersByNotificationTypes];
   SIAXNotificationHandler handler = handlers[(__bridge NSString*)notification];
-  NSRunningApplication* app = [NSRunningApplication runningApplicationWithProcessIdentifier:siElement.processIdentifier];
-  [self execAsyncSynchronisingOn:app block:^{
+  
+//  SIApplication* siApp = nil;
+//  @synchronized (watchedAppsByPid) {
+//    siApp = watchedAppsByPid[@(siElement.processIdentifier)];
+//  }
+//  assert(siApp != nil);
+  // DISABLED we saw some notifs from what look like child processes. (e.g. ...webkit.webcontent), in which case we can't get the si app back from the registry.
+  
+//  [self execAsyncSynchronisingOn:siApp block:^{
     handler(siElement);
-  }];
+//  }];
 }
 
 // RENAME -> observeAxEvents
@@ -175,87 +182,87 @@
     __weak BBLAccessibilityPublisher* blockSelf = self;
     _handlersByNotificationTypes = @{
       (NSString*)kAXApplicationActivatedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-        id application = (SIApplication*) accessibilityElement;
-        [blockSelf updateAccessibilityInfoForElement:application axNotification:kAXApplicationActivatedNotification forceUpdate:YES];
-        [blockSelf onApplicationActivated:application];
+//        id application = (SIApplication*) accessibilityElement;
+        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXApplicationActivatedNotification forceUpdate:YES];
+//        [blockSelf onApplicationActivated:application];
       },
       
       (NSString*)kAXApplicationDeactivatedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-        id application = (SIApplication*) accessibilityElement;
-        [blockSelf updateAccessibilityInfoForElement:application axNotification:kAXApplicationDeactivatedNotification forceUpdate:YES];
-        [blockSelf onApplicationDeactivated:accessibilityElement];
+//        id application = (SIApplication*) accessibilityElement;
+        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXApplicationDeactivatedNotification forceUpdate:YES];
+//        [blockSelf onApplicationDeactivated:accessibilityElement];
       },
       
       
       (NSString*)kAXFocusedWindowChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-        SIWindow* window = [SIWindow windowForElement:accessibilityElement];
-        if (window == nil) {
-          SIApplication* app = [SIApplication applicationForProcessIdentifier:accessibilityElement.processIdentifier];
-          window = app.focusedWindow;
-
-        }
-        [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXFocusedWindowChangedNotification forceUpdate:YES];
-        [blockSelf onFocusedWindowChanged:window];
+//        SIWindow* window = [SIWindow windowForElement:accessibilityElement];
+//        if (window == nil) {
+//          SIApplication* app = [SIApplication applicationForProcessIdentifier:accessibilityElement.processIdentifier];
+//          window = app.focusedWindow;
+//
+//        }
+        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXFocusedWindowChangedNotification forceUpdate:YES];
+//        [blockSelf onFocusedWindowChanged:window];
       },
       
       (NSString*)kAXMainWindowChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-        SIWindow* window =
-          [SIWindow windowForElement:accessibilityElement];
-        if (window == nil) {
-          SIApplication* app = [SIApplication applicationForProcessIdentifier: accessibilityElement.processIdentifier];
-          window = app.focusedWindow;
-        }
+//        SIWindow* window =
+//          [SIWindow windowForElement:accessibilityElement];
+//        if (window == nil) {
+//          SIApplication* app = [SIApplication applicationForProcessIdentifier: accessibilityElement.processIdentifier];
+//          window = app.focusedWindow;
+//        }
         
-        [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXMainWindowChangedNotification forceUpdate:YES];
+        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXMainWindowChangedNotification forceUpdate:YES];
         //      [blockSelf onMainWindowChanged:accessibilityElement];
       },
       
 
       (NSString*)kAXWindowCreatedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-        SIWindow* window = [[SIWindow alloc] initWithAXElement:accessibilityElement.axElementRef];
-        [blockSelf updateAccessibilityInfoForElement:window axNotification:kAXWindowCreatedNotification];
-        [blockSelf onWindowCreated:(SIWindow*)window];
+//        SIWindow* window = [[SIWindow alloc] initWithAXElement:accessibilityElement.axElementRef];
+        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXWindowCreatedNotification];
+//        [blockSelf onWindowCreated:(SIWindow*)window];
       },
       
       (NSString*)kAXTitleChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
         [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXTitleChangedNotification];
-        [blockSelf onTitleChanged:(SIWindow*)accessibilityElement];
+//        [blockSelf onTitleChanged:(SIWindow*)accessibilityElement];
       },
       
       (NSString*)kAXWindowMiniaturizedNotification: ^(SIAccessibilityElement *accessibilityElement) {
         [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXWindowMiniaturizedNotification];
-        [blockSelf onWindowMinimised:(SIWindow*)accessibilityElement];
+//        [blockSelf onWindowMinimised:(SIWindow*)accessibilityElement];
       },
       
       (NSString*)kAXWindowDeminiaturizedNotification: ^(SIAccessibilityElement *accessibilityElement) {
         [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXWindowDeminiaturizedNotification];
         
-        [blockSelf onWindowUnminimised:(SIWindow*)accessibilityElement];
+//        [blockSelf onWindowUnminimised:(SIWindow*)accessibilityElement];
       },
       
       (NSString*)kAXWindowMovedNotification: ^(SIAccessibilityElement *accessibilityElement) {
         [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXWindowMovedNotification];
-        [blockSelf onWindowMoved:(SIWindow*)accessibilityElement];
+//        [blockSelf onWindowMoved:(SIWindow*)accessibilityElement];
       },
       
       (NSString*)kAXWindowResizedNotification: ^(SIAccessibilityElement *accessibilityElement) {
         [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXWindowResizedNotification];
-        [blockSelf onWindowResized:(SIWindow*)accessibilityElement];
+//        [blockSelf onWindowResized:(SIWindow*)accessibilityElement];
       },
       
       (NSString*)kAXFocusedUIElementChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
         [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXFocusedUIElementChangedNotification];
-        [blockSelf onFocusedElementChanged:accessibilityElement];
+//        [blockSelf onFocusedElementChanged:accessibilityElement];
       },
       
       (NSString*)kAXUIElementDestroyedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-        SIWindow* window = [SIWindow windowForElement:accessibilityElement];
-
-        id element = window != nil ? window : accessibilityElement;
-        [blockSelf updateAccessibilityInfoForElement:element axNotification:kAXUIElementDestroyedNotification];
+//        SIWindow* window = [SIWindow windowForElement:accessibilityElement];
+//
+//        id element = window != nil ? window : accessibilityElement;
+        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXUIElementDestroyedNotification];
         
         
-        [blockSelf onElementDestroyed:accessibilityElement];
+//        [blockSelf onElementDestroyed:accessibilityElement];
       },
 
       // observe appropriately for text selection handling.
@@ -284,7 +291,7 @@
           
           [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXSelectedTextChangedNotification];
           
-          [blockSelf onTextSelectionChanged:accessibilityElement];
+//          [blockSelf onTextSelectionChanged:accessibilityElement];
         }
       },
     };
@@ -403,16 +410,6 @@
     return;
   }
 
-  // * case: element's window has an AXUnknown subrole.
-  // e.g. the invisible window that gets created when the mouse pointer turns into a 'pointy hand' when overing over clickable WebKit elements.
-  if (
-      (siElement.class == [SIWindow class] || [siElement.role isEqual:(NSString*)kAXWindowRole])
-      && [siElement.subrole isEqual:(__bridge NSString*)kAXUnknownSubrole]
-      ) {
-    __log("%@ is a window with subrole AXUnknown -- will not create ax info.", siElement);
-    return;
-  }
-  
   // * updated the published property.
   
 //   dispatch to a queue, to avoid spins if ax query of the target app takes a long time.
@@ -450,56 +447,56 @@
 
 #pragma mark - handlers
 
--(void) onApplicationActivated:(SIAccessibilityElement*)element {
-  _frontmostProcessIdentifier = element.processIdentifier;
-  __log("app activated: %@", element);
-}
-
--(void) onApplicationDeactivated:(SIAccessibilityElement*)element {
-  _frontmostProcessIdentifier = [SIApplication focusedApplication].processIdentifier; // ?? too slow?
-  __log("app deactivated: %@", element);
-}
-
--(void) onFocusedWindowChanged:(SIWindow*)window {
-  _frontmostProcessIdentifier = window.processIdentifier;
-  __log("focused window: %@", window);
-}
-
--(void) onFocusedElementChanged:(SIAccessibilityElement*)element {
-  __log("focused element: %@", element);
-}
-
--(void) onWindowCreated:(SIWindow*)window {
-  __log("new window: %@", window);  // NOTE title may not be available yet.
-}
-
--(void) onTitleChanged:(SIWindow*)window {
-  __log("title changed: %@", window);
-}
-
--(void) onWindowMinimised:(SIWindow*)window {
-  __log("window minimised: %@",window);  // NOTE title may not be available yet.
-}
-
--(void) onWindowUnminimised:(SIWindow*)window {
-  __log("window unminimised: %@",window);  // NOTE title may not be available yet.
-}
-
--(void) onWindowMoved:(SIWindow*)window {
-  __log("window moved: %@",window);  // NOTE title may not be available yet.
-}
-
--(void) onWindowResized:(SIWindow*)window {
-  __log("window resized: %@",window);  // NOTE title may not be available yet.
-}
-
--(void) onTextSelectionChanged:(SIAccessibilityElement*)element {
-  __log("text selection changed on element: %@. selection: %@", element, element.selectedText);
-}
-
--(void) onElementDestroyed:(SIAccessibilityElement*)element {
-  __log("element destroyed: %@", element);
-}
+//-(void) onApplicationActivated:(SIAccessibilityElement*)element {
+//  _frontmostProcessIdentifier = element.processIdentifier;
+//  __log("app activated: %@", element);
+//}
+//
+//-(void) onApplicationDeactivated:(SIAccessibilityElement*)element {
+//  _frontmostProcessIdentifier = [SIApplication focusedApplication].processIdentifier; // ?? too slow?
+//  __log("app deactivated: %@", element);
+//}
+//
+//-(void) onFocusedWindowChanged:(SIWindow*)window {
+//  _frontmostProcessIdentifier = window.processIdentifier;
+//  __log("focused window: %@", window);
+//}
+//
+//-(void) onFocusedElementChanged:(SIAccessibilityElement*)element {
+//  __log("focused element: %@", element);
+//}
+//
+//-(void) onWindowCreated:(SIWindow*)window {
+//  __log("new window: %@", window);  // NOTE title may not be available yet.
+//}
+//
+//-(void) onTitleChanged:(SIWindow*)window {
+//  __log("title changed: %@", window);
+//}
+//
+//-(void) onWindowMinimised:(SIWindow*)window {
+//  __log("window minimised: %@",window);  // NOTE title may not be available yet.
+//}
+//
+//-(void) onWindowUnminimised:(SIWindow*)window {
+//  __log("window unminimised: %@",window);  // NOTE title may not be available yet.
+//}
+//
+//-(void) onWindowMoved:(SIWindow*)window {
+//  __log("window moved: %@",window);  // NOTE title may not be available yet.
+//}
+//
+//-(void) onWindowResized:(SIWindow*)window {
+//  __log("window resized: %@",window);  // NOTE title may not be available yet.
+//}
+//
+//-(void) onTextSelectionChanged:(SIAccessibilityElement*)element {
+//  __log("text selection changed on element: %@. selection: %@", element, element.selectedText);
+//}
+//
+//-(void) onElementDestroyed:(SIAccessibilityElement*)element {
+//  __log("element destroyed: %@", element);
+//}
 
 
 -(AccessibilityInfo*) focusedWindowAccessibilityInfo {
