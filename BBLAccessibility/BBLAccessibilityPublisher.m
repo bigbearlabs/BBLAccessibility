@@ -407,7 +407,7 @@
   // e.g. the invisible window that gets created when the mouse pointer turns into a 'pointy hand' when overing over clickable WebKit elements.
   if (
       (siElement.class == [SIWindow class] || [siElement.role isEqual:(NSString*)kAXWindowRole])
-      && [siElement.subrole isEqual:(NSString*)kAXUnknownSubrole]
+      && [siElement.subrole isEqual:(__bridge NSString*)kAXUnknownSubrole]
       ) {
     __log("%@ is a window with subrole AXUnknown -- will not create ax info.", siElement);
     return;
