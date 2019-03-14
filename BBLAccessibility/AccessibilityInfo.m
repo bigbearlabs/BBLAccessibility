@@ -54,11 +54,6 @@
 
     _bundleId = bundleId;
     
-    // properties related to the selection. this part probably needs more hardening.
-    _selectedText = focusedElement.selectedText;
-    if (_selectedText) {
-      _selectionBounds = focusedElement.selectionBounds;
-    }
     
   }
   return self;
@@ -69,15 +64,23 @@
   return _focusedElement.text;
 }
 
-
-
+-(NSString*)selectedText {
+  return _focusedElement.selectedText;
+}
+-(NSRect)selectionBounds {
+  return _focusedElement.selectionBounds;
+}
 
 -(NSString *)description {
-  id selectedText = _selectedText ? _selectedText : @"";
-
+  NSObject* selectedText = self.selectedText;
+  NSUInteger selectedTextHash = selectedText.hash;
+  NSUInteger selectionBoundsHash = self.selectedText != nil ?
+    @(self.selectionBounds).hash
+    : 0;
+  
     return [NSString stringWithFormat:
-            @"ax: %@, app: %@, pid: %@, bundleId: %@, title: %@, windowId: %@, windowRect: %@, selectedText: %@, selectionBounds: %@, role: %@, windowRole: %@, windowSubrole: %@",
-      _axNotification, _appName, @(_pid), _bundleId, _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], selectedText, [NSValue valueWithRect:_selectionBounds], _role, _windowRole, _windowSubrole
+            @"ax: %@, app: %@, pid: %@, bundleId: %@, title: %@, windowId: %@, windowRect: %@, selectedTextHash: %@, selectionBoundsHash: %@, role: %@, windowRole: %@, windowSubrole: %@",
+      _axNotification, _appName, @(_pid), _bundleId, _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], @(selectedTextHash), @(selectionBoundsHash), _role, _windowRole, _windowSubrole
     ];
 }
 
@@ -87,13 +90,15 @@
   if (other == self) {
     return YES;
   } else {
-    return [[self description] isEqualToString:[other description]];
+    AccessibilityInfo* theOther = (AccessibilityInfo*) other;
+    return [_focusedElement isEqual:theOther->_focusedElement]
+      && [_windowElement isEqual:theOther->_focusedElement];
   }
 }
 
 - (NSUInteger)hash
 {
-  return [[self description] hash];
+  return @[_focusedElement, _windowElement].hash;
 }
 
 
