@@ -112,9 +112,7 @@
 
       bundleIdsByPid[@(app.processIdentifier)] = app.bundleIdentifier;
       
-      [blockSelf execAsyncSynchronisingOn:app block:^{
-        [blockSelf observeAxEventsForApplication:app];
-      }];
+      [blockSelf observeAxEventsForApplication:app];
       
       // ensure ax info doesn't lag after new windows.
       SIWindow* window = [SIApplication applicationWithRunningApplication:app].focusedWindow;
@@ -131,9 +129,8 @@
   self->terminateObservation = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidTerminateApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
     
     NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
-    [blockSelf execAsyncSynchronisingOn:app block:^{
-      [blockSelf unobserveAxEventsForApplication:app];
-    }];
+    
+    [blockSelf unobserveAxEventsForApplication:app];
     
     [bundleIdsByPid removeObjectForKey:@(app.processIdentifier)];
   }];
@@ -142,9 +139,7 @@
   // NOTE it still takes a while for the notifs to actually invoke the handlers. at least with concurrent set up we don't hog the main thread as badly as before.
   for (NSRunningApplication* app in applicationsToObserve) {
     bundleIdsByPid[@(app.processIdentifier)] = app.bundleIdentifier;
-    [self execAsyncSynchronisingOn:app block:^{
-      [blockSelf observeAxEventsForApplication:app];
-    }];
+    [self observeAxEventsForApplication:app];
   }
   
   __log("%@ is watching the windows", self);
@@ -300,12 +295,14 @@
   
   // * observe ax notifications for the app asynchronously.
   // TODO timeout and alert user.
+  __weak BBLAccessibilityPublisher* blockSelf = self;
+  [blockSelf execAsyncSynchronisingOn:siApp block:^{
+    for (NSString* notification in [blockSelf handlersByNotificationTypes]) {
+      
+      [siApp observeNotification:(__bridge CFStringRef)notification withElement:siApp];
+    }
+  }];
 
-  for (NSString* notification in [self handlersByNotificationTypes]) {
-
-    [siApp observeNotification:(__bridge CFStringRef)notification withElement:siApp];
-  }
-  
   
   
   // in order for the notifications to work, we must retain the SIApplication.
@@ -327,9 +324,12 @@
       return;
     }
     
-    for (NSString* notification in [self handlersByNotificationTypes]) {
-      [siApp unobserveNotification:(__bridge CFStringRef)notification withElement:siApp];
-    }
+    __weak BBLAccessibilityPublisher* blockSelf = self;
+    [self execAsyncSynchronisingOn:siApp block:^{
+      for (NSString* notification in [blockSelf handlersByNotificationTypes]) {
+        [siApp unobserveNotification:(__bridge CFStringRef)notification withElement:siApp];
+      }
+    }];
   
     [watchedAppsByPid removeObjectForKey:pid];
     
