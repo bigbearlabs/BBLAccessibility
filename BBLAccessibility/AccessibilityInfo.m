@@ -87,20 +87,23 @@
 
 - (BOOL)isEqual:(id)other
 {
+  if (other == nil) {
+    return NO;
+  }
   if (other == self) {
     return YES;
   }
   
   AccessibilityInfo* theOther = (AccessibilityInfo*) other;
   return
-    [_axNotification isEqual:theOther->_axNotification]
-      && NSEqualRects(_windowRect, theOther->_windowRect)
+    [_axNotification isEqual:theOther.axNotification]
+      && NSEqualRects(_windowRect, theOther.windowRect)
       && [_focusedElement isEqual:theOther->_focusedElement]
         // should cover bundle id, pid
-      && [_role isEqual:theOther->_role]
-      && [_windowElement isEqual:theOther->_windowElement]
+      && [_role isEqual:theOther.role]
+      && [_windowElement isEqual:theOther.windowElement]
         // should cover window id, window role, window subrole
-      && [_windowTitle isEqual:theOther->_windowTitle];
+      && [_windowTitle isEqual:theOther.windowTitle];
 }
 
 - (NSUInteger)hash
