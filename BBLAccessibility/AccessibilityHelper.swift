@@ -6,7 +6,7 @@ import BBLBasics
 
 open class AccessibilityHelper {
   
-  let lastOnlyQueue = LastOnlyQueue()
+  var lastOnlyQueue: LastOnlyQueue?
 
   public init() {}
   
@@ -41,13 +41,15 @@ open class AccessibilityHelper {
     
     // sparsely and repeatedly check for perm.
     let shouldPoll = true
-    lastOnlyQueue.pollingAsync { [unowned self] in
+    self.lastOnlyQueue = LastOnlyQueue()
+    self.lastOnlyQueue!.pollingAsync { [unowned self] in
       
       let isPermissioned = AXIsProcessTrustedWithOptions(nil)
       
       // since we got sent to a polling queue, we stop it after one invocation.
       if !shouldPoll || isPermissioned {
-        self.lastOnlyQueue.pollStop()
+        self.lastOnlyQueue!.pollStop()
+        self.lastOnlyQueue = nil
       }
       
       if isPermissioned {
