@@ -10,6 +10,47 @@ import Foundation
 import BBLBasics
 
 
+public struct AxApplication {
+  
+  let siApp: SIApplication
+  
+  public init(bundleId: String) {
+    self.init(siApplication: SIApplication.application(bundleId: bundleId)!)
+    // improve: reuse siapp dictionary in the publisher when we can.
+  }
+  
+  init(siApplication: SIApplication) {
+    self.siApp = siApplication
+  }
+  
+  public func focus(windowNumber: CGWindowID) {
+    print("focusing window \(windowNumber)")
+    let matches = self.siApp.windows.filter {
+      $0.windowID == windowNumber
+    }
+    
+    if let match = matches.first {
+      match.focusOnlyThisWindow()
+      execOnMainAsync {
+        let app = NSWorkspace.shared.runningApplication(pid: self.siApp.processIdentifier())
+        app?.activate(options: [])
+      }
+      
+    }
+  }
+  
+  public static var focused: AxApplication? {
+    if let app = SIApplication.focused() {
+      return self.init(siApplication: app)
+    }
+    return nil
+  }
+  
+  public var pid: pid_t {
+    return self.siApp.processIdentifier()
+  }
+}
+
 
 extension AccessibilityInfo {
   

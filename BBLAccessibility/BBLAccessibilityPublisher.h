@@ -59,5 +59,7 @@
 
 @property(readonly) AccessibilityInfo* focusedWindowAccessibilityInfo;
 
+-(SIApplication*) appElementForProcessIdentifier:(pid_t)processIdentifier;
+
 @end
 
