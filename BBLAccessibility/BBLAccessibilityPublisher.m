@@ -354,6 +354,7 @@
 
 -(AccessibilityInfo*) accessibilityInfoForElement:(SIAccessibilityElement*)siElement axNotification:(CFStringRef)axNotification {
   NSString* bundleId = _bundleIdsByPid[@(siElement.processIdentifier)];
+  
   // * case: element is an SIApplication.
   if ([[siElement class] isEqual:[SIApplication class]]) {
     return [[AccessibilityInfo alloc] initWithAppElement:(SIApplication*) siElement axNotification:axNotification bundleId:bundleId];
@@ -415,27 +416,28 @@
 
   // * updated the published property.
   
-//   dispatch to a queue, to avoid spins if ax query of the target app takes a long time.
+  //   dispatch to a queue, to avoid spins if ax query of the target app takes a long time.
   __weak BBLAccessibilityPublisher* blockSelf = self;
-  [self execAsyncSynchronisingOn:application block:^{
-  
-    id axInfo = [blockSelf accessibilityInfoForElement:siElement axNotification:axNotification];
-    
-    // synchronise state access.
-    dispatch_async(dispatch_get_main_queue(), ^{
-      NSDictionary* accessibilityInfosByPid = blockSelf.accessibilityInfosByPid;
-      
-      if (forceUpdate
-          || ![accessibilityInfosByPid[pid] isEqual:axInfo]) {
-        
-        __log("update ax info dict with: %@", siElement);
-      
-        NSMutableDictionary* updatedAccessibilityInfosByPid = accessibilityInfosByPid.mutableCopy;
-        updatedAccessibilityInfosByPid[pid] = axInfo;
+  [blockSelf execAsyncSynchronisingOn:application block:^{
+    @autoreleasepool {
+      id axInfo = [blockSelf accessibilityInfoForElement:siElement axNotification:axNotification];
 
-        blockSelf.accessibilityInfosByPid = updatedAccessibilityInfosByPid;
-      }
-    });
+      // synchronise state access.
+      dispatch_async(dispatch_get_main_queue(), ^{
+        NSDictionary* accessibilityInfosByPid = blockSelf.accessibilityInfosByPid;
+
+        if (forceUpdate
+            || ![accessibilityInfosByPid[pid] isEqual:axInfo]) {
+
+          __log("update ax info dict with: %@", siElement);
+
+          NSMutableDictionary* updatedAccessibilityInfosByPid = accessibilityInfosByPid.mutableCopy;
+          updatedAccessibilityInfosByPid[pid] = axInfo;
+
+          blockSelf.accessibilityInfosByPid = updatedAccessibilityInfosByPid;
+        }
+      });
+    }
   }];
 }
 
