@@ -41,7 +41,10 @@
     
     watchedAppsByPid = [@{} mutableCopy];
     
-    serialQueue = dispatch_queue_create("BBLAccessiblityPublisher-serial", DISPATCH_QUEUE_SERIAL);
+    serialQueue = dispatch_queue_create(
+      "BBLAccessiblityPublisher-serial",
+      dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INTERACTIVE, 0));
+
     NSUInteger processorCount = NSProcessInfo.processInfo.processorCount;
     semaphore = dispatch_semaphore_create(processorCount);
   }
@@ -513,11 +516,17 @@
   @throw [NSException exceptionWithName:@"invalid-state" reason:@"no suitable window to return as key" userInfo:nil];
 }
 
-/// asynchronously execute on global concurrent queue, synchronised onn object to avoid deadlocks.
+/// asynchronously execute on global concurrent queue, synchronised on object to avoid deadlocks.
 -(void) execAsyncSynchronisingOn:(id)object block:(void(^)(void))block {
+  
+  // use a semaphore to avoid excessive thread spawning if the code path leading to the global
+  // concurrent queue gets hot.
+  // do it asyncly to avoid blocking calling thread.
   __weak dispatch_semaphore_t _semaphore = semaphore;
   dispatch_async(serialQueue, ^{
+    
     dispatch_semaphore_wait(_semaphore, dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC));
+    
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
       @synchronized(object) {
         block();
