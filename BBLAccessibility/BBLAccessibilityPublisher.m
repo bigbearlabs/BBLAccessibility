@@ -166,11 +166,13 @@
   if (self->launchObservation) {
     [[[NSWorkspace sharedWorkspace] notificationCenter]
       removeObserver:self->launchObservation];
+    self->launchObservation = nil;
   }
   
   if (self->terminateObservation) {
     [[[NSWorkspace sharedWorkspace] notificationCenter]
       removeObserver:self->terminateObservation];
+    self->terminateObservation = nil;
   }
 
   [self deregisterForNotification];
