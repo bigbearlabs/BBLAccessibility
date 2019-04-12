@@ -402,10 +402,11 @@
                            axNotification:(CFStringRef)axNotification
                               forceUpdate:(BOOL)forceUpdate
 {
+  id pid = @(siElement.processIdentifier);
 
   SIApplication* application = nil;
   @synchronized(watchedAppsByPid) {
-    application = watchedAppsByPid[@(siElement.processIdentifier)];
+    application = watchedAppsByPid[pid];
   }
   if (application == nil) {
     // impossible!!?
@@ -419,7 +420,6 @@
   [self execAsyncSynchronisingOn:application block:^{
   
     id axInfo = [blockSelf accessibilityInfoForElement:siElement axNotification:axNotification];
-    id pid = @(siElement.processIdentifier);
     
     // synchronise state access.
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -439,15 +439,6 @@
   }];
 }
 
--(NSDictionary*) newAccessibilityInfosUsingElement:(SIAccessibilityElement*)siElement axNotification:(CFStringRef)axNotification {
-  id pid = @(siElement.processIdentifier);
-  
-  AccessibilityInfo* newData = [self accessibilityInfoForElement:siElement axNotification:axNotification];
-  
-  NSMutableDictionary* dictToUpdate = self.accessibilityInfosByPid.mutableCopy;
-  dictToUpdate[pid] = newData;
-  return dictToUpdate;
-}
 
 #pragma mark - handlers
 
