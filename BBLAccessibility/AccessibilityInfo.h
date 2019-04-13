@@ -12,6 +12,7 @@
 
 @interface AccessibilityInfo : NSObject
 
+
 @property(readonly) NSString* _Nonnull axNotification;
 
 @property(readonly) NSString* _Nullable appName;
@@ -34,10 +35,12 @@
 @property(readonly) SIWindow* _Nullable windowElement;
 
 -(nonnull instancetype)initWithAppElement:(nonnull SIApplication*)element
-                           axNotification:(CFStringRef _Nonnull )axNotification
-                                 bundleId:(NSString*)bundleId;
+                           axNotification:(nonnull CFStringRef)axNotification
+                                 bundleId:(nonnull NSString*)bundleId;
 
--(nonnull instancetype)initWithAppElement:(nonnull SIApplication*)appElement focusedElement:(SIAccessibilityElement* _Nullable)element axNotification:(CFStringRef _Nonnull )axNotification
-                                 bundleId:(NSString*)bundleId;
+-(nonnull instancetype)initWithAppElement:(nonnull SIApplication*)appElement
+                           focusedElement:(nonnull SIAccessibilityElement*)element
+                           axNotification:(nonnull CFStringRef)axNotification
+                                 bundleId:(nonnull NSString*)bundleId;
 
 @end

@@ -4,6 +4,7 @@
 
 @interface BBLAccessibilityPublisher : NSObject
 
+NS_ASSUME_NONNULL_BEGIN
 
 @property(readonly) NSArray<NSRunningApplication*>* applicationsToObserve;
 
@@ -57,9 +58,11 @@
 
 -(SIWindow*) keyWindowForApplication:(SIApplication*) application;
 
-@property(readonly) AccessibilityInfo* focusedWindowAccessibilityInfo;
+@property(readonly) AccessibilityInfo* _Nullable focusedWindowAccessibilityInfo;
 
 -(SIApplication*) appElementForProcessIdentifier:(pid_t)processIdentifier;
+
+NS_ASSUME_NONNULL_END
 
 @end
 
