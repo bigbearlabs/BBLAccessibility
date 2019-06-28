@@ -119,7 +119,9 @@
     NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
     if ([[blockSelf.applicationsToObserve valueForKey:@"bundleIdentifier"] containsObject:app.bundleIdentifier]) {
 
-      bundleIdsByPid[@(app.processIdentifier)] = app.bundleIdentifier;
+      @synchronized (bundleIdsByPid) {
+        bundleIdsByPid[@(app.processIdentifier)] = app.bundleIdentifier;
+      }
       
       [blockSelf observeAxEventsForApplication:app];
       
@@ -144,7 +146,9 @@
     NSMutableDictionary* axInfos = blockSelf.accessibilityInfosByPid.mutableCopy;
     [axInfos removeObjectForKey:@(app.processIdentifier)];
     
-    [bundleIdsByPid removeObjectForKey:@(app.processIdentifier)];
+    @synchronized (bundleIdsByPid) {
+      [bundleIdsByPid removeObjectForKey:@(app.processIdentifier)];
+    }
   }];
 
   // observe all current apps.
@@ -357,7 +361,7 @@
 #pragma mark -
 
 -(AccessibilityInfo*) accessibilityInfoForElement:(SIAccessibilityElement*)siElement axNotification:(CFStringRef)axNotification {
-  NSString* bundleId = _bundleIdsByPid[@(siElement.processIdentifier)];
+  NSString* bundleId = self.bundleIdsByPid[@(siElement.processIdentifier)];
   
   // * case: element is an SIApplication.
   if ([[siElement class] isEqual:[SIApplication class]]) {
@@ -503,7 +507,7 @@
 -(AccessibilityInfo*) focusedWindowAccessibilityInfo {
   SIApplication* app = [SIApplication focusedApplication];
   SIWindow* window = [app focusedWindow];
-  return [[AccessibilityInfo alloc] initWithAppElement:app focusedElement:window axNotification:kAXFocusedWindowChangedNotification bundleId: _bundleIdsByPid[@(app.processIdentifier)]];
+  return [[AccessibilityInfo alloc] initWithAppElement:app focusedElement:window axNotification:kAXFocusedWindowChangedNotification bundleId: self.bundleIdsByPid[@(app.processIdentifier)]];
 }
 
 #pragma mark - util
