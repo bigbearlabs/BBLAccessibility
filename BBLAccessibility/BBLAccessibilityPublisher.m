@@ -110,15 +110,14 @@
   [self registerForNotification];
 
   __weak BBLAccessibilityPublisher* blockSelf = self;
+  // private mutation.
   NSMutableDictionary* bundleIdsByPid = _bundleIdsByPid;
-  
-  id applicationsToObserve = [blockSelf applicationsToObserve];
   
   // on didlaunchapplication notif, observe.
   self->launchObservation = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidLaunchApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
     
     NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
-    if ([[applicationsToObserve valueForKey:@"bundleIdentifier"] containsObject:app.bundleIdentifier]) {
+    if ([[blockSelf.applicationsToObserve valueForKey:@"bundleIdentifier"] containsObject:app.bundleIdentifier]) {
 
       bundleIdsByPid[@(app.processIdentifier)] = app.bundleIdentifier;
       
@@ -150,8 +149,10 @@
 
   // observe all current apps.
   // NOTE it still takes a while for the notifs to actually invoke the handlers. at least with concurrent set up we don't hog the main thread as badly as before.
-  for (NSRunningApplication* app in applicationsToObserve) {
-    bundleIdsByPid[@(app.processIdentifier)] = app.bundleIdentifier;
+  for (NSRunningApplication* app in blockSelf.applicationsToObserve) {
+    @synchronized (bundleIdsByPid) {
+      bundleIdsByPid[@(app.processIdentifier)] = app.bundleIdentifier;
+    }
     [self observeAxEventsForApplication:app];
   }
   
