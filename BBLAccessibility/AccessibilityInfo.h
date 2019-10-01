@@ -39,7 +39,7 @@
                                  bundleId:(nonnull NSString*)bundleId;
 
 -(nonnull instancetype)initWithAppElement:(nonnull SIApplication*)appElement
-                           focusedElement:(nonnull SIAccessibilityElement*)element
+                           focusedElement:(nullable SIAccessibilityElement*)element
                            axNotification:(nonnull CFStringRef)axNotification
                                  bundleId:(nonnull NSString*)bundleId;
 

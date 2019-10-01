@@ -17,11 +17,10 @@
 
 -(instancetype)initWithAppElement:(SIApplication*)app axNotification:(CFStringRef)axNotification bundleId:(NSString*)bundleId;
 {
-  SIWindow* focusedWindow = app.focusedWindow;
   return [self initWithAppElement:app
-                   focusedElement:focusedWindow
+                   focusedElement:nil
                    axNotification:axNotification
-                          bundleId: bundleId];
+                         bundleId:bundleId];
 }
 
 
@@ -45,6 +44,9 @@
     if (focusedElement != nil) {
       _windowElement = [SIWindow windowForElement:focusedElement];
     }
+    if (_windowElement == nil || _windowElement.windowID == kCGNullWindowID) {
+      _windowElement = appElement.focusedWindow;
+    }
     
     _windowTitle = _windowElement.title;
     _windowId = @(_windowElement.windowID).stringValue;
@@ -53,9 +55,8 @@
     _windowSubrole = _windowElement.subrole;
 
     _bundleId = bundleId;
-    
-    
   }
+  
   return self;
 }
 

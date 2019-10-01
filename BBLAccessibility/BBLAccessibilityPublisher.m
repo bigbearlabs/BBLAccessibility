@@ -365,7 +365,7 @@
   
   // * case: element is an SIApplication.
   if ([[siElement class] isEqual:[SIApplication class]]) {
-    return [[AccessibilityInfo alloc] initWithAppElement:(SIApplication*) siElement axNotification:axNotification bundleId:bundleId];
+    return [[AccessibilityInfo alloc] initWithAppElement:(SIApplication*)siElement axNotification:axNotification bundleId:bundleId];
   }
 
   id appElement = [self appElementForProcessIdentifier:siElement.processIdentifier];
