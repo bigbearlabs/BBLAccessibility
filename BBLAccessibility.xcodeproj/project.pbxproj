@@ -146,7 +146,6 @@
 		51100F321CC15D540095B985 /* BBLAccessibilityAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BBLAccessibilityAppUITests.swift; sourceTree = "<group>"; };
 		51100F341CC15D540095B985 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		51100F3F1CC15DA30095B985 /* BBLAccessibilityApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBLAccessibilityApp-Bridging-Header.h"; sourceTree = "<group>"; };
-		511EECD024909B170029982D /* ResizeWindowsDemo copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ResizeWindowsDemo copy-Info.plist"; path = "/Users/ilo/dev/src/bigbearlabs/contexter/BBLAccessibility/ResizeWindowsDemo copy-Info.plist"; sourceTree = "<absolute>"; };
 		511EECD524909C560029982D /* WindowListMonitorDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WindowListMonitorDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		511EECD724909C560029982D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		511EECD924909C560029982D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -241,7 +240,6 @@
 				511EECD624909C560029982D /* WindowListMonitorDemo */,
 				51100F0C1CC15D200095B985 /* Products */,
 				5191A9401E34FFBF001B94FD /* Frameworks */,
-				511EECD024909B170029982D /* ResizeWindowsDemo copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
