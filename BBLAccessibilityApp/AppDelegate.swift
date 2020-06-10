@@ -16,38 +16,38 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
   @IBOutlet weak var window: NSWindow!
 
-  var watcher: BBLAccessibilityPublisher!
+  var axPublisher: BBLAccessibilityPublisher!
   
   var siApp: SIApplication!
+  
+  
+  var observation: Any?
   
   func applicationDidFinishLaunching(_ aNotification: Notification) {
     print("AXIsProcessTrusted: #\(AXIsProcessTrusted())")
     
-    watcher = AXPublisher()
-//    watcher!.watchWindows()
-    
-    // PoC Silica basic usage.
-    DispatchQueue.global().async {
-      if let finder = NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.finder").last {
-        self.siApp = SIApplication(runningApplication: finder)
-        self.siApp.observeNotification(kAXApplicationActivatedNotification as CFString, with: self.siApp, handler: { (element) in
-          print("bing")
-        })
-      }
-      
-//      // PoC Silica coarse-grain interface.
-//      watcher.watchNotifications(forApp: finder)
-      
-//      // PoC WIP
-//      [application observeNotification:kAXApplicationActivatedNotification
-//        withElement:application
-//        handler:^(SIAccessibilityElement *accessibilityElement) {
-//        [blockSelf updateAccessibilityInfoForElement:accessibilityElement forceUpdate:YES];
-//        
-//        [blockSelf onApplicationActivated:accessibilityElement];
-//        }];
-//      
+    self.axPublisher = AXPublisher()
+
+    self.observation = axPublisher.observe(\.accessibilityInfosByPid, options: [.initial, .new]) { (o, c) in
+      print("ax updated: \(c.newValue)")
     }
+    
+
+//    DispatchQueue.global().async {
+      if let finder = NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.finder").last {
+
+        self.siApp = SIApplication(runningApplication: finder)
+
+//        // PoC Silica basic usage. receive data via axPublisher.accessibilityInfosByPid
+//        self.siApp.observeNotification(kAXApplicationActivatedNotification as CFString, with: self.siApp)
+        
+//        // PoC Silica coarse-grain interface.
+//        watcher.watchNotifications(forApp: finder)
+      }
+    
+    // PoC watch windows.
+    axPublisher!.watchWindows()
+    
   }
 
   func applicationWillTerminate(_ aNotification: Notification) {
@@ -58,16 +58,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   // PoC requesting perms.
   @IBAction
   func action_showAxRequestDialog(_ sender: AnyObject) {
-//    AccessibilityHelper().maybeRequestAxPerms()
+    AccessibilityHelper().showSystemAxRequestDialog()
   }
 }
 
 
 
 class AXPublisher: BBLAccessibilityPublisher {
+  
+  
   override var applicationsToObserve: [NSRunningApplication] {
     get {
-      let pid = NSRunningApplication.current().processIdentifier
+      let pid = NSRunningApplication.current.processIdentifier
       let excludedBundleIds = self.excludedBundleIds
       let excludedNames = self.excludedNames
       

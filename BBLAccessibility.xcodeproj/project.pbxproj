@@ -12,7 +12,22 @@
 		51100F251CC15D540095B985 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51100F241CC15D540095B985 /* Assets.xcassets */; };
 		51100F281CC15D540095B985 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51100F261CC15D540095B985 /* MainMenu.xib */; };
 		51100F331CC15D540095B985 /* BBLAccessibilityAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51100F321CC15D540095B985 /* BBLAccessibilityAppUITests.swift */; };
+		511EECB8249093A70029982D /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
+		511EECB9249093A70029982D /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5123E4C11DDFD62B0099D11E /* Silica-ext.h in Headers */ = {isa = PBXBuildFile; fileRef = 5123E4BF1DDFD62B0099D11E /* Silica-ext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		514DE397249073EF00A3E184 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514DE396249073EF00A3E184 /* AppDelegate.swift */; };
+		514DE399249073EF00A3E184 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514DE398249073EF00A3E184 /* ContentView.swift */; };
+		514DE39B249073F300A3E184 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 514DE39A249073F300A3E184 /* Assets.xcassets */; };
+		514DE39E249073F300A3E184 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 514DE39D249073F300A3E184 /* Preview Assets.xcassets */; };
+		514DE3A1249073F300A3E184 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 514DE39F249073F300A3E184 /* Main.storyboard */; };
+		514DE3B02490746700A3E184 /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; };
+		514DE3B12490746700A3E184 /* BBLBasics.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		514DE3B62490749100A3E184 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
+		514DE3B72490749100A3E184 /* Silica.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		514DE3B8249085AF00A3E184 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
+		514DE3B9249085AF00A3E184 /* Silica.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		514DE3BA249085CB00A3E184 /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; };
+		514DE3BB249085CB00A3E184 /* BBLBasics.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		51B8F2241DB5774100E79EEC /* BBLAccessibilityPublisher.h in Headers */ = {isa = PBXBuildFile; fileRef = 51B8F2221DB5774100E79EEC /* BBLAccessibilityPublisher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		51B8F2251DB5774100E79EEC /* BBLAccessibilityPublisher.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B8F2231DB5774100E79EEC /* BBLAccessibilityPublisher.m */; };
 		51B8F25D1DB582A200E79EEC /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
@@ -35,6 +50,13 @@
 			remoteGlobalIDString = 51100F1F1CC15D540095B985;
 			remoteInfo = BBLAccessibilityApp;
 		};
+		514DE3B42490748200A3E184 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 51100F021CC15D200095B985 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 51100F0A1CC15D200095B985;
+			remoteInfo = BBLAccessibility;
+		};
 		51B8F25F1DB582A200E79EEC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 51100F021CC15D200095B985 /* Project object */;
@@ -52,6 +74,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		514DE3AA2490741600A3E184 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				514DE3B72490749100A3E184 /* Silica.framework in Embed Frameworks */,
+				514DE3B12490746700A3E184 /* BBLBasics.framework in Embed Frameworks */,
+				511EECB9249093A70029982D /* BBLAccessibility.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		51B8F2611DB582A200E79EEC /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -59,6 +94,8 @@
 			dstSubfolderSpec = 10;
 			files = (
 				51B8F25E1DB582A200E79EEC /* BBLAccessibility.framework in Embed Frameworks */,
+				514DE3BB249085CB00A3E184 /* BBLBasics.framework in Embed Frameworks */,
+				514DE3B9249085AF00A3E184 /* Silica.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -80,6 +117,15 @@
 		51100F3F1CC15DA30095B985 /* BBLAccessibilityApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBLAccessibilityApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		5123E4BF1DDFD62B0099D11E /* Silica-ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Silica-ext.h"; sourceTree = "<group>"; };
 		5123E4C01DDFD62B0099D11E /* Silica-ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Silica-ext.m"; sourceTree = "<group>"; };
+		514DE394249073EF00A3E184 /* ResizeWindowsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ResizeWindowsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		514DE396249073EF00A3E184 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		514DE398249073EF00A3E184 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		514DE39A249073F300A3E184 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		514DE39D249073F300A3E184 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		514DE3A0249073F300A3E184 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		514DE3A2249073F300A3E184 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		514DE3A3249073F300A3E184 /* ResizeWindowsDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ResizeWindowsDemo.entitlements; sourceTree = "<group>"; };
+		514DE3AF2490746700A3E184 /* BBLBasics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BBLBasics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5183AAAF20F53038004388C3 /* lab */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lab; sourceTree = "<group>"; };
 		51B0D8C71E4BD47900EED498 /* logging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = logging.h; sourceTree = "<group>"; };
 		51B8F2221DB5774100E79EEC /* BBLAccessibilityPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBLAccessibilityPublisher.h; sourceTree = "<group>"; };
@@ -108,6 +154,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				51B8F25D1DB582A200E79EEC /* BBLAccessibility.framework in Frameworks */,
+				514DE3BA249085CB00A3E184 /* BBLBasics.framework in Frameworks */,
+				514DE3B8249085AF00A3E184 /* Silica.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,6 +163,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		514DE391249073EF00A3E184 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				514DE3B62490749100A3E184 /* Silica.framework in Frameworks */,
+				514DE3B02490746700A3E184 /* BBLBasics.framework in Frameworks */,
+				511EECB8249093A70029982D /* BBLAccessibility.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,6 +187,7 @@
 				51100F311CC15D540095B985 /* BBLAccessibilityAppUITests */,
 				51D53ADD1DCA3A9200079955 /* Silica.xcodeproj */,
 				5183AAAF20F53038004388C3 /* lab */,
+				514DE395249073EF00A3E184 /* ResizeWindowsDemo */,
 				51100F0C1CC15D200095B985 /* Products */,
 				5191A9401E34FFBF001B94FD /* Frameworks */,
 			);
@@ -140,6 +199,7 @@
 				51100F0B1CC15D200095B985 /* BBLAccessibility.framework */,
 				51100F201CC15D540095B985 /* BBLAccessibilityApp.app */,
 				51100F2E1CC15D540095B985 /* BBLAccessibilityAppUITests.xctest */,
+				514DE394249073EF00A3E184 /* ResizeWindowsDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -183,6 +243,28 @@
 			path = BBLAccessibilityAppUITests;
 			sourceTree = "<group>";
 		};
+		514DE395249073EF00A3E184 /* ResizeWindowsDemo */ = {
+			isa = PBXGroup;
+			children = (
+				514DE396249073EF00A3E184 /* AppDelegate.swift */,
+				514DE398249073EF00A3E184 /* ContentView.swift */,
+				514DE39A249073F300A3E184 /* Assets.xcassets */,
+				514DE39F249073F300A3E184 /* Main.storyboard */,
+				514DE3A2249073F300A3E184 /* Info.plist */,
+				514DE3A3249073F300A3E184 /* ResizeWindowsDemo.entitlements */,
+				514DE39C249073F300A3E184 /* Preview Content */,
+			);
+			path = ResizeWindowsDemo;
+			sourceTree = "<group>";
+		};
+		514DE39C249073F300A3E184 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				514DE39D249073F300A3E184 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		516218501F5770F00011508E /* Window Buttons */ = {
 			isa = PBXGroup;
 			children = (
@@ -196,6 +278,7 @@
 		5191A9401E34FFBF001B94FD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				514DE3AF2490746700A3E184 /* BBLBasics.framework */,
 				51DF495A1E4E7F9800D1DCA5 /* BBLBasics.framework */,
 			);
 			name = Frameworks;
@@ -281,13 +364,32 @@
 			productReference = 51100F2E1CC15D540095B985 /* BBLAccessibilityAppUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		514DE393249073EF00A3E184 /* ResizeWindowsDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 514DE3A7249073F300A3E184 /* Build configuration list for PBXNativeTarget "ResizeWindowsDemo" */;
+			buildPhases = (
+				514DE390249073EF00A3E184 /* Sources */,
+				514DE391249073EF00A3E184 /* Frameworks */,
+				514DE392249073EF00A3E184 /* Resources */,
+				514DE3AA2490741600A3E184 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				514DE3B52490748200A3E184 /* PBXTargetDependency */,
+			);
+			name = ResizeWindowsDemo;
+			productName = ResizeWindowsDemo;
+			productReference = 514DE394249073EF00A3E184 /* ResizeWindowsDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		51100F021CC15D200095B985 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0730;
+				LastSwiftUpdateCheck = 1130;
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "Big Bear Labs";
 				TargetAttributes = {
@@ -303,6 +405,11 @@
 						CreatedOnToolsVersion = 7.3;
 						LastSwiftMigration = 0830;
 						TestTargetID = 51100F1F1CC15D540095B985;
+					};
+					514DE393249073EF00A3E184 = {
+						CreatedOnToolsVersion = 11.3.1;
+						DevelopmentTeam = XK44TD8U4S;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -328,6 +435,7 @@
 				51100F0A1CC15D200095B985 /* BBLAccessibility */,
 				51100F1F1CC15D540095B985 /* BBLAccessibilityApp */,
 				51100F2D1CC15D540095B985 /* BBLAccessibilityAppUITests */,
+				514DE393249073EF00A3E184 /* ResizeWindowsDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -366,6 +474,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		514DE392249073EF00A3E184 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				514DE3A1249073F300A3E184 /* Main.storyboard in Resources */,
+				514DE39E249073F300A3E184 /* Preview Assets.xcassets in Resources */,
+				514DE39B249073F300A3E184 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -398,6 +516,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		514DE390249073EF00A3E184 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				514DE399249073EF00A3E184 /* ContentView.swift in Sources */,
+				514DE397249073EF00A3E184 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -405,6 +532,11 @@
 			isa = PBXTargetDependency;
 			target = 51100F1F1CC15D540095B985 /* BBLAccessibilityApp */;
 			targetProxy = 51100F2F1CC15D540095B985 /* PBXContainerItemProxy */;
+		};
+		514DE3B52490748200A3E184 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 51100F0A1CC15D200095B985 /* BBLAccessibility */;
+			targetProxy = 514DE3B42490748200A3E184 /* PBXContainerItemProxy */;
 		};
 		51B8F2601DB582A200E79EEC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -420,6 +552,14 @@
 				51100F271CC15D540095B985 /* Base */,
 			);
 			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		514DE39F249073F300A3E184 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				514DE3A0249073F300A3E184 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -477,6 +617,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -528,6 +669,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -588,7 +730,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BBLAccessibilityApp/BBLAccessibilityApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -605,7 +746,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibilityApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "BBLAccessibilityApp/BBLAccessibilityApp-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -632,6 +772,65 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = BBLAccessibilityApp;
+			};
+			name = Release;
+		};
+		514DE3A4249073F300A3E184 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = ResizeWindowsDemo/ResizeWindowsDemo.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"ResizeWindowsDemo/Preview Content\"";
+				DEVELOPMENT_TEAM = XK44TD8U4S;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = ResizeWindowsDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibilityApp.ResizeWindowsDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		514DE3A5249073F300A3E184 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = ResizeWindowsDemo/ResizeWindowsDemo.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"ResizeWindowsDemo/Preview Content\"";
+				DEVELOPMENT_TEAM = XK44TD8U4S;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = ResizeWindowsDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibilityApp.ResizeWindowsDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -670,6 +869,15 @@
 			buildConfigurations = (
 				51100F391CC15D540095B985 /* Debug */,
 				51100F3A1CC15D540095B985 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		514DE3A7249073F300A3E184 /* Build configuration list for PBXNativeTarget "ResizeWindowsDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				514DE3A4249073F300A3E184 /* Debug */,
+				514DE3A5249073F300A3E184 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
