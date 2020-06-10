@@ -14,6 +14,17 @@
 		51100F331CC15D540095B985 /* BBLAccessibilityAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51100F321CC15D540095B985 /* BBLAccessibilityAppUITests.swift */; };
 		511EECB8249093A70029982D /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
 		511EECB9249093A70029982D /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		511EECD824909C560029982D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511EECD724909C560029982D /* AppDelegate.swift */; };
+		511EECDA24909C560029982D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511EECD924909C560029982D /* ContentView.swift */; };
+		511EECDC24909C590029982D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 511EECDB24909C590029982D /* Assets.xcassets */; };
+		511EECDF24909C590029982D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 511EECDE24909C590029982D /* Preview Assets.xcassets */; };
+		511EECE224909C590029982D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 511EECE024909C590029982D /* Main.storyboard */; };
+		511EECE824909C8E0029982D /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
+		511EECE924909C8E0029982D /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		511EECED24909C930029982D /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
+		511EECEE24909C930029982D /* Silica.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		511EECEF24909C990029982D /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; };
+		511EECF024909C990029982D /* BBLBasics.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5123E4C11DDFD62B0099D11E /* Silica-ext.h in Headers */ = {isa = PBXBuildFile; fileRef = 5123E4BF1DDFD62B0099D11E /* Silica-ext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		514DE397249073EF00A3E184 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514DE396249073EF00A3E184 /* AppDelegate.swift */; };
 		514DE399249073EF00A3E184 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514DE398249073EF00A3E184 /* ContentView.swift */; };
@@ -50,6 +61,13 @@
 			remoteGlobalIDString = 51100F1F1CC15D540095B985;
 			remoteInfo = BBLAccessibilityApp;
 		};
+		511EECEA24909C8E0029982D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 51100F021CC15D200095B985 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 51100F0A1CC15D200095B985;
+			remoteInfo = BBLAccessibility;
+		};
 		514DE3B42490748200A3E184 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 51100F021CC15D200095B985 /* Project object */;
@@ -74,6 +92,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		511EECEC24909C8F0029982D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				511EECE924909C8E0029982D /* BBLAccessibility.framework in Embed Frameworks */,
+				511EECF024909C990029982D /* BBLBasics.framework in Embed Frameworks */,
+				511EECEE24909C930029982D /* Silica.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		514DE3AA2490741600A3E184 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +146,15 @@
 		51100F321CC15D540095B985 /* BBLAccessibilityAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BBLAccessibilityAppUITests.swift; sourceTree = "<group>"; };
 		51100F341CC15D540095B985 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		51100F3F1CC15DA30095B985 /* BBLAccessibilityApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBLAccessibilityApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		511EECD024909B170029982D /* ResizeWindowsDemo copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ResizeWindowsDemo copy-Info.plist"; path = "/Users/ilo/dev/src/bigbearlabs/contexter/BBLAccessibility/ResizeWindowsDemo copy-Info.plist"; sourceTree = "<absolute>"; };
+		511EECD524909C560029982D /* WindowListMonitorDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WindowListMonitorDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		511EECD724909C560029982D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		511EECD924909C560029982D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		511EECDB24909C590029982D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		511EECDE24909C590029982D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		511EECE124909C590029982D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		511EECE324909C590029982D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		511EECE424909C590029982D /* WindowListMonitorDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WindowListMonitorDemo.entitlements; sourceTree = "<group>"; };
 		5123E4BF1DDFD62B0099D11E /* Silica-ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Silica-ext.h"; sourceTree = "<group>"; };
 		5123E4C01DDFD62B0099D11E /* Silica-ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Silica-ext.m"; sourceTree = "<group>"; };
 		514DE394249073EF00A3E184 /* ResizeWindowsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ResizeWindowsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -166,6 +206,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		511EECD224909C560029982D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				511EECE824909C8E0029982D /* BBLAccessibility.framework in Frameworks */,
+				511EECEF24909C990029982D /* BBLBasics.framework in Frameworks */,
+				511EECED24909C930029982D /* Silica.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		514DE391249073EF00A3E184 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -188,8 +238,10 @@
 				51D53ADD1DCA3A9200079955 /* Silica.xcodeproj */,
 				5183AAAF20F53038004388C3 /* lab */,
 				514DE395249073EF00A3E184 /* ResizeWindowsDemo */,
+				511EECD624909C560029982D /* WindowListMonitorDemo */,
 				51100F0C1CC15D200095B985 /* Products */,
 				5191A9401E34FFBF001B94FD /* Frameworks */,
+				511EECD024909B170029982D /* ResizeWindowsDemo copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -200,6 +252,7 @@
 				51100F201CC15D540095B985 /* BBLAccessibilityApp.app */,
 				51100F2E1CC15D540095B985 /* BBLAccessibilityAppUITests.xctest */,
 				514DE394249073EF00A3E184 /* ResizeWindowsDemo.app */,
+				511EECD524909C560029982D /* WindowListMonitorDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -241,6 +294,28 @@
 				51100F341CC15D540095B985 /* Info.plist */,
 			);
 			path = BBLAccessibilityAppUITests;
+			sourceTree = "<group>";
+		};
+		511EECD624909C560029982D /* WindowListMonitorDemo */ = {
+			isa = PBXGroup;
+			children = (
+				511EECD724909C560029982D /* AppDelegate.swift */,
+				511EECD924909C560029982D /* ContentView.swift */,
+				511EECDB24909C590029982D /* Assets.xcassets */,
+				511EECE024909C590029982D /* Main.storyboard */,
+				511EECE324909C590029982D /* Info.plist */,
+				511EECE424909C590029982D /* WindowListMonitorDemo.entitlements */,
+				511EECDD24909C590029982D /* Preview Content */,
+			);
+			path = WindowListMonitorDemo;
+			sourceTree = "<group>";
+		};
+		511EECDD24909C590029982D /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				511EECDE24909C590029982D /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		514DE395249073EF00A3E184 /* ResizeWindowsDemo */ = {
@@ -364,6 +439,25 @@
 			productReference = 51100F2E1CC15D540095B985 /* BBLAccessibilityAppUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		511EECD424909C560029982D /* WindowListMonitorDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 511EECE524909C590029982D /* Build configuration list for PBXNativeTarget "WindowListMonitorDemo" */;
+			buildPhases = (
+				511EECD124909C560029982D /* Sources */,
+				511EECD224909C560029982D /* Frameworks */,
+				511EECD324909C560029982D /* Resources */,
+				511EECEC24909C8F0029982D /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				511EECEB24909C8E0029982D /* PBXTargetDependency */,
+			);
+			name = WindowListMonitorDemo;
+			productName = WindowListMonitorDemo;
+			productReference = 511EECD524909C560029982D /* WindowListMonitorDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
 		514DE393249073EF00A3E184 /* ResizeWindowsDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 514DE3A7249073F300A3E184 /* Build configuration list for PBXNativeTarget "ResizeWindowsDemo" */;
@@ -406,6 +500,11 @@
 						LastSwiftMigration = 0830;
 						TestTargetID = 51100F1F1CC15D540095B985;
 					};
+					511EECD424909C560029982D = {
+						CreatedOnToolsVersion = 11.3.1;
+						DevelopmentTeam = XK44TD8U4S;
+						ProvisioningStyle = Automatic;
+					};
 					514DE393249073EF00A3E184 = {
 						CreatedOnToolsVersion = 11.3.1;
 						DevelopmentTeam = XK44TD8U4S;
@@ -436,6 +535,7 @@
 				51100F1F1CC15D540095B985 /* BBLAccessibilityApp */,
 				51100F2D1CC15D540095B985 /* BBLAccessibilityAppUITests */,
 				514DE393249073EF00A3E184 /* ResizeWindowsDemo */,
+				511EECD424909C560029982D /* WindowListMonitorDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -471,6 +571,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		511EECD324909C560029982D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				511EECE224909C590029982D /* Main.storyboard in Resources */,
+				511EECDF24909C590029982D /* Preview Assets.xcassets in Resources */,
+				511EECDC24909C590029982D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -516,6 +626,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		511EECD124909C560029982D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				511EECDA24909C560029982D /* ContentView.swift in Sources */,
+				511EECD824909C560029982D /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		514DE390249073EF00A3E184 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -532,6 +651,11 @@
 			isa = PBXTargetDependency;
 			target = 51100F1F1CC15D540095B985 /* BBLAccessibilityApp */;
 			targetProxy = 51100F2F1CC15D540095B985 /* PBXContainerItemProxy */;
+		};
+		511EECEB24909C8E0029982D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 51100F0A1CC15D200095B985 /* BBLAccessibility */;
+			targetProxy = 511EECEA24909C8E0029982D /* PBXContainerItemProxy */;
 		};
 		514DE3B52490748200A3E184 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -552,6 +676,14 @@
 				51100F271CC15D540095B985 /* Base */,
 			);
 			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		511EECE024909C590029982D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				511EECE124909C590029982D /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		514DE39F249073F300A3E184 /* Main.storyboard */ = {
@@ -775,6 +907,63 @@
 			};
 			name = Release;
 		};
+		511EECE624909C590029982D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = WindowListMonitorDemo/WindowListMonitorDemo.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"WindowListMonitorDemo/Preview Content\"";
+				DEVELOPMENT_TEAM = XK44TD8U4S;
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = WindowListMonitorDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibility.WindowListMonitorDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		511EECE724909C590029982D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = WindowListMonitorDemo/WindowListMonitorDemo.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"WindowListMonitorDemo/Preview Content\"";
+				DEVELOPMENT_TEAM = XK44TD8U4S;
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = WindowListMonitorDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibility.WindowListMonitorDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		514DE3A4249073F300A3E184 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -869,6 +1058,15 @@
 			buildConfigurations = (
 				51100F391CC15D540095B985 /* Debug */,
 				51100F3A1CC15D540095B985 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		511EECE524909C590029982D /* Build configuration list for PBXNativeTarget "WindowListMonitorDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				511EECE624909C590029982D /* Debug */,
+				511EECE724909C590029982D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
