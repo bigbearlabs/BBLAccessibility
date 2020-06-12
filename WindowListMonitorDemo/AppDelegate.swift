@@ -32,13 +32,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     window.makeKeyAndOrderFront(nil)
     
     
-    self.windowListMonitor.observeEvents { event in
+    self.windowListMonitor.observeEvents { [unowned self] event in
       switch event {
       // new
       case let .created(windowNumber):
         print("created \(windowNumber)")
-
-        // focused
+        
+      // focused
       case let .focused(windowNumber):
         print("focused \(windowNumber)")
         
@@ -49,8 +49,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       }
       
       // IT1 poll cgwindowlist for on-space windows.
+      self.currentSpaceWindows = self.windowListMonitor.activeWindowsInCurrentSpace
+      let dump = self.currentSpaceWindows.map {
+        [
+          "title": $0.title(),
+          "app": $0.app()?.title(),
+        ]
+      }
+      
+      print(try! ["currentSpaceWindows": dump].jsonString())
     }
   }
+
+  var currentSpaceWindows: [SIWindow] = []
   
   lazy var windowListMonitor = WindowListMonitor()
 

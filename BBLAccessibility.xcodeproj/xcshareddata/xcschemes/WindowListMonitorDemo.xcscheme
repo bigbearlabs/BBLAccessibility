@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "511EECBA24909B170029982D"
+               BlueprintIdentifier = "511EECD424909C560029982D"
                BuildableName = "WindowListMonitorDemo.app"
                BlueprintName = "WindowListMonitorDemo"
                ReferencedContainer = "container:BBLAccessibility.xcodeproj">
@@ -44,7 +44,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "511EECBA24909B170029982D"
+            BlueprintIdentifier = "511EECD424909C560029982D"
             BuildableName = "WindowListMonitorDemo.app"
             BlueprintName = "WindowListMonitorDemo"
             ReferencedContainer = "container:BBLAccessibility.xcodeproj">
@@ -61,7 +61,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "511EECBA24909B170029982D"
+            BlueprintIdentifier = "511EECD424909C560029982D"
             BuildableName = "WindowListMonitorDemo.app"
             BlueprintName = "WindowListMonitorDemo"
             ReferencedContainer = "container:BBLAccessibility.xcodeproj">
