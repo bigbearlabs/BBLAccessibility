@@ -9,7 +9,7 @@
 import Cocoa
 import SwiftUI
 import BBLAccessibility
-
+import WindowListMonitor
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -65,65 +65,4 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   
   lazy var windowListMonitor = WindowListMonitor()
 
-}
-
-
-
-class WindowListMonitor: BBLAccessibilityPublisher {
-  
-  enum Event {
-    case created(windowNumber: UInt32)
-    case focused(windowNumber: UInt32)
-    
-    // TODO
-//    case movedIn(windowNumber: UInt32)
-    
-    // TODO moved out
-    
-    // TODO space changed
-    
-//    case closed(windowNumber: UInt32)
-    // out of scope: no suitable ax event found.
-  }
-  
-  var handler: (Event) -> Void = { _ in }
-  
-  
-  var observation: Any?
-  
-  
-  func observeEvents(handler: @escaping (Event) -> Void) {
-    
-    self.handler = handler
-    
-//    self.observation = self.observe(\.accessibilityInfosByPid) { o, c in
-//
-//    }
-    
-    self.watchWindows()
-  }
-  
-  func unobserveEvents() {
-    
-  }
-  
-  override func updateAccessibilityInfo(for siElement: SIAccessibilityElement, axNotification: CFString, forceUpdate: Bool) {
-    super.updateAccessibilityInfo(for: siElement, axNotification: axNotification, forceUpdate: forceUpdate)
-
-    let siWindow = SIWindow(for: siElement)
-    let windowId = siWindow.windowID
-
-    switch axNotification as String {
-    case kAXWindowCreatedNotification:
-      self.handler(.created(windowNumber: windowId))
-    
-    case kAXMainWindowChangedNotification, kAXFocusedWindowChangedNotification:
-      self.handler(.focused(windowNumber: windowId))
-      // TODO confirm the id is reliable
-      
-    default:
-      ()
-    }
-  }
-  
 }
