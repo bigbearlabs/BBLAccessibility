@@ -8,13 +8,15 @@
 
 import BBLAccessibility
 
-
-
 public class WindowListMonitor: BBLAccessibilityPublisher {
   
   public enum Event {
     case created(windowNumber: UInt32)
     case focused(windowNumber: UInt32)
+    
+    case titleChanged(windowNumber: UInt32)
+    
+    case activated(pid: pid_t)
     
     // TODO
 //    case movedIn(windowNumber: UInt32)
@@ -55,23 +57,33 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     super.updateAccessibilityInfo(for: siElement, axNotification: axNotification, forceUpdate: forceUpdate)
 
     let siWindow = SIWindow(for: siElement)
-    let windowId = siWindow.windowID
+    let windowNumber = siWindow.windowID
 
+    var event: Event!
     switch axNotification as String {
     case kAXWindowCreatedNotification:
-      DispatchQueue.main.async {
-        self.handler(.created(windowNumber: windowId))
-      }
+      event = .created(windowNumber: windowNumber)
     
     case kAXMainWindowChangedNotification, kAXFocusedWindowChangedNotification:
-      DispatchQueue.main.async {
-        self.handler(.focused(windowNumber: windowId))
-      }
+      event = .focused(windowNumber: windowNumber)
       // TODO confirm the id is reliable
+    
+    case kAXApplicationActivatedNotification:
+      let siApp = SIApplication(axElement: siElement.axElementRef)
+      let pid = siApp.processIdentifier()
+      event = .activated(pid: pid)
+      
+    case kAXTitleChangedNotification:
+      event = .titleChanged(windowNumber: windowNumber)
       
     default:
-      ()
+      return
     }
+    
+    DispatchQueue.main.async {
+      self.handler(event)
+    }
+
   }
   
 }

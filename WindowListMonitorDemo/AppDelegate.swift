@@ -33,6 +33,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     
     self.windowListMonitor.observeEvents { [unowned self] event in
+      
       switch event {
       // new
       case let .created(windowNumber):
@@ -45,6 +46,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //      // moved in
 //      case let .movedIn(windowNumber):
 //        print("movedIn \(windowNumber)")
+        
+      case let .activated(pid):
+        print("activated pid \(pid)")
         
       }
       
