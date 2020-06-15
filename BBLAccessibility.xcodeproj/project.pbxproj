@@ -31,7 +31,7 @@
 		514DAEB22493EA23009AD46A /* WindowListMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 514DAEB02493EA23009AD46A /* WindowListMonitor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		514DAEB52493EA23009AD46A /* WindowListMonitor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DAEAE2493EA23009AD46A /* WindowListMonitor.framework */; };
 		514DAEB62493EA23009AD46A /* WindowListMonitor.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 514DAEAE2493EA23009AD46A /* WindowListMonitor.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		514DAEBC2493EA3B009AD46A /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514DAEBB2493EA3B009AD46A /* File.swift */; };
+		514DAEBC2493EA3B009AD46A /* WindowListMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514DAEBB2493EA3B009AD46A /* WindowListMonitor.swift */; };
 		514DAEBD2493EA57009AD46A /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
 		514DAEC12493EA57009AD46A /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; };
 		514DAEC42493EA5C009AD46A /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
@@ -185,7 +185,7 @@
 		514DAEAE2493EA23009AD46A /* WindowListMonitor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WindowListMonitor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		514DAEB02493EA23009AD46A /* WindowListMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowListMonitor.h; sourceTree = "<group>"; };
 		514DAEB12493EA23009AD46A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		514DAEBB2493EA3B009AD46A /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		514DAEBB2493EA3B009AD46A /* WindowListMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowListMonitor.swift; sourceTree = "<group>"; };
 		514DE394249073EF00A3E184 /* ResizeWindowsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ResizeWindowsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		514DE396249073EF00A3E184 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		514DE398249073EF00A3E184 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -364,9 +364,9 @@
 		514DAEAF2493EA23009AD46A /* WindowListMonitor */ = {
 			isa = PBXGroup;
 			children = (
+				514DAEBB2493EA3B009AD46A /* WindowListMonitor.swift */,
 				514DAEB02493EA23009AD46A /* WindowListMonitor.h */,
 				514DAEB12493EA23009AD46A /* Info.plist */,
-				514DAEBB2493EA3B009AD46A /* File.swift */,
 			);
 			path = WindowListMonitor;
 			sourceTree = "<group>";
@@ -736,7 +736,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				514DAEBC2493EA3B009AD46A /* File.swift in Sources */,
+				514DAEBC2493EA3B009AD46A /* WindowListMonitor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -52,8 +52,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       self.currentSpaceWindows = self.windowListMonitor.activeWindowsInCurrentSpace
       let dump = self.currentSpaceWindows.map {
         [
-          "title": $0.title(),
-          "app": $0.app()?.title(),
+          "title": $0.title,
+          "app": $0.bundleId,
         ]
       }
       
@@ -61,7 +61,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
   }
 
-  var currentSpaceWindows: [SIWindow] = []
+  var currentSpaceWindows: [CGWindowInfo] = []
   
   lazy var windowListMonitor = WindowListMonitor()
 

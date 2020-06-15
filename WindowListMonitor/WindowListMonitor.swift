@@ -41,7 +41,10 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
 //
 //    }
     
-    self.watchWindows()
+    // avoid slow return.
+    DispatchQueue.global().sync {
+      self.watchWindows()
+    }
   }
   
   func unobserveEvents() {
@@ -56,10 +59,14 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
 
     switch axNotification as String {
     case kAXWindowCreatedNotification:
-      self.handler(.created(windowNumber: windowId))
+      DispatchQueue.main.async {
+        self.handler(.created(windowNumber: windowId))
+      }
     
     case kAXMainWindowChangedNotification, kAXFocusedWindowChangedNotification:
-      self.handler(.focused(windowNumber: windowId))
+      DispatchQueue.main.async {
+        self.handler(.focused(windowNumber: windowId))
+      }
       // TODO confirm the id is reliable
       
     default:
