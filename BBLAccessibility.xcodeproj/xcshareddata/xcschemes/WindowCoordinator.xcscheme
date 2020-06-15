@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "514DE393249073EF00A3E184"
-               BuildableName = "ResizeWindowsDemo.app"
-               BlueprintName = "ResizeWindowsDemo"
+               BlueprintIdentifier = "514DAECF24972E23009AD46A"
+               BuildableName = "WindowCoordinator.framework"
+               BlueprintName = "WindowCoordinator"
                ReferencedContainer = "container:BBLAccessibility.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -40,16 +40,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "514DE393249073EF00A3E184"
-            BuildableName = "ResizeWindowsDemo.app"
-            BlueprintName = "ResizeWindowsDemo"
-            ReferencedContainer = "container:BBLAccessibility.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -57,16 +47,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "514DE393249073EF00A3E184"
-            BuildableName = "ResizeWindowsDemo.app"
-            BlueprintName = "ResizeWindowsDemo"
+            BlueprintIdentifier = "514DAECF24972E23009AD46A"
+            BuildableName = "WindowCoordinator.framework"
+            BlueprintName = "WindowCoordinator"
             ReferencedContainer = "container:BBLAccessibility.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
