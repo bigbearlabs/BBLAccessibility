@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  ResizeWindowsDemo
+//  WindowCoordinatorDemo
 //
-//  Created by ilo on 10/06/2020.
+//  Created by ilo on 15/06/2020.
 //  Copyright © 2020 Big Bear Labs. All rights reserved.
 //
 

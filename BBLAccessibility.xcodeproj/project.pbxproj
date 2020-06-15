@@ -12,8 +12,6 @@
 		51100F251CC15D540095B985 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51100F241CC15D540095B985 /* Assets.xcassets */; };
 		51100F281CC15D540095B985 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51100F261CC15D540095B985 /* MainMenu.xib */; };
 		51100F331CC15D540095B985 /* BBLAccessibilityAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51100F321CC15D540095B985 /* BBLAccessibilityAppUITests.swift */; };
-		511EECB8249093A70029982D /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
-		511EECB9249093A70029982D /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		511EECD824909C560029982D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511EECD724909C560029982D /* AppDelegate.swift */; };
 		511EECDA24909C560029982D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511EECD924909C560029982D /* ContentView.swift */; };
 		511EECDC24909C590029982D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 511EECDB24909C590029982D /* Assets.xcassets */; };
@@ -28,6 +26,15 @@
 		511EECF2249101680029982D /* CGWindowList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511EECF1249101680029982D /* CGWindowList.swift */; };
 		511EED12249116B40029982D /* BBLAccessibilityPublisher-ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511EED11249116B40029982D /* BBLAccessibilityPublisher-ext.swift */; };
 		5123E4C11DDFD62B0099D11E /* Silica-ext.h in Headers */ = {isa = PBXBuildFile; fileRef = 5123E4BF1DDFD62B0099D11E /* Silica-ext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		514A4D7424972F4900E8021A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 514A4D7124972F4900E8021A /* Main.storyboard */; };
+		514A4D7524972FC700E8021A /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
+		514A4D7624972FC700E8021A /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		514A4D7924972FC700E8021A /* WindowCoordinator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DAED024972E23009AD46A /* WindowCoordinator.framework */; };
+		514A4D7A24972FC700E8021A /* WindowCoordinator.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 514DAED024972E23009AD46A /* WindowCoordinator.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		514A4D7D24972FC700E8021A /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; };
+		514A4D7E24972FC700E8021A /* BBLBasics.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		514A4D8024972FCC00E8021A /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
+		514A4D8124972FCC00E8021A /* Silica.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		514DAEB22493EA23009AD46A /* WindowListMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 514DAEB02493EA23009AD46A /* WindowListMonitor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		514DAEB52493EA23009AD46A /* WindowListMonitor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DAEAE2493EA23009AD46A /* WindowListMonitor.framework */; };
 		514DAEB62493EA23009AD46A /* WindowListMonitor.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 514DAEAE2493EA23009AD46A /* WindowListMonitor.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -35,15 +42,15 @@
 		514DAEBD2493EA57009AD46A /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
 		514DAEC12493EA57009AD46A /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; };
 		514DAEC42493EA5C009AD46A /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
-		514DE397249073EF00A3E184 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514DE396249073EF00A3E184 /* AppDelegate.swift */; };
-		514DE399249073EF00A3E184 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514DE398249073EF00A3E184 /* ContentView.swift */; };
-		514DE39B249073F300A3E184 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 514DE39A249073F300A3E184 /* Assets.xcassets */; };
-		514DE39E249073F300A3E184 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 514DE39D249073F300A3E184 /* Preview Assets.xcassets */; };
-		514DE3A1249073F300A3E184 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 514DE39F249073F300A3E184 /* Main.storyboard */; };
-		514DE3B02490746700A3E184 /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; };
-		514DE3B12490746700A3E184 /* BBLBasics.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		514DE3B62490749100A3E184 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
-		514DE3B72490749100A3E184 /* Silica.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		514DAED424972E23009AD46A /* WindowCoordinator.h in Headers */ = {isa = PBXBuildFile; fileRef = 514DAED224972E23009AD46A /* WindowCoordinator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		514DAED824972E33009AD46A /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
+		514DAEDC24972E33009AD46A /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; };
+		514DAEDF24972E38009AD46A /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
+		514DAEE224972E60009AD46A /* WindowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514DAEE124972E60009AD46A /* WindowCoordinator.swift */; };
+		514DAEEA24972EA9009AD46A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514DAEE924972EA9009AD46A /* AppDelegate.swift */; };
+		514DAEEC24972EA9009AD46A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514DAEEB24972EA9009AD46A /* ContentView.swift */; };
+		514DAEEE24972EAB009AD46A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 514DAEED24972EAB009AD46A /* Assets.xcassets */; };
+		514DAEF124972EAB009AD46A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 514DAEF024972EAB009AD46A /* Preview Assets.xcassets */; };
 		514DE3B8249085AF00A3E184 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
 		514DE3B9249085AF00A3E184 /* Silica.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		514DE3BA249085CB00A3E184 /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; };
@@ -77,6 +84,20 @@
 			remoteGlobalIDString = 51100F0A1CC15D200095B985;
 			remoteInfo = BBLAccessibility;
 		};
+		514A4D7724972FC700E8021A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 51100F021CC15D200095B985 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 51100F0A1CC15D200095B985;
+			remoteInfo = BBLAccessibility;
+		};
+		514A4D7B24972FC700E8021A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 51100F021CC15D200095B985 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 514DAECF24972E23009AD46A;
+			remoteInfo = WindowCoordinator;
+		};
 		514DAEB32493EA23009AD46A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 51100F021CC15D200095B985 /* Project object */;
@@ -91,7 +112,7 @@
 			remoteGlobalIDString = 51100F0A1CC15D200095B985;
 			remoteInfo = BBLAccessibility;
 		};
-		514DE3B42490748200A3E184 /* PBXContainerItemProxy */ = {
+		514DAEDA24972E33009AD46A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 51100F021CC15D200095B985 /* Project object */;
 			proxyType = 1;
@@ -129,15 +150,16 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		514DE3AA2490741600A3E184 /* Embed Frameworks */ = {
+		514A4D7F24972FC700E8021A /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				514DE3B72490749100A3E184 /* Silica.framework in Embed Frameworks */,
-				514DE3B12490746700A3E184 /* BBLBasics.framework in Embed Frameworks */,
-				511EECB9249093A70029982D /* BBLAccessibility.framework in Embed Frameworks */,
+				514A4D7624972FC700E8021A /* BBLAccessibility.framework in Embed Frameworks */,
+				514A4D8124972FCC00E8021A /* Silica.framework in Embed Frameworks */,
+				514A4D7E24972FC700E8021A /* BBLBasics.framework in Embed Frameworks */,
+				514A4D7A24972FC700E8021A /* WindowCoordinator.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -182,18 +204,22 @@
 		511EED11249116B40029982D /* BBLAccessibilityPublisher-ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BBLAccessibilityPublisher-ext.swift"; sourceTree = "<group>"; };
 		5123E4BF1DDFD62B0099D11E /* Silica-ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Silica-ext.h"; sourceTree = "<group>"; };
 		5123E4C01DDFD62B0099D11E /* Silica-ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Silica-ext.m"; sourceTree = "<group>"; };
+		514A4D7224972F4900E8021A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		514DAEAE2493EA23009AD46A /* WindowListMonitor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WindowListMonitor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		514DAEB02493EA23009AD46A /* WindowListMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowListMonitor.h; sourceTree = "<group>"; };
 		514DAEB12493EA23009AD46A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		514DAEBB2493EA3B009AD46A /* WindowListMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowListMonitor.swift; sourceTree = "<group>"; };
-		514DE394249073EF00A3E184 /* ResizeWindowsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ResizeWindowsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		514DE396249073EF00A3E184 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		514DE398249073EF00A3E184 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		514DE39A249073F300A3E184 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		514DE39D249073F300A3E184 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		514DE3A0249073F300A3E184 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		514DE3A2249073F300A3E184 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		514DE3A3249073F300A3E184 /* ResizeWindowsDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ResizeWindowsDemo.entitlements; sourceTree = "<group>"; };
+		514DAED024972E23009AD46A /* WindowCoordinator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WindowCoordinator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		514DAED224972E23009AD46A /* WindowCoordinator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowCoordinator.h; sourceTree = "<group>"; };
+		514DAED324972E23009AD46A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		514DAEE124972E60009AD46A /* WindowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCoordinator.swift; sourceTree = "<group>"; };
+		514DAEE724972EA9009AD46A /* WindowCoordinatorDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WindowCoordinatorDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		514DAEE924972EA9009AD46A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		514DAEEB24972EA9009AD46A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		514DAEED24972EAB009AD46A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		514DAEF024972EAB009AD46A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		514DAEF524972EAB009AD46A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		514DAEF624972EAB009AD46A /* WindowCoordinatorDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WindowCoordinatorDemo.entitlements; sourceTree = "<group>"; };
 		514DE3AF2490746700A3E184 /* BBLBasics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BBLBasics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5183AAAF20F53038004388C3 /* lab */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lab; sourceTree = "<group>"; };
 		51B0D8C71E4BD47900EED498 /* logging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = logging.h; sourceTree = "<group>"; };
@@ -256,13 +282,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		514DE391249073EF00A3E184 /* Frameworks */ = {
+		514DAECD24972E23009AD46A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				514DE3B62490749100A3E184 /* Silica.framework in Frameworks */,
-				514DE3B02490746700A3E184 /* BBLBasics.framework in Frameworks */,
-				511EECB8249093A70029982D /* BBLAccessibility.framework in Frameworks */,
+				514DAEDC24972E33009AD46A /* BBLBasics.framework in Frameworks */,
+				514DAEDF24972E38009AD46A /* Silica.framework in Frameworks */,
+				514DAED824972E33009AD46A /* BBLAccessibility.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		514DAEE424972EA9009AD46A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				514A4D7524972FC700E8021A /* BBLAccessibility.framework in Frameworks */,
+				514A4D8024972FCC00E8021A /* Silica.framework in Frameworks */,
+				514A4D7D24972FC700E8021A /* BBLBasics.framework in Frameworks */,
+				514A4D7924972FC700E8021A /* WindowCoordinator.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,9 +314,10 @@
 				51100F311CC15D540095B985 /* BBLAccessibilityAppUITests */,
 				51D53ADD1DCA3A9200079955 /* Silica.xcodeproj */,
 				5183AAAF20F53038004388C3 /* lab */,
-				514DE395249073EF00A3E184 /* ResizeWindowsDemo */,
 				514DAEAF2493EA23009AD46A /* WindowListMonitor */,
 				511EECD624909C560029982D /* WindowListMonitorDemo */,
+				514DAED124972E23009AD46A /* WindowCoordinator */,
+				514DAEE824972EA9009AD46A /* WindowCoordinatorDemo */,
 				51100F0C1CC15D200095B985 /* Products */,
 				5191A9401E34FFBF001B94FD /* Frameworks */,
 			);
@@ -291,9 +329,10 @@
 				51100F0B1CC15D200095B985 /* BBLAccessibility.framework */,
 				51100F201CC15D540095B985 /* BBLAccessibilityApp.app */,
 				51100F2E1CC15D540095B985 /* BBLAccessibilityAppUITests.xctest */,
-				514DE394249073EF00A3E184 /* ResizeWindowsDemo.app */,
 				511EECD524909C560029982D /* WindowListMonitorDemo.app */,
 				514DAEAE2493EA23009AD46A /* WindowListMonitor.framework */,
+				514DAED024972E23009AD46A /* WindowCoordinator.framework */,
+				514DAEE724972EA9009AD46A /* WindowCoordinatorDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -371,24 +410,34 @@
 			path = WindowListMonitor;
 			sourceTree = "<group>";
 		};
-		514DE395249073EF00A3E184 /* ResizeWindowsDemo */ = {
+		514DAED124972E23009AD46A /* WindowCoordinator */ = {
 			isa = PBXGroup;
 			children = (
-				514DE396249073EF00A3E184 /* AppDelegate.swift */,
-				514DE398249073EF00A3E184 /* ContentView.swift */,
-				514DE39A249073F300A3E184 /* Assets.xcassets */,
-				514DE39F249073F300A3E184 /* Main.storyboard */,
-				514DE3A2249073F300A3E184 /* Info.plist */,
-				514DE3A3249073F300A3E184 /* ResizeWindowsDemo.entitlements */,
-				514DE39C249073F300A3E184 /* Preview Content */,
+				514DAEE124972E60009AD46A /* WindowCoordinator.swift */,
+				514DAED224972E23009AD46A /* WindowCoordinator.h */,
+				514DAED324972E23009AD46A /* Info.plist */,
 			);
-			path = ResizeWindowsDemo;
+			path = WindowCoordinator;
 			sourceTree = "<group>";
 		};
-		514DE39C249073F300A3E184 /* Preview Content */ = {
+		514DAEE824972EA9009AD46A /* WindowCoordinatorDemo */ = {
 			isa = PBXGroup;
 			children = (
-				514DE39D249073F300A3E184 /* Preview Assets.xcassets */,
+				514A4D7124972F4900E8021A /* Main.storyboard */,
+				514DAEE924972EA9009AD46A /* AppDelegate.swift */,
+				514DAEEB24972EA9009AD46A /* ContentView.swift */,
+				514DAEED24972EAB009AD46A /* Assets.xcassets */,
+				514DAEF524972EAB009AD46A /* Info.plist */,
+				514DAEF624972EAB009AD46A /* WindowCoordinatorDemo.entitlements */,
+				514DAEEF24972EAB009AD46A /* Preview Content */,
+			);
+			path = WindowCoordinatorDemo;
+			sourceTree = "<group>";
+		};
+		514DAEEF24972EAB009AD46A /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				514DAEF024972EAB009AD46A /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -439,6 +488,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				514DAEB22493EA23009AD46A /* WindowListMonitor.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		514DAECB24972E23009AD46A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				514DAED424972E23009AD46A /* WindowCoordinator.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -539,23 +596,43 @@
 			productReference = 514DAEAE2493EA23009AD46A /* WindowListMonitor.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		514DE393249073EF00A3E184 /* ResizeWindowsDemo */ = {
+		514DAECF24972E23009AD46A /* WindowCoordinator */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 514DE3A7249073F300A3E184 /* Build configuration list for PBXNativeTarget "ResizeWindowsDemo" */;
+			buildConfigurationList = 514DAED524972E23009AD46A /* Build configuration list for PBXNativeTarget "WindowCoordinator" */;
 			buildPhases = (
-				514DE390249073EF00A3E184 /* Sources */,
-				514DE391249073EF00A3E184 /* Frameworks */,
-				514DE392249073EF00A3E184 /* Resources */,
-				514DE3AA2490741600A3E184 /* Embed Frameworks */,
+				514DAECB24972E23009AD46A /* Headers */,
+				514DAECC24972E23009AD46A /* Sources */,
+				514DAECD24972E23009AD46A /* Frameworks */,
+				514DAECE24972E23009AD46A /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				514DE3B52490748200A3E184 /* PBXTargetDependency */,
+				514DAEDB24972E33009AD46A /* PBXTargetDependency */,
 			);
-			name = ResizeWindowsDemo;
-			productName = ResizeWindowsDemo;
-			productReference = 514DE394249073EF00A3E184 /* ResizeWindowsDemo.app */;
+			name = WindowCoordinator;
+			productName = WindowCoordinator;
+			productReference = 514DAED024972E23009AD46A /* WindowCoordinator.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		514DAEE624972EA9009AD46A /* WindowCoordinatorDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 514DAEF724972EAB009AD46A /* Build configuration list for PBXNativeTarget "WindowCoordinatorDemo" */;
+			buildPhases = (
+				514DAEE324972EA9009AD46A /* Sources */,
+				514DAEE424972EA9009AD46A /* Frameworks */,
+				514DAEE524972EA9009AD46A /* Resources */,
+				514A4D7F24972FC700E8021A /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				514A4D7824972FC700E8021A /* PBXTargetDependency */,
+				514A4D7C24972FC700E8021A /* PBXTargetDependency */,
+			);
+			name = WindowCoordinatorDemo;
+			productName = WindowCoordinatorDemo;
+			productReference = 514DAEE724972EA9009AD46A /* WindowCoordinatorDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -592,7 +669,13 @@
 						LastSwiftMigration = 1130;
 						ProvisioningStyle = Automatic;
 					};
-					514DE393249073EF00A3E184 = {
+					514DAECF24972E23009AD46A = {
+						CreatedOnToolsVersion = 11.3.1;
+						DevelopmentTeam = XK44TD8U4S;
+						LastSwiftMigration = 1130;
+						ProvisioningStyle = Automatic;
+					};
+					514DAEE624972EA9009AD46A = {
 						CreatedOnToolsVersion = 11.3.1;
 						DevelopmentTeam = XK44TD8U4S;
 						ProvisioningStyle = Automatic;
@@ -621,9 +704,10 @@
 				51100F0A1CC15D200095B985 /* BBLAccessibility */,
 				51100F1F1CC15D540095B985 /* BBLAccessibilityApp */,
 				51100F2D1CC15D540095B985 /* BBLAccessibilityAppUITests */,
-				514DE393249073EF00A3E184 /* ResizeWindowsDemo */,
 				511EECD424909C560029982D /* WindowListMonitorDemo */,
 				514DAEAD2493EA23009AD46A /* WindowListMonitor */,
+				514DAECF24972E23009AD46A /* WindowCoordinator */,
+				514DAEE624972EA9009AD46A /* WindowCoordinatorDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -679,13 +763,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		514DE392249073EF00A3E184 /* Resources */ = {
+		514DAECE24972E23009AD46A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				514DE3A1249073F300A3E184 /* Main.storyboard in Resources */,
-				514DE39E249073F300A3E184 /* Preview Assets.xcassets in Resources */,
-				514DE39B249073F300A3E184 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		514DAEE524972EA9009AD46A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				514A4D7424972F4900E8021A /* Main.storyboard in Resources */,
+				514DAEF124972EAB009AD46A /* Preview Assets.xcassets in Resources */,
+				514DAEEE24972EAB009AD46A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -740,12 +831,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		514DE390249073EF00A3E184 /* Sources */ = {
+		514DAECC24972E23009AD46A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				514DE399249073EF00A3E184 /* ContentView.swift in Sources */,
-				514DE397249073EF00A3E184 /* AppDelegate.swift in Sources */,
+				514DAEE224972E60009AD46A /* WindowCoordinator.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		514DAEE324972EA9009AD46A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				514DAEEC24972EA9009AD46A /* ContentView.swift in Sources */,
+				514DAEEA24972EA9009AD46A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -762,6 +861,16 @@
 			target = 51100F0A1CC15D200095B985 /* BBLAccessibility */;
 			targetProxy = 511EECEA24909C8E0029982D /* PBXContainerItemProxy */;
 		};
+		514A4D7824972FC700E8021A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 51100F0A1CC15D200095B985 /* BBLAccessibility */;
+			targetProxy = 514A4D7724972FC700E8021A /* PBXContainerItemProxy */;
+		};
+		514A4D7C24972FC700E8021A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 514DAECF24972E23009AD46A /* WindowCoordinator */;
+			targetProxy = 514A4D7B24972FC700E8021A /* PBXContainerItemProxy */;
+		};
 		514DAEB42493EA23009AD46A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 514DAEAD2493EA23009AD46A /* WindowListMonitor */;
@@ -772,10 +881,10 @@
 			target = 51100F0A1CC15D200095B985 /* BBLAccessibility */;
 			targetProxy = 514DAEBF2493EA57009AD46A /* PBXContainerItemProxy */;
 		};
-		514DE3B52490748200A3E184 /* PBXTargetDependency */ = {
+		514DAEDB24972E33009AD46A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 51100F0A1CC15D200095B985 /* BBLAccessibility */;
-			targetProxy = 514DE3B42490748200A3E184 /* PBXContainerItemProxy */;
+			targetProxy = 514DAEDA24972E33009AD46A /* PBXContainerItemProxy */;
 		};
 		51B8F2601DB582A200E79EEC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -801,10 +910,10 @@
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		514DE39F249073F300A3E184 /* Main.storyboard */ = {
+		514A4D7124972F4900E8021A /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				514DE3A0249073F300A3E184 /* Base */,
+				514A4D7224972F4900E8021A /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -1140,7 +1249,68 @@
 			};
 			name = Release;
 		};
-		514DE3A4249073F300A3E184 /* Debug */ = {
+		514DAED624972E23009AD46A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = XK44TD8U4S;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = WindowCoordinator/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.WindowCoordinator;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		514DAED724972E23009AD46A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = XK44TD8U4S;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = WindowCoordinator/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.WindowCoordinator;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		514DAEF824972EAB009AD46A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1149,21 +1319,20 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = ResizeWindowsDemo/ResizeWindowsDemo.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_ENTITLEMENTS = WindowCoordinatorDemo/WindowCoordinatorDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"ResizeWindowsDemo/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"WindowCoordinatorDemo/Preview Content\"";
 				DEVELOPMENT_TEAM = XK44TD8U4S;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = ResizeWindowsDemo/Info.plist;
+				INFOPLIST_FILE = WindowCoordinatorDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibilityApp.ResizeWindowsDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.WindowCoordinatorDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1171,7 +1340,7 @@
 			};
 			name = Debug;
 		};
-		514DE3A5249073F300A3E184 /* Release */ = {
+		514DAEF924972EAB009AD46A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1180,20 +1349,19 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = ResizeWindowsDemo/ResizeWindowsDemo.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_ENTITLEMENTS = WindowCoordinatorDemo/WindowCoordinatorDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"ResizeWindowsDemo/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"WindowCoordinatorDemo/Preview Content\"";
 				DEVELOPMENT_TEAM = XK44TD8U4S;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = ResizeWindowsDemo/Info.plist;
+				INFOPLIST_FILE = WindowCoordinatorDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibilityApp.ResizeWindowsDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.WindowCoordinatorDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -1256,11 +1424,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		514DE3A7249073F300A3E184 /* Build configuration list for PBXNativeTarget "ResizeWindowsDemo" */ = {
+		514DAED524972E23009AD46A /* Build configuration list for PBXNativeTarget "WindowCoordinator" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				514DE3A4249073F300A3E184 /* Debug */,
-				514DE3A5249073F300A3E184 /* Release */,
+				514DAED624972E23009AD46A /* Debug */,
+				514DAED724972E23009AD46A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		514DAEF724972EAB009AD46A /* Build configuration list for PBXNativeTarget "WindowCoordinatorDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				514DAEF824972EAB009AD46A /* Debug */,
+				514DAEF924972EAB009AD46A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
