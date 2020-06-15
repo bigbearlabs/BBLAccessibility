@@ -19,16 +19,17 @@ public class WindowCoordinator {
     
     if let app = NSRunningApplication.application(windowNumber: windowNumber),
       
-      let siWindow = SIApplication(forProcessIdentifier: app.processIdentifier).windows.first(where: {$0.windowID == windowNumber}),
-    // NOTE -25204 was caused by sandbox settings applied to default app template since xcode 11.3
+      let siWindow = SIApplication(forProcessIdentifier: app.processIdentifier).windows.first(where: {$0.windowID ==  windowNumber}),
+      // NOTE -25204 was caused by sandbox settings applied to default app template since xcode 11.3
     
-      // centre.
       let centredFrame = siWindow.centredFrame {
-      siWindow.setFrame(centredFrame)
-
-      // activate.
-      siWindow.focusOnlyThisWindow()
       
+        // centre.
+        siWindow.setFrame(centredFrame)
+
+        // activate.
+        siWindow.focusOnlyThisWindow()
+        
       // TODO add resizing.
     }
   }
@@ -39,7 +40,7 @@ extension NSRunningApplication {
   
   class func application(windowNumber: UInt32) -> NSRunningApplication? {
     if let dict = (CGWindowListCopyWindowInfo([.optionIncludingWindow], windowNumber) as? [[CFString : Any?]])?.first {
-      let pid = Int32((dict as NSDictionary)[kCGWindowOwnerPID] as! NSNumber)
+      let pid = Int32(truncating: (dict as NSDictionary)[kCGWindowOwnerPID] as! NSNumber)
       return NSRunningApplication(processIdentifier: pid)
     }
     return nil
