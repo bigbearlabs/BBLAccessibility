@@ -34,23 +34,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     self.windowListMonitor.observeEvents { [unowned self] event in
       
-      switch event {
-      // new
-      case let .created(windowNumber):
-        print("created \(windowNumber)")
-        
-      // focused
-      case let .focused(windowNumber):
-        print("focused \(windowNumber)")
-        
-//      // moved in
-//      case let .movedIn(windowNumber):
-//        print("movedIn \(windowNumber)")
-        
-      case let .activated(pid):
-        print("activated pid \(pid)")
-        
-      }
+      print("event: \(event)")
       
       // IT1 poll cgwindowlist for on-space windows.
       self.currentSpaceWindows = self.windowListMonitor.activeWindowsInCurrentSpace
