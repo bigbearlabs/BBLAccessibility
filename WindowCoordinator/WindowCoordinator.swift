@@ -17,11 +17,7 @@ public class WindowCoordinator {
     AccessibilityHelper().showSystemAxRequestDialog()
     
     
-    if let app = NSRunningApplication.application(windowNumber: windowNumber),
-      
-      let siWindow = SIApplication(forProcessIdentifier: app.processIdentifier).windows.first(where: {$0.windowID ==  windowNumber}),
-      // NOTE -25204 was caused by sandbox settings applied to default app template since xcode 11.3
-    
+    if let siWindow = SIWindow.for(windowNumber: windowNumber),
       let centredFrame = siWindow.centredFrame {
       
         // centre.
@@ -32,6 +28,23 @@ public class WindowCoordinator {
         
       // TODO add resizing.
     }
+  }
+  
+  public func position(windowFramePairs: [UInt32 : CGRect], focus windowNumberToFocus: UInt32? = nil) {
+    for (windowNumber, frame) in windowFramePairs {
+      
+      if let window = SIWindow.for(windowNumber: windowNumber) {
+        
+        window.setFrame(frame)
+      }
+    }
+    
+    if let n = windowNumberToFocus,
+      let w = SIWindow.for(windowNumber: n) {
+      // activate.
+      w.focusOnlyThisWindow()
+    }
+
   }
 }
 
@@ -60,6 +73,18 @@ extension SIWindow {
       
       return newFrame
     }
+    return nil
+  }
+  
+  class func `for`(windowNumber: UInt32) -> SIWindow? {
+    if let app = NSRunningApplication.application(windowNumber: windowNumber),
+      
+      // NOTE -25204 was caused by sandbox settings applied to default app template since xcode 11.3  }
+      let siWindow = SIApplication(forProcessIdentifier: app.processIdentifier).windows.first(where: {$0.windowID ==  windowNumber}) {
+      
+      return siWindow
+    }
+    
     return nil
   }
   
