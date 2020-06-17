@@ -23,11 +23,11 @@ public class WindowCoordinator {
         // centre.
         siWindow.setFrame(centredFrame)
 
-        // activate.
-        siWindow.focusOnlyThisWindow()
-        
-      // TODO add resizing.
+        // TODO add resizing.
     }
+    
+    // activate.
+    self.focus(windowNumber: windowNumber)
   }
   
   public func position(windowFramePairs: [UInt32 : CGRect], focus windowNumberToFocus: UInt32? = nil) {
@@ -39,13 +39,19 @@ public class WindowCoordinator {
       }
     }
     
-    if let n = windowNumberToFocus,
-      let w = SIWindow.for(windowNumber: n) {
-      // activate.
-      w.focusOnlyThisWindow()
+    if let n = windowNumberToFocus {
+      self.focus(windowNumber: n)
     }
 
   }
+  
+  public func focus(windowNumber: UInt32) {
+    if let w = SIWindow.for(windowNumber: windowNumber) {
+      // activate.
+      w.focusOnlyThisWindow()
+    }
+  }
+
 }
 
 
