@@ -46,6 +46,7 @@ public class WindowCoordinator {
     if let w = SIWindow.for(windowNumber: windowNumber) {
       // activate.
       w.focusOnlyThisWindow()
+      w.app()?.runningApplication().activate(options: [])
     }
   }
 
