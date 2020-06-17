@@ -9,21 +9,18 @@ public class WindowCoordinator {
   public init() {}
   
   
-  public func positionAsMainLayoutElement(windowNumber: UInt32) {
+  public func presentFocused(windowNumber: UInt32, frame: CGRect? = nil) {
     
     print("AXIsProcessTrusted: #\(AXIsProcessTrusted())")
 
     // perm
     AccessibilityHelper().showSystemAxRequestDialog()
     
-    
-    if let siWindow = SIWindow.for(windowNumber: windowNumber),
-      let centredFrame = siWindow.centredFrame {
-      
-        // centre.
-        siWindow.setFrame(centredFrame)
 
-        // TODO add resizing.
+    // update frame
+    if let siWindow = SIWindow.for(windowNumber: windowNumber),
+      let newFrame = frame ?? siWindow.centredFrame {
+      siWindow.setFrame(newFrame)
     }
     
     // activate.
