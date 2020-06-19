@@ -86,4 +86,14 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
 
   }
   
+  
+  public override var applicationsToObserve: [NSRunningApplication] {
+    var apps = super.applicationsToObserve
+    apps.removeAll { runningApp in
+      // exclude myself.
+      runningApp.bundleIdentifier == Bundle.main.bundleIdentifier
+    }
+    return apps
+  }
+  
 }

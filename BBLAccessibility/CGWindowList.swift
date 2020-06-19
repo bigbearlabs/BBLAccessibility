@@ -174,6 +174,11 @@ public struct CGWindowInfo: Codable, Equatable {
     }
       
     let results: [CGWindowInfo] = windowInfos.compactMap { e in
+      // reject transparent windows.
+      if e[kCGWindowAlpha as String] as? CGFloat == 0 {
+        return nil
+      }
+      
         // apply bid filter early.
         if let pids = pids,
           let pid = e[kCGWindowOwnerPID as String] as? pid_t {
