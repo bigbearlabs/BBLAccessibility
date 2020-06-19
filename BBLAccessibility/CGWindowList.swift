@@ -133,7 +133,8 @@ public struct CGWindowInfo: Codable, Equatable {
   public static func query(
     windowId: WindowId? = nil,
     bundleId: String? = nil,
-    scope: QueryScope = .allScreens)
+    scope: QueryScope = .allScreens,
+    otherOptions: CGWindowListOption? = nil)
     -> [CGWindowInfo] {
       
     if scope == .onScreen {
@@ -147,10 +148,15 @@ public struct CGWindowInfo: Codable, Equatable {
       kCGNullWindowID
       : CGWindowID(windowId!.windowNumber)!
       
+    var options = CGWindowListOption(arrayLiteral: [
+      scope == .allScreens ? .optionAll : .optionOnScreenOnly,
+    ])
+    if let otherOptions = otherOptions {
+      options.formUnion(otherOptions)
+    }
+      
     guard let cgWindowInfos = CGWindowListCopyWindowInfo(
-      [scope == .allScreens ?
-        .optionAll
-        : .optionOnScreenOnly],
+      options,
       cgWindowId)
       else {
         // !?
