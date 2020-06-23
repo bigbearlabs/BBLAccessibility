@@ -16,7 +16,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     
     case titleChanged(windowNumber: UInt32)
     
-    case activated(pid: pid_t)
+    case activated(pid: pid_t, focusedWindowNumber: UInt32?)
     
     // TODO
 //    case movedIn(windowNumber: UInt32)
@@ -68,13 +68,14 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       event = .focused(windowNumber: windowNumber)
       // TODO confirm the id is reliable
     
+    case kAXTitleChangedNotification:
+      event = .titleChanged(windowNumber: windowNumber)
+      
     case kAXApplicationActivatedNotification:
       let siApp = SIApplication(axElement: siElement.axElementRef)
       let pid = siApp.processIdentifier()
-      event = .activated(pid: pid)
-      
-    case kAXTitleChangedNotification:
-      event = .titleChanged(windowNumber: windowNumber)
+      let focusedWindowNumber = siApp.focusedWindow()?.windowID
+      event = .activated(pid: pid, focusedWindowNumber: focusedWindowNumber)
       
     default:
       return
