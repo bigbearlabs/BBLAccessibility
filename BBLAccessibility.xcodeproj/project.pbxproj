@@ -19,30 +19,24 @@
 		511EECE224909C590029982D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 511EECE024909C590029982D /* Main.storyboard */; };
 		511EECE824909C8E0029982D /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
 		511EECE924909C8E0029982D /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		511EECED24909C930029982D /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
-		511EECEE24909C930029982D /* Silica.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		511EECEF24909C990029982D /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; };
 		511EECF024909C990029982D /* BBLBasics.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		511EECF2249101680029982D /* CGWindowList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511EECF1249101680029982D /* CGWindowList.swift */; };
 		511EED12249116B40029982D /* BBLAccessibilityPublisher-ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511EED11249116B40029982D /* BBLAccessibilityPublisher-ext.swift */; };
 		5123E4C11DDFD62B0099D11E /* Silica-ext.h in Headers */ = {isa = PBXBuildFile; fileRef = 5123E4BF1DDFD62B0099D11E /* Silica-ext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		513A8DC424A19498009FFF81 /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
+		513A8DC524A19498009FFF81 /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		514A4D7424972F4900E8021A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 514A4D7124972F4900E8021A /* Main.storyboard */; };
-		514A4D7524972FC700E8021A /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
-		514A4D7624972FC700E8021A /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		514A4D7924972FC700E8021A /* WindowCoordinator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DAED024972E23009AD46A /* WindowCoordinator.framework */; };
 		514A4D7A24972FC700E8021A /* WindowCoordinator.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 514DAED024972E23009AD46A /* WindowCoordinator.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		514A4D7D24972FC700E8021A /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; };
 		514A4D7E24972FC700E8021A /* BBLBasics.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		514A4D8024972FCC00E8021A /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
-		514A4D8124972FCC00E8021A /* Silica.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		514DAEB22493EA23009AD46A /* WindowListMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 514DAEB02493EA23009AD46A /* WindowListMonitor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		514DAEB52493EA23009AD46A /* WindowListMonitor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DAEAE2493EA23009AD46A /* WindowListMonitor.framework */; };
 		514DAEB62493EA23009AD46A /* WindowListMonitor.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 514DAEAE2493EA23009AD46A /* WindowListMonitor.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		514DAEBC2493EA3B009AD46A /* WindowListMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514DAEBB2493EA3B009AD46A /* WindowListMonitor.swift */; };
 		514DAED424972E23009AD46A /* WindowCoordinator.h in Headers */ = {isa = PBXBuildFile; fileRef = 514DAED224972E23009AD46A /* WindowCoordinator.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		514DAED824972E33009AD46A /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
 		514DAEDC24972E33009AD46A /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; };
-		514DAEDF24972E38009AD46A /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
 		514DAEE224972E60009AD46A /* WindowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514DAEE124972E60009AD46A /* WindowCoordinator.swift */; };
 		514DAEEA24972EA9009AD46A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514DAEE924972EA9009AD46A /* AppDelegate.swift */; };
 		514DAEEC24972EA9009AD46A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514DAEEB24972EA9009AD46A /* ContentView.swift */; };
@@ -53,7 +47,6 @@
 		514DE3BA249085CB00A3E184 /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; };
 		514DE3BB249085CB00A3E184 /* BBLBasics.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5178DFB82498A821005EBE59 /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; };
-		5178DFB92498A821005EBE59 /* BBLBasics.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5178DFBA2498A871005EBE59 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
 		5178DFBB2498A871005EBE59 /* Silica.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5178DFBE2498A93D005EBE59 /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
@@ -81,13 +74,6 @@
 			remoteInfo = BBLAccessibilityApp;
 		};
 		511EECEA24909C8E0029982D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 51100F021CC15D200095B985 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 51100F0A1CC15D200095B985;
-			remoteInfo = BBLAccessibility;
-		};
-		514A4D7724972FC700E8021A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 51100F021CC15D200095B985 /* Project object */;
 			proxyType = 1;
@@ -147,8 +133,18 @@
 			files = (
 				511EECE924909C8E0029982D /* BBLAccessibility.framework in Embed Frameworks */,
 				511EECF024909C990029982D /* BBLBasics.framework in Embed Frameworks */,
-				511EECEE24909C930029982D /* Silica.framework in Embed Frameworks */,
 				514DAEB62493EA23009AD46A /* WindowListMonitor.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		513A8DC624A19499009FFF81 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				513A8DC524A19498009FFF81 /* BBLAccessibility.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -159,8 +155,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				514A4D7624972FC700E8021A /* BBLAccessibility.framework in Embed Frameworks */,
-				514A4D8124972FCC00E8021A /* Silica.framework in Embed Frameworks */,
 				514A4D7E24972FC700E8021A /* BBLBasics.framework in Embed Frameworks */,
 				514A4D7A24972FC700E8021A /* WindowCoordinator.framework in Embed Frameworks */,
 			);
@@ -173,7 +167,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5178DFB92498A821005EBE59 /* BBLBasics.framework in Embed Frameworks */,
 				5178DFBB2498A871005EBE59 /* Silica.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -294,7 +287,6 @@
 			files = (
 				511EECE824909C8E0029982D /* BBLAccessibility.framework in Frameworks */,
 				511EECEF24909C990029982D /* BBLBasics.framework in Frameworks */,
-				511EECED24909C930029982D /* Silica.framework in Frameworks */,
 				514DAEB52493EA23009AD46A /* WindowListMonitor.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -313,8 +305,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				514DAEDC24972E33009AD46A /* BBLBasics.framework in Frameworks */,
-				514DAEDF24972E38009AD46A /* Silica.framework in Frameworks */,
-				514DAED824972E33009AD46A /* BBLAccessibility.framework in Frameworks */,
+				513A8DC424A19498009FFF81 /* BBLAccessibility.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,8 +313,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				514A4D7524972FC700E8021A /* BBLAccessibility.framework in Frameworks */,
-				514A4D8024972FCC00E8021A /* Silica.framework in Frameworks */,
 				514A4D7D24972FC700E8021A /* BBLBasics.framework in Frameworks */,
 				514A4D7924972FC700E8021A /* WindowCoordinator.framework in Frameworks */,
 			);
@@ -632,6 +621,7 @@
 				514DAECC24972E23009AD46A /* Sources */,
 				514DAECD24972E23009AD46A /* Frameworks */,
 				514DAECE24972E23009AD46A /* Resources */,
+				513A8DC624A19499009FFF81 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -655,7 +645,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				514A4D7824972FC700E8021A /* PBXTargetDependency */,
 				514A4D7C24972FC700E8021A /* PBXTargetDependency */,
 			);
 			name = WindowCoordinatorDemo;
@@ -890,11 +879,6 @@
 			isa = PBXTargetDependency;
 			target = 51100F0A1CC15D200095B985 /* BBLAccessibility */;
 			targetProxy = 511EECEA24909C8E0029982D /* PBXContainerItemProxy */;
-		};
-		514A4D7824972FC700E8021A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 51100F0A1CC15D200095B985 /* BBLAccessibility */;
-			targetProxy = 514A4D7724972FC700E8021A /* PBXContainerItemProxy */;
 		};
 		514A4D7C24972FC700E8021A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
