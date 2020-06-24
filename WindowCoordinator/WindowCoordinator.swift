@@ -50,6 +50,12 @@ public class WindowCoordinator {
     }
   }
 
+  // MARK: -
+  
+  public func frame(windowNumber: UInt32) -> CGRect? {
+    return SIWindow.for(windowNumber: windowNumber)?.frame()
+  }
+  
 }
 
 
