@@ -77,11 +77,7 @@ extension SIWindow {
     }()
       
     let frame = self.frame()
-    let screenCentre = areaFrame.centre
-    let newFrame = frame.offsetBy(dx: screenCentre.x - frame.centre.x, dy: screenCentre.y - frame.centre.y)
-      
-    return newFrame
-
+    return frame.centred(in: areaFrame)
   }
   
   class func `for`(windowNumber: UInt32) -> SIWindow? {
