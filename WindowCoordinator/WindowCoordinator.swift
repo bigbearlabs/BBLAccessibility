@@ -9,7 +9,7 @@ public class WindowCoordinator {
   public init() {}
   
   
-  public func presentFocused(windowNumber: UInt32, frame: CGRect? = nil) {
+  public func presentFocused(windowNumber: UInt32, frame: CGRect? = nil, inArea areaFrame: CGRect? = nil) {
     
     print("AXIsProcessTrusted: #\(AXIsProcessTrusted())")
 
@@ -19,7 +19,7 @@ public class WindowCoordinator {
 
     // update frame
     if let siWindow = SIWindow.for(windowNumber: windowNumber),
-      let newFrame = frame ?? siWindow.centredFrame {
+      let newFrame = frame ?? siWindow.centredFrame(areaFrame: areaFrame) {
       siWindow.setFrame(newFrame)
     }
     
@@ -68,16 +68,20 @@ extension NSRunningApplication {
 
 extension SIWindow {
   
-  var centredFrame: CGRect? {
-    if let screen = self.screen() {
+  func centredFrame(areaFrame: CGRect? = nil) -> CGRect? {
+    let areaFrame = areaFrame ?? {
+      if let screen = self.screen() {
+        return screen.frame
+      }
+      fatalError()
+    }()
       
-      let frame = self.frame()
-      let screenCentre = screen.frame.centre
-      let newFrame = frame.offsetBy(dx: screenCentre.x - frame.centre.x, dy: screenCentre.y - frame.centre.y)
+    let frame = self.frame()
+    let screenCentre = areaFrame.centre
+    let newFrame = frame.offsetBy(dx: screenCentre.x - frame.centre.x, dy: screenCentre.y - frame.centre.y)
       
-      return newFrame
-    }
-    return nil
+    return newFrame
+
   }
   
   class func `for`(windowNumber: UInt32) -> SIWindow? {
