@@ -9,7 +9,7 @@ public class WindowCoordinator {
   public init() {}
   
   
-  public func presentFocused(windowNumber: UInt32, frame: CGRect? = nil, inArea areaFrame: CGRect? = nil) {
+  public func presentCentred(windowNumber: UInt32, frame: CGRect? = nil, inArea areaFrame: CGRect? = nil) {
     
     print("AXIsProcessTrusted: #\(AXIsProcessTrusted())")
 
