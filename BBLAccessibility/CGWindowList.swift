@@ -72,8 +72,6 @@ extension WindowId: CustomStringConvertible {
 public struct CGWindowInfo: Codable, Equatable {
   
   public let pid: pid_t
-  public let bundleId: String
-  
   public let windowId: WindowId
   public let title: String
 
@@ -89,8 +87,6 @@ public struct CGWindowInfo: Codable, Equatable {
   init?(data: [String : Any?], debug: Bool = false) {
     guard
       let pid = (data[kCGWindowOwnerPID as String] as? NSNumber)?.int32Value,
-      let bundleId = data["bundleId"] as? String
-        ?? NSWorkspace.shared.runningApplication(pid: pid)?.bundleIdentifier,
       let cgWindowId = data[kCGWindowNumber as String] as? NSNumber
     else {
       return nil
@@ -99,7 +95,6 @@ public struct CGWindowInfo: Codable, Equatable {
     self.data = debug ? DebugPropertyWrapper(data: data) : nil
     
     self.pid = pid
-    self.bundleId = bundleId
     self.windowId = WindowId.from(windowNumber: String(describing: cgWindowId))
     if let title = data[kCGWindowName as String] as? NSString {
       self.title = String(title)
@@ -117,6 +112,14 @@ public struct CGWindowInfo: Codable, Equatable {
   
   // MARK: -
   
+  public var bundleId: String {
+    return
+//      data["bundleId"] as? String
+//      ??
+        NSWorkspace.shared.runningApplication(pid: pid)?.bundleIdentifier
+          ?? "<nil bid>"
+  }
+
   // RENAME screenshot -> snapshotImage
   public func screenshot() -> NSImage? {
     if let windowNumber = CGWindowID(self.windowId.windowNumber),
@@ -169,8 +172,9 @@ public struct CGWindowInfo: Codable, Equatable {
         return []
       }
       
-    let pids = bundleId.flatMap {
-      NSRunningApplication.runningApplications(withBundleIdentifier: $0).map { $0.processIdentifier }
+    let pidsForBundleId = bundleId.flatMap {
+      NSRunningApplication.runningApplications(withBundleIdentifier: $0)
+        .map { $0.processIdentifier }
     }
       
     let results: [CGWindowInfo] = windowInfos.compactMap { e in
@@ -180,7 +184,7 @@ public struct CGWindowInfo: Codable, Equatable {
       }
       
         // apply bid filter early.
-        if let pids = pids,
+        if let pids = pidsForBundleId,
           let pid = e[kCGWindowOwnerPID as String] as? pid_t {
           if !pids.contains(pid) {
             return nil
@@ -223,7 +227,7 @@ extension CGWindowInfo: WindowFingerprintable {
 
 extension CGWindowInfo: CustomStringConvertible {
   public var description: String {
-    return "\(( bundleId, windowId, isInActiveSpace ))"
+    return "\(( pid, windowId, isInActiveSpace ))"
   }
 }
 
