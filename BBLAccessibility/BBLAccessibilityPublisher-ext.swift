@@ -9,11 +9,20 @@ public extension BBLAccessibilityPublisher {
       .filter { $0.isInActiveSpace }
     
     // reject windows not seen by ax api, e.g. transparent windows.
-    let pids = onScreenCgWindows.map { $0.pid}.uniqueValues
-    let axWindowIds = activeWindows(pids: pids)
-      .map { $0.windowID }
+    let pids = onScreenCgWindows
+      .filter {
+        // exclude pids for status menu items or dock
+        ![NSWindow.Level.statusBar.rawValue, NSWindow.Level.dock.rawValue]
+        .contains($0.windowLayer)
+      }
+      .map { $0.pid }.uniqueValues
+    let axWindowIds = activeWindows(pids: pids).map { $0.windowID }
     
-    return onScreenCgWindows.filter { axWindowIds.contains(UInt32($0.windowId.windowNumber)!) }
+    let windows = onScreenCgWindows.filter {
+      axWindowIds.contains(UInt32($0.windowId.windowNumber)!)
+    }
+    
+    return windows
   }
   
   func activeWindows(pids: [pid_t]) -> [SIWindow] {
