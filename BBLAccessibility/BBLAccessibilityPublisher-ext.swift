@@ -13,7 +13,7 @@ public extension BBLAccessibilityPublisher {
       .filter {
         // exclude pids for status menu items or dock
         ![NSWindow.Level.statusBar.rawValue, NSWindow.Level.dock.rawValue]
-        .contains($0.windowLayer)
+          .contains($0.windowLayer)
       }
       .map { $0.pid }.uniqueValues
     let axWindowIds = activeWindows(pids: pids).map { $0.windowID }
