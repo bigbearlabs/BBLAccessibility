@@ -27,12 +27,19 @@ public class WindowCoordinator {
     self.focus(windowNumber: windowNumber)
   }
   
-  public func position(windowFramePairs: [UInt32 : CGRect], focus windowNumberToFocus: UInt32? = nil) {
+  public func position(
+    windowFramePairs: [UInt32 : CGRect],
+    raise: Bool = false,
+    focus windowNumberToFocus: UInt32? = nil) {
     for (windowNumber, frame) in windowFramePairs {
       
       if let window = SIWindow.for(windowNumber: windowNumber) {
         
         window.setFrame(frame)
+        
+        if raise {
+          self.raise(windowNumber: windowNumber)
+        }
       }
     }
     
@@ -50,6 +57,13 @@ public class WindowCoordinator {
     }
   }
 
+  public func raise(windowNumber: UInt32) {
+    if let w = SIWindow.for(windowNumber: windowNumber) {
+      // activate.
+      w.focusOnlyThisWindow()
+    }
+  }
+  
   // MARK: -
   
   public func frame(windowNumber: UInt32) -> CGRect? {
