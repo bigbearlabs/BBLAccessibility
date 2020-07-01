@@ -25,12 +25,14 @@ public extension BBLAccessibilityPublisher {
     // group by screen based on frame
     
     let d = Dictionary.init(grouping: windows.map { w -> (Int, CGWindowInfo) in
-      for (i, screen) in NSScreen.screens.enumerated() {
+      let screens = NSScreen.screens
+      for (i, screen) in screens.enumerated() {
         if w.frame.intersects(screen.frame) {
           return (i, w)
         }
       }
-      fatalError()
+      // no intersection; assume belonging to first screen.
+      return (0, w)
     }, by: {
       $0.0
     }).mapValues { ts in
