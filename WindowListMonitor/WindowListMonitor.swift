@@ -12,7 +12,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
   
   public enum Event {
     case created(windowNumber: UInt32)
-    case focused(windowNumber: UInt32)
+    case focused(windowNumber: UInt32)  // RENAME activated
     
     case titleChanged(windowNumber: UInt32)
     

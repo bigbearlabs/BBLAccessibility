@@ -1,6 +1,6 @@
 public extension BBLAccessibilityPublisher {
   
-  var activeWindowsInCurrentSpace: [CGWindowInfo] {
+  var activeWindowsInCurrentSpace: [Int : [CGWindowInfo]] {
 
     // screen recording perms TODO refine acquisition flow
     _ = CGWindowListCreateImage(CGRect.null, [.optionOnScreenBelowWindow], kCGNullWindowID, .nominalResolution)
@@ -22,7 +22,21 @@ public extension BBLAccessibilityPublisher {
       axWindowIds.contains(UInt32($0.windowId.windowNumber)!)
     }
     
-    return windows
+    // group by screen based on frame
+    
+    let d = Dictionary.init(grouping: windows.map { w -> (Int, CGWindowInfo) in
+      for (i, screen) in NSScreen.screens.enumerated() {
+        if w.frame.intersects(screen.frame) {
+          return (i, w)
+        }
+      }
+      fatalError()
+    }, by: {
+      $0.0
+    }).mapValues { ts in
+      ts.map { $0.1 }
+    }
+    return d
   }
   
   func activeWindows(pids: [pid_t]) -> [SIWindow] {

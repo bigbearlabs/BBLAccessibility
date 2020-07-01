@@ -38,18 +38,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       
       // IT1 poll cgwindowlist for on-space windows.
       self.currentSpaceWindows = self.windowListMonitor.activeWindowsInCurrentSpace
-      let dump = self.currentSpaceWindows.map {
-        [
+      let dump = self.currentSpaceWindows.flatMap { e -> [[String : String]] in
+        let (screen, windows) = e
+        return windows.map {[
+          "screen": screen.description,
           "title": $0.title,
           "app": $0.bundleId,
-        ]
+          ]
+        }
       }
       
       print(try! ["currentSpaceWindows": dump].jsonString())
     }
   }
 
-  var currentSpaceWindows: [CGWindowInfo] = []
+  var currentSpaceWindows: [Int : [CGWindowInfo]] = [:]
   
   lazy var windowListMonitor = WindowListMonitor()
 
