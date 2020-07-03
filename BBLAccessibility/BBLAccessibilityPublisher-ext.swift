@@ -1,9 +1,6 @@
 public extension BBLAccessibilityPublisher {
   
   var activeWindowsInCurrentSpace: [Int : [CGWindowInfo]] {
-
-    // screen recording perms TODO refine acquisition flow
-    _ = CGWindowListCreateImage(CGRect.null, [.optionOnScreenBelowWindow], kCGNullWindowID, .nominalResolution)
     
     let onScreenCgWindows = CGWindowInfo.query(scope: .onScreen, otherOptions: [.excludeDesktopElements])
       .filter { $0.isInActiveSpace }
