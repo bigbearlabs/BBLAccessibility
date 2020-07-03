@@ -1,10 +1,6 @@
 public extension BBLAccessibilityPublisher {
 
-  var activeWindowsInCurrentSpace: (Int, [Int : [CGWindowInfo]]) {
-//    activeWindowsInCurrentSpace
-//  }
-//
-//  var activeWindowsInCurrentSpace: [Int : [CGWindowInfo]] {
+  var activeWindowsInCurrentSpace: (currentScreenId: Int, windowInfoListsByScreenId: [Int : [CGWindowInfo]]) {
     
     let onScreenCgWindows = CGWindowInfo.query(scope: .onScreen, otherOptions: [.excludeDesktopElements])
       .filter { $0.isInActiveSpace }
@@ -40,11 +36,19 @@ public extension BBLAccessibilityPublisher {
       ts.map { $0.1 }
     }
     
-    let currentScreenId = windowInfoListsByScreenId.first {
-      $0.value.contains(axFilteredCgWindows[0])
-    }!.key
+    let currentScreenId: Int = {
+      if let firstWindow = axFilteredCgWindows.first,
+        let currentScreenId = windowInfoListsByScreenId.first(where: {
+          $0.value.contains(firstWindow)
+        })?.key {
+        return currentScreenId
+      } else {
+        print("defaulting currentScreenId to 0")
+        return 0
+      }
+    }()
     
-    return (currentScreenId, windowInfoListsByScreenId)
+    return (currentScreenId: currentScreenId, windowInfoListsByScreenId: windowInfoListsByScreenId)
   }
   
   func activeWindows(pids: [pid_t]) -> [SIWindow] {
