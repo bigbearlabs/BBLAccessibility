@@ -14,6 +14,7 @@ public extension BBLAccessibilityPublisher {
       }
       .map { $0.pid }.uniqueValues
     let axWindowIds = activeWindows(pids: pids).map { $0.windowID }
+    // PERF work on the per-app queues to avoid hanging app blocking main thread.
     
     let axFilteredCgWindows = onScreenCgWindows.filter {
       axWindowIds.contains(UInt32($0.windowId.windowNumber)!)
