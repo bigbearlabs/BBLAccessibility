@@ -52,6 +52,16 @@ public extension BBLAccessibilityPublisher {
     return (currentScreenId: currentScreenId, windowInfoListsByScreenId: windowInfoListsByScreenId)
   }
   
+  var currentAppAccessibilityInfo: AccessibilityInfo? {
+    guard let pid = SIApplication.focused()?.processIdentifier() else {
+      return nil
+    }
+    
+    let axDataForPid = self.accessibilityInfosByPid[NSNumber(value: pid)]
+    return axDataForPid
+  }
+
+
   func activeWindows(pids: [pid_t]) -> [SIWindow] {
     let siApps = pids.compactMap { self.appElement(forProcessIdentifier: $0) }
     let activeWindows = siApps.flatMap {
@@ -60,4 +70,5 @@ public extension BBLAccessibilityPublisher {
     return activeWindows
   }
 
+  
 }
