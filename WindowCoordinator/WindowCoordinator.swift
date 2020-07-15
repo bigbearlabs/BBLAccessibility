@@ -56,8 +56,7 @@ public class WindowCoordinator {
     raise(windowNumber: windowNumber)
     
     if let w = SIWindow.for(windowNumber: windowNumber) {
-      if let app = w.app()?.runningApplication(),
-        !app.isActive {
+      if SIWindow.focused()?.windowID != w.windowID {
         w.focusOnlyThisWindow()
       }
     }
