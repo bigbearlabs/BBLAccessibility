@@ -35,7 +35,9 @@ public class WindowCoordinator {
       
       if let window = SIWindow.for(windowNumber: windowNumber) {
         
-        window.setFrame(frame)
+        if window.frame() != frame {
+          window.setFrame(frame)
+        }
         
         if raise {
           self.raise(windowNumber: windowNumber)
@@ -44,23 +46,26 @@ public class WindowCoordinator {
     }
     
     if let n = windowNumberToFocus {
+      
       self.focus(windowNumber: n)
     }
 
   }
   
   public func focus(windowNumber: UInt32) {
+    raise(windowNumber: windowNumber)
+    
     if let w = SIWindow.for(windowNumber: windowNumber) {
-      // activate.
-      w.focusOnlyThisWindow()
-      w.app()?.runningApplication().activate(options: [])
+      if let app = w.app()?.runningApplication(),
+        !app.isActive {
+        w.focusOnlyThisWindow()
+      }
     }
   }
 
   public func raise(windowNumber: UInt32) {
     if let w = SIWindow.for(windowNumber: windowNumber) {
-      // activate.
-      w.focusOnlyThisWindow()
+      w.raise()
     }
   }
   
