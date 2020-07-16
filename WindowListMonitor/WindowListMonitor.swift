@@ -18,14 +18,16 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     
     case activated(pid: pid_t, focusedWindowNumber: UInt32?)
     
+    case moved(windowNumber: UInt32)
+    
     // TODO
-//    case movedIn(windowNumber: UInt32)
+//    case movedIn(windowNumber: WindowNumber)
     
     // TODO moved out
     
     // TODO space changed
     
-//    case closed(windowNumber: UInt32)
+//    case closed(windowNumber: WindowNumber)
     // out of scope: no suitable ax event found.
   }
   
@@ -76,6 +78,9 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       let pid = siApp.processIdentifier()
       let focusedWindowNumber = siApp.focusedWindow()?.windowID
       event = .activated(pid: pid, focusedWindowNumber: focusedWindowNumber)
+    
+    case kAXWindowMovedNotification:
+      event = .moved(windowNumber: windowNumber)
       
     default:
       return
