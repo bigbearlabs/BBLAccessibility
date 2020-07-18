@@ -1,24 +1,41 @@
+public typealias WindowServerState =  (activePid: pid_t?, currentScreenId: Int, windowInfoListsByScreenId: [Int : [CGWindowInfo]])
+
+
 public extension BBLAccessibilityPublisher {
 
+  
   var activeWindowsInCurrentSpace: (currentScreenId: Int, windowInfoListsByScreenId: [Int : [CGWindowInfo]]) {
+    let currentState = self.currentState
+    return (currentState.currentScreenId, currentState.windowInfoListsByScreenId)
+  }
     
-    let onScreenCgWindows = CGWindowInfo.query(scope: .onScreen, otherOptions: [.excludeDesktopElements])
+  var currentState: WindowServerState {
+    let cgWindows = CGWindowInfo.query(scope: .onScreen, otherOptions: [.excludeDesktopElements])
+    // TODO scope needs to change to 'all' in order for dock to show up during mission control activation.
+    let onScreenCgWindows = cgWindows
       .filter { $0.isInActiveSpace }
-    
-    // reject windows not seen by ax api, e.g. transparent windows.
-    let pids = onScreenCgWindows
       .filter {
         // exclude pids for status menu items or dock
-        ![NSWindow.Level.statusBar.rawValue, NSWindow.Level.dock.rawValue]
-          .contains($0.windowLayer)
+        ![
+          NSWindow.Level.statusBar.rawValue,
+//          NSWindow.Level.dock.rawValue
+        ].contains($0.windowLayer)
       }
-      .map { $0.pid }.uniqueValues
+
+    // reject windows not seen by ax api, e.g. transparent windows.
+    let pids = onScreenCgWindows.map { $0.pid }.uniqueValues
     let axWindowIds = activeWindows(pids: pids).map { $0.windowID }
     // PERF work on the per-app queues to avoid hanging app blocking main thread.
     
     let axFilteredCgWindows = onScreenCgWindows.filter {
-      axWindowIds.contains(UInt32($0.windowId.windowNumber)!)
+      if $0.windowLayer == Int(kCGNormalWindowLevel) {
+        return axWindowIds.contains(UInt32($0.windowId.windowNumber)!)
+      } else {
+        return true
+      }
     }
+    
+    let activePid = axFilteredCgWindows.first?.pid
     
     // group by screen based on frame
     
@@ -49,7 +66,7 @@ public extension BBLAccessibilityPublisher {
       }
     }()
     
-    return (currentScreenId: currentScreenId, windowInfoListsByScreenId: windowInfoListsByScreenId)
+    return (activePid: activePid, currentScreenId: currentScreenId, windowInfoListsByScreenId: windowInfoListsByScreenId)
   }
   
   var currentAppAccessibilityInfo: AccessibilityInfo? {

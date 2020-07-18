@@ -37,7 +37,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       print("event: \(event)")
       
       // IT1 poll cgwindowlist for on-space windows.
-      self.currentSpaceWindows = self.windowListMonitor.activeWindowsInCurrentSpace
+      self.currentSpaceWindows = self.windowListMonitor.activeWindowsInCurrentSpace.1
       let dump = self.currentSpaceWindows.flatMap { e -> [[String : String]] in
         let (screen, windows) = e
         return windows.map {[
@@ -50,6 +50,28 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       
       print(try! ["currentSpaceWindows": dump].jsonString())
     }
+    
+    loopInspectCgWindows()
+    
+    sub = NSWorkspace.shared.publisher(for: \.frontmostApplication)
+      .sink {
+       print("!! frontmost application changed: \($0)")
+      }
+  }
+  var sub: Any?
+  
+  func loopInspectCgWindows() {
+    _ = CGWindowListCreateImage(.zero, [], kCGNullWindowID, .nominalResolution)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+      let d = CGWindowInfo.query(scope: .onScreen, otherOptions: [.excludeDesktopElements]).map {
+        ($0.bundleId, $0.pid, $0.title, $0.windowLayer)
+      }
+      
+      print(d)
+      
+      self.loopInspectCgWindows()
+    }
+
   }
 
   var currentSpaceWindows: [Int : [CGWindowInfo]] = [:]
