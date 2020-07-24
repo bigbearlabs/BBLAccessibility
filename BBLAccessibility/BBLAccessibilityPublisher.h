@@ -8,6 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(readonly) NSArray<NSRunningApplication*>* applicationsToObserve;
 
+//@property(readonly,copy)NSDictionary<NSNumber*, SIApplication*>* observedAppsByPid;
 
 @property(readonly,copy) NSDictionary<NSNumber*, AccessibilityInfo*>* accessibilityInfosByPid;  // a growing dict of ax infos.
 
@@ -62,6 +63,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(SIApplication*) appElementForProcessIdentifier:(pid_t)processIdentifier;
 
+
+-(void) execAsyncSynchronisingOn:(id)object block:(void(^)(void))block;
+
+  
 NS_ASSUME_NONNULL_END
 
 @end

@@ -40,7 +40,12 @@ public class WindowCoordinator {
         }
         
         if raise {
-          self.raise(windowNumber: windowNumber)
+          if windowNumberToFocus != nil
+            && windowNumber == windowNumberToFocus {
+            // don't raise since we will focus later
+          } else {
+            self.raise(windowNumber: windowNumber)
+          }
         }
       }
     }

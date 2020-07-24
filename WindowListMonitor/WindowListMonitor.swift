@@ -17,7 +17,8 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     case titleChanged(windowNumber: UInt32)
     
     case activated(pid: pid_t, focusedWindowNumber: UInt32?)
-    
+    case noWindow(pid: pid_t)
+
     case moved(windowNumber: UInt32)
     
     // TODO
@@ -81,6 +82,15 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     
     case kAXWindowMovedNotification:
       event = .moved(windowNumber: windowNumber)
+    
+    // TODO inferring closed.
+    case kAXUIElementDestroyedNotification:
+      let pid = siElement.processIdentifier()
+      if SIApplication(forProcessIdentifier: pid).focusedWindow() == nil {
+        event = .noWindow(pid: pid)
+      } else {
+        return
+      }
       
     default:
       return

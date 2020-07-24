@@ -16,7 +16,7 @@
 
 @implementation BBLAccessibilityPublisher
 {
-  NSMutableDictionary<NSNumber*, SIApplication*>* watchedAppsByPid;  // RENAME -> observedAppsByPid
+  NSMutableDictionary<NSNumber*, SIApplication*>* observedAppsByPid;
   
   id launchObservation;
   id terminateObservation;
@@ -39,7 +39,7 @@
     _accessibilityInfosByPid = [@{} mutableCopy];
     _bundleIdsByPid = @{}.mutableCopy;
     
-    watchedAppsByPid = [@{} mutableCopy];
+    observedAppsByPid = [@{} mutableCopy];
     
     serialQueue = dispatch_queue_create(
       "BBLAccessiblityPublisher-serial",
@@ -165,8 +165,8 @@
 
 -(void) unwatchWindows {
 
-  @synchronized(watchedAppsByPid) {
-    for (SIApplication* app in watchedAppsByPid.allValues) {
+  @synchronized(observedAppsByPid) {
+    for (SIApplication* app in observedAppsByPid.allValues) {
       [self unobserveAxEventsForApplication:app.runningApplication];
     }
   }
@@ -326,8 +326,8 @@
   
   
   // in order for the notifications to work, we must retain the SIApplication.
-  @synchronized(watchedAppsByPid) {
-    watchedAppsByPid[@(application.processIdentifier)] = siApp;
+  @synchronized(observedAppsByPid) {
+    observedAppsByPid[@(application.processIdentifier)] = siApp;
   }
   
   __log("%@ registered observation for app %@", self, application);
@@ -335,10 +335,10 @@
 
 -(void) unobserveAxEventsForApplication:(NSRunningApplication*)application {
 
-  @synchronized(watchedAppsByPid) {
+  @synchronized(observedAppsByPid) {
     
     NSNumber* pid = @(application.processIdentifier);
-    SIApplication* siApp = watchedAppsByPid[pid];
+    SIApplication* siApp = observedAppsByPid[pid];
     if (siApp == nil) {
         __log("%@ %@ was not being observed.", application.bundleIdentifier, pid);
       return;
@@ -351,7 +351,7 @@
       }
     }];
   
-    [watchedAppsByPid removeObjectForKey:pid];
+    [observedAppsByPid removeObjectForKey:pid];
     
     __log("%@ deregistered observation for app %@", self, application);
   }
@@ -385,8 +385,8 @@
 }
 
 -(SIApplication*) appElementForProcessIdentifier:(pid_t)processIdentifier {
-  @synchronized(watchedAppsByPid) {
-    return watchedAppsByPid[@(processIdentifier)];
+  @synchronized(observedAppsByPid) {
+    return observedAppsByPid[@(processIdentifier)];
   }
 }
 
@@ -414,8 +414,8 @@
   id pid = @(siElement.processIdentifier);
 
   SIApplication* application = nil;
-  @synchronized(watchedAppsByPid) {
-    application = watchedAppsByPid[pid];
+  @synchronized(observedAppsByPid) {
+    application = observedAppsByPid[pid];
   }
   if (application == nil) {
     // impossible!!?
@@ -430,7 +430,8 @@
     @autoreleasepool {
       id axInfo = [blockSelf accessibilityInfoForElement:siElement axNotification:axNotification];
 
-      // synchronise state access.
+      // synchronise state access on main queue.
+      // this restricts usage of this class on the main thread!
       dispatch_async(dispatch_get_main_queue(), ^{
         NSDictionary* accessibilityInfosByPid = blockSelf.accessibilityInfosByPid;
 
