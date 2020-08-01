@@ -61,12 +61,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(readonly) AccessibilityInfo* _Nullable focusedWindowAccessibilityInfo;
 
+-(NSArray<SIWindow*>*) windowsForPid:(pid_t)pid;
+
+
 -(SIApplication*) appElementForProcessIdentifier:(pid_t)processIdentifier;
 
 
--(void) execAsyncSynchronisingOn:(id)object block:(void(^)(void))block;
+-(void) execAsyncSynchronisingOnPid:(NSNumber*)pid block:(void(^)(void))block;
 
-  
+
 NS_ASSUME_NONNULL_END
 
 @end

@@ -23,16 +23,8 @@ public extension BBLAccessibilityPublisher {
       }
 
     // reject windows not seen by ax api, e.g. transparent windows.
-    let pids = onScreenCgWindows.map { $0.pid }.uniqueValues
-    let axWindowIds = activeWindows(pids: pids).map { $0.windowID }
-    // PERF work on the per-app queues to avoid hanging app blocking main thread.
-    
-    let axFilteredCgWindows = onScreenCgWindows.filter {
-      if $0.windowLayer == Int(kCGNormalWindowLevel) {
-        return axWindowIds.contains(UInt32($0.windowId.windowNumber)!)
-      } else {
-        return true
-      }
+    let axFilteredCgWindows = onScreenCgWindows.filter { window in
+      self.windows(forPid: window.pid).contains { $0.windowID == UInt32(window.windowId.windowNumber) }
     }
     
     let activePid = axFilteredCgWindows.first?.pid

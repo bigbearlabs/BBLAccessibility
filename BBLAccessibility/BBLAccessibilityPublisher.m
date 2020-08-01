@@ -2,7 +2,7 @@
 #import <Silica/Silica.h>
 #import <AppKit/AppKit.h>
 #import "logging.h"
-
+#import <BBLAccessibility/BBLAccessibility-Swift.h>
 
 // FIXME some performance problems with:
 // console.app (too frequent notifs for title change)
@@ -23,6 +23,8 @@
 
   NSMutableDictionary* _bundleIdsByPid;
   
+  NSMutableDictionary* windowListsByPid;
+
   // control load of concurrent queue.
   dispatch_semaphore_t semaphore;
   dispatch_queue_t serialQueue;
@@ -38,9 +40,10 @@
   if (self) {
     _accessibilityInfosByPid = [@{} mutableCopy];
     _bundleIdsByPid = @{}.mutableCopy;
-    
+
     observedAppsByPid = [@{} mutableCopy];
-    
+    windowListsByPid =[@{} mutableCopy];
+
     serialQueue = dispatch_queue_create(
       "BBLAccessiblityPublisher-serial",
       dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INTERACTIVE, 0));
@@ -141,6 +144,11 @@
     
     NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
     
+    BBLAccessibilityPublisher* strongSelf = blockSelf;
+    @synchronized (strongSelf) {
+      [strongSelf->windowListsByPid removeObjectForKey:@(app.processIdentifier)];
+    }
+    
     [blockSelf unobserveAxEventsForApplication:app];
     
     NSMutableDictionary* axInfos = blockSelf.accessibilityInfosByPid.mutableCopy;
@@ -153,11 +161,15 @@
 
   // observe all current apps.
   // NOTE it still takes a while for the notifs to actually invoke the handlers. at least with concurrent set up we don't hog the main thread as badly as before.
-  for (NSRunningApplication* app in blockSelf.applicationsToObserve) {
+  for (NSRunningApplication* app in self.applicationsToObserve) {
     @synchronized (bundleIdsByPid) {
       bundleIdsByPid[@(app.processIdentifier)] = app.bundleIdentifier;
     }
     [self observeAxEventsForApplication:app];
+    
+    [self execAsyncSynchronisingOnPid:@(app.processIdentifier) block:^{
+      [self updateWindowsForPid:app.processIdentifier];
+    }];
   }
   
   __log("%@ is watching the windows", self);
@@ -411,22 +423,13 @@
                            axNotification:(CFStringRef)axNotification
                               forceUpdate:(BOOL)forceUpdate
 {
-  id pid = @(siElement.processIdentifier);
-
-  SIApplication* application = nil;
-  @synchronized(observedAppsByPid) {
-    application = observedAppsByPid[pid];
-  }
-  if (application == nil) {
-    // impossible!!?
-    return;
-  }
 
   // * updated the published property.
   
   //   dispatch to a queue, to avoid spins if ax query of the target app takes a long time.
+  id pid = @(siElement.processIdentifier);
   __weak BBLAccessibilityPublisher* blockSelf = self;
-  [blockSelf execAsyncSynchronisingOn:application block:^{
+  [self execAsyncSynchronisingOnPid:pid block:^{
     @autoreleasepool {
       id axInfo = [blockSelf accessibilityInfoForElement:siElement axNotification:axNotification];
 
@@ -446,10 +449,21 @@
           blockSelf.accessibilityInfosByPid = updatedAccessibilityInfosByPid;
         }
       });
+      
+      // track visible windows.
+      [self updateWindowsForPid:siElement.processIdentifier];
     }
   }];
 }
 
+-(void)updateWindowsForPid: (pid_t)pid {
+  SIApplication* siApp = [SIApplication applicationForProcessIdentifier:pid];
+  [siApp dropWindowsCache]; // PERF?
+  id windows = [siApp windows];
+  @synchronized (self) {
+    [windowListsByPid setObject:windows forKey:@(pid)];
+  }
+}
 
 #pragma mark - handlers
 
@@ -513,6 +527,12 @@
 
 #pragma mark - util
 
+-(NSArray<SIWindow*>*) windowsForPid:(pid_t)pid {
+  @synchronized (self) {
+    return [windowListsByPid objectForKey:@(pid)];
+  }
+}
+
 -(SIWindow*) keyWindowForApplication:(SIApplication*) application {
   for (SIWindow* window in application.visibleWindows) {
     if (![window isSheet]) 
@@ -521,6 +541,20 @@
 
   @throw [NSException exceptionWithName:@"invalid-state" reason:@"no suitable window to return as key" userInfo:nil];
 }
+
+-(void) execAsyncSynchronisingOnPid:(NSNumber*)pid block:(void(^)(void))block {
+  SIApplication* application = nil;
+  @synchronized(observedAppsByPid) {
+    application = observedAppsByPid[pid];
+  }
+  if (application == nil) {
+    // impossible!!?
+    return;
+  }
+
+  [self execAsyncSynchronisingOn:application block:block];
+}
+
 
 /// asynchronously execute on global concurrent queue, synchronised on object to avoid deadlocks.
 -(void) execAsyncSynchronisingOn:(id)object block:(void(^)(void))block {
