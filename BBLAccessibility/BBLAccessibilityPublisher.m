@@ -328,7 +328,7 @@
   // * observe ax notifications for the app asynchronously.
   // TODO timeout and alert user.
   __weak BBLAccessibilityPublisher* blockSelf = self;
-  [blockSelf execAsyncSynchronisingOn:siApp block:^{
+  [blockSelf execAsyncSynchronisingOnObject:siApp block:^{
     for (NSString* notification in [blockSelf handlersByNotificationTypes]) {
       
       [siApp observeNotification:(__bridge CFStringRef)notification withElement:siApp];
@@ -357,7 +357,7 @@
     }
     
     __weak BBLAccessibilityPublisher* blockSelf = self;
-    [self execAsyncSynchronisingOn:siApp block:^{
+    [self execAsyncSynchronisingOnObject:siApp block:^{
       for (NSString* notification in [blockSelf handlersByNotificationTypes]) {
         [siApp unobserveNotification:(__bridge CFStringRef)notification withElement:siApp];
       }
@@ -552,12 +552,12 @@
     return;
   }
 
-  [self execAsyncSynchronisingOn:application block:block];
+  [self execAsyncSynchronisingOnObject:application block:block];
 }
 
 
 /// asynchronously execute on global concurrent queue, synchronised on object to avoid deadlocks.
--(void) execAsyncSynchronisingOn:(id)object block:(void(^)(void))block {
+-(void) execAsyncSynchronisingOnObject:(id)object block:(void(^)(void))block {
   
   // use a semaphore to avoid excessive thread spawning if the code path leading to the global
   // concurrent queue gets hot.
@@ -565,15 +565,15 @@
   __weak dispatch_semaphore_t _semaphore = semaphore;
   dispatch_async(serialQueue, ^{
     
-    dispatch_semaphore_wait(_semaphore, dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC));
-    
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
       @synchronized(object) {
         block();
       }
       dispatch_semaphore_signal(_semaphore);
     });
- });
+
+    dispatch_semaphore_wait(_semaphore, dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC));
+  });
 }
 
 @end

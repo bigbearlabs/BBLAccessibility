@@ -69,6 +69,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void) execAsyncSynchronisingOnPid:(NSNumber*)pid block:(void(^)(void))block;
 
+-(void) execAsyncSynchronisingOnObject:(id)object block:(void(^)(void))block;
+
 
 NS_ASSUME_NONNULL_END
 

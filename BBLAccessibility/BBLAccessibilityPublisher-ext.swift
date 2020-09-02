@@ -2,7 +2,6 @@ public typealias WindowServerState =  (activePid: pid_t?, currentScreenId: Int, 
 
 
 public extension BBLAccessibilityPublisher {
-
   
   var activeWindowsInCurrentSpace: (currentScreenId: Int, windowInfoListsByScreenId: [Int : [CGWindowInfo]]) {
     let currentState = self.currentState
@@ -23,26 +22,30 @@ public extension BBLAccessibilityPublisher {
       }
 
     // reject windows not seen by ax api, e.g. transparent windows.
+    let pidsForCgWindows = onScreenCgWindows.map { $0.pid }.uniqueValues
+    let axWindowsForPids = pidsForCgWindows.map { self.siWindows(pid: $0) }.flatMap { $0 }
+    
     let axFilteredCgWindows = onScreenCgWindows.filter { window in
-      self.windows(forPid: window.pid).contains { $0.windowID == UInt32(window.windowId.windowNumber) }
+      axWindowsForPids.contains { $0.windowID == UInt32(window.windowId.windowNumber) }
     }
     
     let activePid = axFilteredCgWindows.first?.pid
     
     // group by screen based on frame
     
-    let windowInfoListsByScreenId = Dictionary(grouping: axFilteredCgWindows.map { windowInfo -> (Int, CGWindowInfo) in
-      let screens = NSScreen.screens
-      for (i, screen) in screens.enumerated() {
-        if windowInfo.frame.intersects(screen.frame) {
-          return (i, windowInfo)
+    let windowInfoListsByScreenId = Dictionary(
+      grouping: axFilteredCgWindows.map { windowInfo -> (Int, CGWindowInfo) in
+        let screens = NSScreen.screens
+        for (i, screen) in screens.enumerated() {
+          if windowInfo.frame.intersects(screen.frame) {
+            return (i, windowInfo)
+          }
         }
-      }
-      // no intersection; assume belonging to first screen.
-      return (0, windowInfo)
-    }, by: { (screenId, _) in
-      screenId
-    }).mapValues { ts in
+        // no intersection; assume belonging to first screen.
+        return (0, windowInfo)
+      },
+      by: { screenId, _ in  screenId })
+    .mapValues { ts in
       ts.map { $0.1 }
     }
     
@@ -79,5 +82,27 @@ public extension BBLAccessibilityPublisher {
     return activeWindows
   }
 
-  
+
+  func siWindows(pid: pid_t) -> [SIWindow] {
+    // IT1
+//    SIApplication(forProcessIdentifier: pid).uncachedWindows
+    
+    // IT2 version that doens't risk blocking calling thread.
+    var windows: [SIWindow]? = nil
+    let serialisingSemaphore = DispatchSemaphore(value: 0)
+    let siApp = SIApplication(forProcessIdentifier: pid)
+    execAsyncSynchronising(on: siApp) {
+      windows = siApp.uncachedWindows
+      serialisingSemaphore.signal()
+    }
+    serialisingSemaphore.wait() // MAYBE provide a timeout
+
+    guard windows != nil
+      else { fatalError() }
+    
+    return windows!
+  }
+
 }
+
+
