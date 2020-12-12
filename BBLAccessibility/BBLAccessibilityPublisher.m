@@ -460,8 +460,12 @@
   SIApplication* siApp = [SIApplication applicationForProcessIdentifier:pid];
   [siApp dropWindowsCache]; // PERF?
   id windows = [siApp windows];
-  @synchronized (self) {
-    [windowListsByPid setObject:windows forKey:@(pid)];
+  if (windows == nil) {
+    NSLog(@"%@ reported nil windows; will not update window lists for it.", siApp);
+  } else {
+    @synchronized (self) {
+      [windowListsByPid setObject:windows forKey:@(pid)];
+    }
   }
 }
 
