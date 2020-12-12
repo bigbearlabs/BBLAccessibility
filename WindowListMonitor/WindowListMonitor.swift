@@ -32,16 +32,17 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     // out of scope: no suitable ax event found.
   }
   
-  var handler: (Event) -> Void = { _ in }
+  let handler: (Event) -> Void
   
   
   var observation: Any?
   
-  
-  public func observeEvents(handler: @escaping (Event) -> Void) {
-    
+  public init(handler: @escaping (Event) -> Void) {
     self.handler = handler
-    
+  }
+  
+  public func observeEvents() {
+        
 //    self.observation = self.observe(\.accessibilityInfosByPid) { o, c in
 //
 //    }

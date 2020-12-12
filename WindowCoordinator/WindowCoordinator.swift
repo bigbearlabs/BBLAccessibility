@@ -12,12 +12,14 @@ public class WindowCoordinator {
   public func position(
     windowFramePairs: [UInt32 : CGRect],
     raise: Bool = false,
-    focus windowNumberToFocus: UInt32? = nil) {
+    activate windowNumberToFocus: UInt32? = nil) {
     for (windowNumber, frame) in windowFramePairs {
       
       if let window = SIWindow.for(windowNumber: windowNumber) {
-        
-        if window.frame() != frame {
+        if frame == .zero {
+          print("WARN window \(windowNumber) is given a zero frame; will not set.")
+        }
+        else if window.frame() != frame {
           window.setFrame(frame)
         }
         

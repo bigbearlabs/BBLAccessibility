@@ -32,7 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     window.makeKeyAndOrderFront(nil)
     
     
-    self.windowListMonitor.observeEvents { [unowned self] event in
+    self.windowListMonitor = WindowListMonitor { [unowned self] event in
       
       print("event: \(event)")
       
@@ -50,6 +50,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       
       print(try! ["currentSpaceWindows": dump].jsonString())
     }
+    windowListMonitor.observeEvents()
     
     loopInspectCgWindows()
     
