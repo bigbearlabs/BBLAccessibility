@@ -103,14 +103,97 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
 
   }
   
-  
+    
+  /**
+   @return applications for which the AxObserver will register for AX notifications.
+   there are factory defaults for some exclusions which are roughly on par with:
+   
+   ```bash
+   killall cfprefsd
+   defaults write com.bigbearlabs.contexter "axobserver_excluded_names" "System Events,com.apple.WebKit.WebContent,com.apple.WebKit.Networking,Google Chrome Helper,WebBuddy,Contexter"
+   defaults write com.bigbearlabs.contexter "axobserver_excluded_bundleids" "com.apple.WebKit,com.apple.WebKit.Networking,com.apple.loginwindow,Karabiner_AXNotifier,com.google.Chrome.helper"
+   ```
+  */
   public override var applicationsToObserve: [NSRunningApplication] {
-    var apps = super.applicationsToObserve
-    apps.removeAll { runningApp in
-      // exclude myself.
-      runningApp.bundleIdentifier == Bundle.main.bundleIdentifier
+    get {
+      let pid = NSRunningApplication.current.processIdentifier
+      
+      return super.applicationsToObserve.filter { runningApplication in
+        
+        // must have a bundle id.
+        guard let bundleId = runningApplication.bundleIdentifier else {
+          return false
+        }
+        
+        guard
+          // don't observe this app.
+          runningApplication.processIdentifier != pid
+            
+          // exclude all agent apps. except webbuddy.
+          && (!runningApplication.isAgent()
+//            || runningApplication.bundleIdentifier == "com.bigbearlabs.WebBuddy"
+            )
+            
+          // exclude everything that ends with '.xpc'.
+          && runningApplication.bundleURL?.absoluteString.hasSuffix(".xpc") != true
+          // exclude e.g. '/System/Library/CoreServices/Siri.app/Contents/XPCServices/SiriNCService.xpc/Contents/MacOS/SiriNCService'
+          && runningApplication.bundleURL?.absoluteString.contains(".xpc/") != true
+        else {
+          return false
+        }
+        
+        if self.excludedBundleIdSubstrings
+          .contains(where: {
+            // bundle id contains the substring
+            bundleId.lowercased().contains($0)
+          }) {
+          return false
+        }
+        
+        if let appUrl = runningApplication.executableURL {
+          let filename = appUrl.lastPathComponent
+          if self.excludedNames.contains(filename) {
+            return false
+          }
+        }
+        
+        return true
+      }
     }
-    return apps
   }
+
+
+  lazy var excludedBundleIdSubstrings: [String] = {
+    return (UserDefaults.standard.stringArray(forKey: "excludedBundleIdPatterns")  ?? [])
+      + [
+        // always exclude my own bundle id.
+        Bundle.main.bundleIdentifier,
+        "com.apple.loginwindow",
+        "com.kite.Kite",
+        "com.apple.controlstrip",
+        
+        // exclude all input methods, ui agents.
+        "com.apple.inputmethod",
+        ".uiagent",
+
+//        "com.apple.dt.Xcode",  // DEV to allow debugger ops while troubleshooting cases where watch setup was slow.
+
+      ].compactMap { $0 }
+  }()
   
+  var excludedNames: [String] {
+    return (UserDefaults.standard.stringArray(forKey: "excludedBundleIdNames") ?? [])
+      + [
+        "loginwindow",
+        "universalaccessd",
+        "talagent",
+        "coreautha.bundle",
+        "AirPlayUIAgent",
+        "Siri",
+        "SiriNCService",
+        "universalAccessAuthWarn",
+        "BetterTouchTool",
+    ]
+  }
+
 }

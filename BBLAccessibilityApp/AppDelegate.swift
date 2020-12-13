@@ -74,15 +74,17 @@ class AXPublisher: BBLAccessibilityPublisher {
       let excludedNames = self.excludedNames
       
       return super.applicationsToObserve.filter { runningApplication in
-        guard
+        if
           // don't observe this app.
-          runningApplication.processIdentifier != pid
+          runningApplication.processIdentifier == pid
             // exclude all agent apps.
-            && !runningApplication.isAgent()
+            || runningApplication.isAgent()
             // exclude everything that ends with '.xpc'.
-            && !(runningApplication.bundleURL?.absoluteString.hasSuffix(".xpc") ?? false)
-          else {
-            return false
+            || (
+              runningApplication.bundleURL?.absoluteString.hasSuffix(".xpc")
+              || runningApplication.bundleURL?.absoluteString.hasSuffix(".xpc/")
+            ) {
+          return false
         }
         
         if let bundleId = runningApplication.bundleIdentifier {
