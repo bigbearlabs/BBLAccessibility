@@ -182,8 +182,9 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
   }()
   
   var excludedNames: [String] {
-    return (UserDefaults.standard.stringArray(forKey: "excludedBundleIdNames") ?? [])
+    return (UserDefaults.standard.stringArray(forKey: "excludedNames") ?? [])
       + [
+        "Dock",
         "loginwindow",
         "universalaccessd",
         "talagent",
