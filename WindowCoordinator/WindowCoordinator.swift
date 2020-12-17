@@ -10,10 +10,10 @@ public class WindowCoordinator {
   
   
   public func position(
-    windowFramePairs: [UInt32 : CGRect],
+    framesByWindowNumber: [UInt32 : CGRect],
     raise: Bool = false,
     activate windowNumberToFocus: UInt32? = nil) {
-    for (windowNumber, frame) in windowFramePairs {
+    for (windowNumber, frame) in framesByWindowNumber {
       
       if let window = SIWindow.for(windowNumber: windowNumber) {
         if frame == .zero {
