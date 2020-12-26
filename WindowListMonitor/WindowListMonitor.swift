@@ -81,6 +81,13 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       let focusedWindowNumber = siApp.focusedWindow()?.windowID
       event = .activated(pid: pid, focusedWindowNumber: focusedWindowNumber)
     
+    case kAXApplicationDeactivatedNotification:
+      guard let frontmostApp = SIApplication.focused(),
+         let activeWindow = frontmostApp.focusedWindow()
+      else { return }
+      
+      event = .activated(pid: frontmostApp.processIdentifier(), focusedWindowNumber: activeWindow.windowID)
+
     case kAXWindowMovedNotification:
       event = .moved(windowNumber: windowNumber)
     

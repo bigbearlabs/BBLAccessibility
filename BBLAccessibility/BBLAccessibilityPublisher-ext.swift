@@ -1,4 +1,4 @@
-public typealias WindowServerState =  (activePid: pid_t?, currentScreenId: Int, windowInfoListsByScreenId: [Int : [CGWindowInfo]])
+public typealias WindowServerState = (activeWindowInfo: CGWindowInfo?, currentScreenId: Int, windowInfoListsByScreenId: [Int : [CGWindowInfo]])
 
 
 public extension BBLAccessibilityPublisher {
@@ -23,13 +23,12 @@ public extension BBLAccessibilityPublisher {
 
     // reject windows not seen by ax api, e.g. transparent windows.
     let pidsForCgWindows = onScreenCgWindows.map { $0.pid }.uniqueValues
-    let axWindowsForPids = pidsForCgWindows.map { self.siWindows(pid: $0) }.flatMap { $0 }
-    
+    let onScreenAxWindowIds = pidsForCgWindows.flatMap { self.siWindows(pid: $0) }.map { $0.windowID }
     let axFilteredCgWindows = onScreenCgWindows.filter { window in
-      axWindowsForPids.contains { $0.windowID == UInt32(window.windowId.windowNumber) }
+      onScreenAxWindowIds.contains { $0 == UInt32(window.windowId.windowNumber) }
     }
     
-    let activePid = axFilteredCgWindows.first?.pid
+    let activeWindowInfo = axFilteredCgWindows.first
     
     // group by screen based on frame
     
@@ -61,7 +60,7 @@ public extension BBLAccessibilityPublisher {
       }
     }()
     
-    return (activePid: activePid, currentScreenId: currentScreenId, windowInfoListsByScreenId: windowInfoListsByScreenId)
+    return (activeWindowInfo: activeWindowInfo, currentScreenId: currentScreenId, windowInfoListsByScreenId: windowInfoListsByScreenId)
   }
   
   var currentAppAccessibilityInfo: AccessibilityInfo? {
