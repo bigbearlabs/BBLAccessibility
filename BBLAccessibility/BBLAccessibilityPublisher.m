@@ -551,11 +551,12 @@
   @synchronized(observedAppsByPid) {
     application = observedAppsByPid[pid];
   }
-  if (application == nil) {
-    // impossible!!?
-    return;
-  }
+//  if (application == nil) {
+//    @throw [[NSException alloc] initWithName:@"app-not-observed" reason:nil userInfo:@{@"pid": pid}];
+//  }
 
+  // NOTE if app for pid not observed, we will not be synchronising!
+  
   [self execAsyncSynchronisingOnObject:application block:block];
 }
 
