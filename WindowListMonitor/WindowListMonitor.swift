@@ -76,17 +76,15 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       event = .titleChanged(windowNumber: windowNumber)
       
     case kAXApplicationActivatedNotification:
-      let siApp = SIApplication(axElement: siElement.axElementRef)
-      let pid = siApp.processIdentifier()
-      let focusedWindowNumber = siApp.focusedWindow()?.windowID
+      let pid = siElement.processIdentifier()
+      let focusedWindowNumber = focusedWindow(pid: pid)?.windowID
       event = .activated(pid: pid, focusedWindowNumber: focusedWindowNumber)
     
     case kAXApplicationDeactivatedNotification:
-      guard let frontmostApp = SIApplication.focused(),
-         let activeWindow = frontmostApp.focusedWindow()
+      guard let focusedWindow = focusedWindow()
       else { return }
       
-      event = .activated(pid: frontmostApp.processIdentifier(), focusedWindowNumber: activeWindow.windowID)
+      event = .activated(pid: focusedWindow.processIdentifier(), focusedWindowNumber: focusedWindow.windowID)
 
     case kAXWindowMovedNotification:
       event = .moved(windowNumber: windowNumber)
@@ -94,7 +92,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     // TODO inferring closed.
     case kAXUIElementDestroyedNotification:
       let pid = siElement.processIdentifier()
-      if SIApplication(forProcessIdentifier: pid).focusedWindow() == nil {
+      if focusedWindow(pid: pid) == nil {
         event = .noWindow(pid: pid)
       } else {
         return

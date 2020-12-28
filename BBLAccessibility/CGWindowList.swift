@@ -196,7 +196,10 @@ public struct CGWindowInfo: Codable, Equatable {
           e["bundleId"] = bundleId
         }
         
-        return CGWindowInfo(data: e, debug: false) // DEBUG
+        return CGWindowInfo(
+          data: e
+//          debug: true  // DEBUG
+        )
       }
       
     return results

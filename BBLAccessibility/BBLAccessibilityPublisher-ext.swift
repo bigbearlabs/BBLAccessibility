@@ -2,12 +2,7 @@ public typealias WindowServerState = (activeWindowInfo: CGWindowInfo?, currentSc
 
 
 public extension BBLAccessibilityPublisher {
-  
-  var activeWindowsInCurrentSpace: (currentScreenId: Int, windowInfoListsByScreenId: [Int : [CGWindowInfo]]) {
-    let currentState = self.currentState
-    return (currentState.currentScreenId, currentState.windowInfoListsByScreenId)
-  }
-    
+      
   var currentState: WindowServerState {
     let cgWindows = CGWindowInfo.query(scope: .onScreen, otherOptions: [.excludeDesktopElements])
     // TODO scope needs to change to 'all' in order for dock to show up during mission control activation.
@@ -21,9 +16,9 @@ public extension BBLAccessibilityPublisher {
         ].contains($0.windowLayer)
       }
 
-    // reject windows not seen by ax api, e.g. transparent windows.
+    //  reject windows not seen by ax api, e.g. transparent windows.
     let pidsForCgWindows = onScreenCgWindows.map { $0.pid }.uniqueValues
-    let onScreenAxWindowIds = pidsForCgWindows.flatMap { self.siWindows(pid: $0) }.map { $0.windowID }
+    let onScreenAxWindowIds = pidsForCgWindows.flatMap { self.windows(pid: $0) }.map { $0.windowID }
     let axFilteredCgWindows = onScreenCgWindows.filter { window in
       onScreenAxWindowIds.contains { $0 == UInt32(window.windowId.windowNumber) }
     }
@@ -63,45 +58,58 @@ public extension BBLAccessibilityPublisher {
     return (activeWindowInfo: activeWindowInfo, currentScreenId: currentScreenId, windowInfoListsByScreenId: windowInfoListsByScreenId)
   }
   
-  var currentAppAccessibilityInfo: AccessibilityInfo? {
-    guard let pid = SIApplication.focused()?.processIdentifier() else {
+
+  func windows(pid: pid_t) -> [SIWindow] {
+    do {
+      return try siQuery(pid: pid) { siApp in
+        siApp.uncachedWindows
+      }
+    } catch let e {
+      print("WARN \(e) acquiring windows for \(NSRunningApplication(processIdentifier: pid)?.debugDescription ?? String(pid))")
+      return []
+    }
+  }
+
+  func focusedWindow(pid: pid_t) -> SIWindow? {
+    do {
+      return try siQuery(pid: pid) { siApp in
+        siApp.focusedWindow()
+      }
+    } catch let e {
+      print("WARN \(e) acquiring focused window for \(NSRunningApplication(processIdentifier: pid)?.debugDescription ?? String(pid))")
       return nil
     }
-    
-    let axDataForPid = self.accessibilityInfosByPid[NSNumber(value: pid)]
-    return axDataForPid
   }
-
-
-  func activeWindows(pids: [pid_t]) -> [SIWindow] {
-    let siApps = pids.compactMap { self.appElement(forProcessIdentifier: $0) }
-    let activeWindows = siApps.flatMap {
-      $0.uncachedWindows
+  
+  func focusedWindow() -> SIWindow? {
+    guard let frontmostApp = NSWorkspace.shared.frontmostApplication
+    else { return nil }
+    
+    return focusedWindow(pid: frontmostApp.processIdentifier)
+  }
+  
+  
+  func siQuery<SIQueryResult>(
+    pid: pid_t,
+    timeout: TimeInterval = 1,
+    siAppHandler: @escaping (SIApplication) -> SIQueryResult)
+  throws -> SIQueryResult {
+    
+    var result: SIQueryResult? = nil
+    let group = DispatchGroup()
+    group.enter()
+    execAsyncSynchronising(onPid: NSNumber(value: pid)) {
+      let siApp = SIApplication(forProcessIdentifier: pid)
+      result = siAppHandler(siApp)
+      group.leave()
     }
-    return activeWindows
-  }
-
-
-  func siWindows(pid: pid_t) -> [SIWindow] {
-    // IT1
-//    SIApplication(forProcessIdentifier: pid).uncachedWindows
+    _ = group.wait(timeout: .now() + timeout)
     
-    // IT2 version that doens't risk blocking calling thread.
-    var windows: [SIWindow]? = nil
-    let serialisingSemaphore = DispatchSemaphore(value: 0)
-    let siApp = SIApplication(forProcessIdentifier: pid)
-    execAsyncSynchronising(on: siApp) {
-      windows = siApp.uncachedWindows
-      serialisingSemaphore.signal()
+    guard result != nil else {
+      throw NSError(domain: "ax-query-failure", code: -1, userInfo: nil)
     }
-    serialisingSemaphore.wait() // MAYBE provide a timeout
-
-    guard windows != nil
-      else { fatalError() }
     
-    return windows!
+    return result!
   }
-
+  
 }
-
-
