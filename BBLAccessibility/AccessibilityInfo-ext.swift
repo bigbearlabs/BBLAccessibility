@@ -31,11 +31,6 @@ public struct AxApplication {
     
     if let match = matches.first {
       match.focusOnlyThisWindow()
-      execOnMainAsync {
-        let app = NSWorkspace.shared.runningApplication(pid: self.siApp.processIdentifier())
-        app?.activate(options: [])
-      }
-      
     }
   }
   
