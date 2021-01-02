@@ -43,9 +43,7 @@ public class WindowCoordinator {
   
   public func focus(windowNumber: UInt32) {
     if let w = SIWindow.for(windowNumber: windowNumber) {
-      if SIWindow.focused()?.windowID != w.windowID {
-        w.focusOnlyThisWindow()
-      }
+      w.focusOnlyThisWindow()
     }
   }
 
