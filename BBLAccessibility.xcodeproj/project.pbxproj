@@ -46,6 +46,7 @@
 		514DE3B9249085AF00A3E184 /* Silica.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		514DE3BA249085CB00A3E184 /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; };
 		514DE3BB249085CB00A3E184 /* BBLBasics.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		51640E9125A462C000D791AE /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
 		5178DFB82498A821005EBE59 /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; };
 		5178DFBA2498A871005EBE59 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
 		5178DFBB2498A871005EBE59 /* Silica.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -305,6 +306,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				514DAEDC24972E33009AD46A /* BBLBasics.framework in Frameworks */,
+				51640E9125A462C000D791AE /* Silica.framework in Frameworks */,
 				513A8DC424A19498009FFF81 /* BBLAccessibility.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
