@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(readonly,copy,atomic,nonnull) NSDictionary<NSNumber*, NSString*>* bundleIdsByPid; // cache bundle ids as the processes come and go, to avoid hot path to NSRunningApplication.bundleIdentifier / its backing LS function (which showed up a few times as suspicious)
 
+-(BOOL)shouldObserveApplication: (NSRunningApplication*)application;
+
 -(void) watchWindows;
 
 -(void) unwatchWindows;

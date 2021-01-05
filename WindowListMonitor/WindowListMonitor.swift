@@ -119,53 +119,49 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
    defaults write com.bigbearlabs.contexter "axobserver_excluded_bundleids" "com.apple.WebKit,com.apple.WebKit.Networking,com.apple.loginwindow,Karabiner_AXNotifier,com.google.Chrome.helper"
    ```
   */
-  public override var applicationsToObserve: [NSRunningApplication] {
-    get {
-      let pid = NSRunningApplication.current.processIdentifier
-      
-      return super.applicationsToObserve.filter { runningApplication in
+  public override func shouldObserve(_ application: NSRunningApplication) -> Bool {
+    let pid = NSRunningApplication.current.processIdentifier
         
-        // must have a bundle id.
-        guard let bundleId = runningApplication.bundleIdentifier else {
-          return false
-        }
+    // must have a bundle id.
+    guard let bundleId = application.bundleIdentifier else {
+      return false
+    }
+    
+    guard
+      // don't observe this app.
+      application.processIdentifier != pid
         
-        guard
-          // don't observe this app.
-          runningApplication.processIdentifier != pid
-            
-          // exclude all agent apps. except webbuddy.
-          && (!runningApplication.isAgent()
+      // exclude all agent apps. except webbuddy.
+      && (!application.isAgent()
 //            || runningApplication.bundleIdentifier == "com.bigbearlabs.WebBuddy"
-            )
-            
-          // exclude everything that ends with '.xpc'.
-          && runningApplication.bundleURL?.absoluteString.hasSuffix(".xpc") != true
-          // exclude e.g. '/System/Library/CoreServices/Siri.app/Contents/XPCServices/SiriNCService.xpc/Contents/MacOS/SiriNCService'
-          && runningApplication.bundleURL?.absoluteString.contains(".xpc/") != true
-        else {
-          return false
-        }
+        )
         
-        if self.excludedBundleIdSubstrings
-          .contains(where: {
-            // bundle id contains the substring
-            bundleId.lowercased().contains($0)
-          }) {
-          return false
-        }
-        
-        if let appUrl = runningApplication.executableURL {
-          let filename = appUrl.lastPathComponent
-          if self.excludedNames.contains(filename) {
-            return false
-          }
-        }
-        
-        return true
+      // exclude everything that ends with '.xpc'.
+      && application.bundleURL?.absoluteString.hasSuffix(".xpc") != true
+      // exclude e.g. '/System/Library/CoreServices/Siri.app/Contents/XPCServices/SiriNCService.xpc/Contents/MacOS/SiriNCService'
+      && application.bundleURL?.absoluteString.contains(".xpc/") != true
+    else {
+      return false
+    }
+    
+    if self.excludedBundleIdSubstrings
+      .contains(where: {
+        // bundle id contains the substring
+        bundleId.lowercased().contains($0)
+      }) {
+      return false
+    }
+    
+    if let appUrl = application.executableURL {
+      let filename = appUrl.lastPathComponent
+      if self.excludedNames.contains(filename) {
+        return false
       }
     }
+    
+    return true
   }
+  
 
 
   lazy var excludedBundleIdSubstrings: [String] = {

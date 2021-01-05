@@ -62,7 +62,8 @@ public extension BBLAccessibilityPublisher {
   func windows(pid: pid_t) -> [SIWindow] {
     do {
       return try siQuery(pid: pid) { siApp in
-        siApp.uncachedWindows
+        siApp?.uncachedWindows
+          ?? []
       }
     } catch let e {
       print("WARN \(e) acquiring windows for \(NSRunningApplication(processIdentifier: pid)?.debugDescription ?? String(pid))")
@@ -73,7 +74,7 @@ public extension BBLAccessibilityPublisher {
   func focusedWindow(pid: pid_t) -> SIWindow? {
     do {
       return try siQuery(pid: pid) { siApp in
-        siApp.focusedWindow()
+        siApp?.focusedWindow()
       }
     } catch let e {
       print("WARN \(e) acquiring focused window for \(NSRunningApplication(processIdentifier: pid)?.debugDescription ?? String(pid))")
@@ -88,18 +89,27 @@ public extension BBLAccessibilityPublisher {
     return focusedWindow(pid: frontmostApp.processIdentifier)
   }
   
-  
+  /**
+      @callback siAppHandler:
+      - @param siAppilcation  nil when pid is not subject to ax queries (e.g. due to #shouldObserve)
+   */
   func siQuery<SIQueryResult>(
     pid: pid_t,
     timeout: TimeInterval = 1,
-    siAppHandler: @escaping (SIApplication) -> SIQueryResult)
+    siAppHandler: @escaping (SIApplication?) -> SIQueryResult)
   throws -> SIQueryResult {
     
     var result: SIQueryResult? = nil
     let group = DispatchGroup()
     group.enter()
-    execAsyncSynchronising(onPid: NSNumber(value: pid)) {
-      let siApp = SIApplication(forProcessIdentifier: pid)
+    execAsyncSynchronising(onPid: NSNumber(value: pid)) { [unowned self] in
+      let siApp: SIApplication?
+      if let app = NSRunningApplication(processIdentifier: pid),
+         self.shouldObserve(app) {
+        siApp = SIApplication(runningApplication: app)
+      } else {
+        siApp = nil
+      }
       result = siAppHandler(siApp)
       group.leave()
     }

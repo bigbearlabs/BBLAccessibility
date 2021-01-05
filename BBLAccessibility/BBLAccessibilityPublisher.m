@@ -68,6 +68,9 @@
 //  return [NSRunningApplication runningApplicationsWithBundleIdentifier:@"com.apple.Safari"];
 }
 
+-(BOOL)shouldObserveApplication: (NSRunningApplication*)application {
+  return true;
+}
 
 #pragma mark -
 
@@ -120,7 +123,7 @@
   self->launchObservation = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidLaunchApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
     
     NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
-    if ([[blockSelf.applicationsToObserve valueForKey:@"bundleIdentifier"] containsObject:app.bundleIdentifier]) {
+    if ([blockSelf shouldObserveApplication:app]) {
 
       @synchronized (bundleIdsByPid) {
         bundleIdsByPid[@(app.processIdentifier)] = app.bundleIdentifier;
@@ -162,6 +165,10 @@
   // observe all current apps.
   // NOTE it still takes a while for the notifs to actually invoke the handlers. at least with concurrent set up we don't hog the main thread as badly as before.
   for (NSRunningApplication* app in self.applicationsToObserve) {
+    if (![self shouldObserveApplication: app]) {
+      continue;
+    }
+    
     @synchronized (bundleIdsByPid) {
       bundleIdsByPid[@(app.processIdentifier)] = app.bundleIdentifier;
     }
@@ -551,9 +558,15 @@
   @synchronized(observedAppsByPid) {
     application = observedAppsByPid[pid];
   }
-//  if (application == nil) {
+  if (application == nil) {
 //    @throw [[NSException alloc] initWithName:@"app-not-observed" reason:nil userInfo:@{@"pid": pid}];
-//  }
+    
+    // retrieve running app, sync on it.
+    application = [NSRunningApplication runningApplicationWithProcessIdentifier:pid];
+//    if (![self shouldObserveApplication:application]) {
+//
+//    }
+  }
 
   // NOTE if app for pid not observed, we will not be synchronising!
   
