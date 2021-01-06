@@ -69,6 +69,11 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       event = .created(windowNumber: windowNumber)
     
     case kAXMainWindowChangedNotification, kAXFocusedWindowChangedNotification:
+      guard siElement.subrole() == kAXStandardWindowSubrole else {
+        print("\(siElement) is not a standard window; not emitting event.")
+        return
+      }
+      
       event = .focused(windowNumber: windowNumber)
       // TODO confirm the id is reliable
     
