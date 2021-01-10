@@ -138,7 +138,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
         
       // exclude all agent apps. except webbuddy.
       && (!application.isAgent()
-//            || runningApplication.bundleIdentifier == "com.bigbearlabs.WebBuddy"
+        || application.bundleIdentifier == "com.bigbearlabs.WebBuddy"
         )
         
       // exclude everything that ends with '.xpc'.
