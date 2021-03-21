@@ -49,7 +49,7 @@
 		51640E9125A462C000D791AE /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
 		5178DFB82498A821005EBE59 /* BBLBasics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; };
 		5178DFBA2498A871005EBE59 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
-		5178DFBB2498A871005EBE59 /* Silica.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5178DFBB2498A871005EBE59 /* Silica.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5178DFBE2498A93D005EBE59 /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
 		5178DFBF2498A93D005EBE59 /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5178DFC52498AB3C005EBE59 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
@@ -666,9 +666,7 @@
 				TargetAttributes = {
 					51100F0A1CC15D200095B985 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = XK44TD8U4S;
 						LastSwiftMigration = 1020;
-						ProvisioningStyle = Automatic;
 					};
 					51100F1F1CC15D540095B985 = {
 						CreatedOnToolsVersion = 7.3;
@@ -686,15 +684,11 @@
 					};
 					514DAEAD2493EA23009AD46A = {
 						CreatedOnToolsVersion = 11.3.1;
-						DevelopmentTeam = XK44TD8U4S;
 						LastSwiftMigration = 1130;
-						ProvisioningStyle = Automatic;
 					};
 					514DAECF24972E23009AD46A = {
 						CreatedOnToolsVersion = 11.3.1;
-						DevelopmentTeam = XK44TD8U4S;
 						LastSwiftMigration = 1130;
-						ProvisioningStyle = Automatic;
 					};
 					514DAEE624972EA9009AD46A = {
 						CreatedOnToolsVersion = 11.3.1;
@@ -1053,11 +1047,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = XK44TD8U4S;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1066,7 +1057,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibility;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1076,11 +1066,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = XK44TD8U4S;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1089,7 +1076,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.BBLAccessibility;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -1223,10 +1209,8 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = XK44TD8U4S;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1255,10 +1239,8 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = XK44TD8U4S;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1284,10 +1266,8 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = XK44TD8U4S;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1316,10 +1296,8 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = XK44TD8U4S;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
