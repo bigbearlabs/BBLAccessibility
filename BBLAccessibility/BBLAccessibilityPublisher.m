@@ -562,7 +562,7 @@
 //    @throw [[NSException alloc] initWithName:@"app-not-observed" reason:nil userInfo:@{@"pid": pid}];
     
     // retrieve running app, sync on it.
-    application = [NSRunningApplication runningApplicationWithProcessIdentifier:pid];
+    application = [SIApplication applicationForProcessIdentifier:pid.intValue];
 //    if (![self shouldObserveApplication:application]) {
 //
 //    }
