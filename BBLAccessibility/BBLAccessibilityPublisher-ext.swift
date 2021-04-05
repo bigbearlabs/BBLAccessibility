@@ -18,7 +18,11 @@ public extension BBLAccessibilityPublisher {
 
     //  reject windows not seen by ax api, e.g. transparent windows.
     let pidsForCgWindows = onScreenCgWindows.map { $0.pid }.uniqueValues
-    let onScreenAxWindowIds = pidsForCgWindows.flatMap { self.windows(pid: $0) }.map { $0.windowID }
+    let onScreenAxWindowIds = pidsForCgWindows
+      // exclude this app in order not to get stuck in certain situations.
+      .filter { $0 != NSRunningApplication.current.processIdentifier }
+      .flatMap { self.windows(pid: $0) }
+      .map { $0.windowID }
     let axFilteredCgWindows = onScreenCgWindows.filter { window in
       onScreenAxWindowIds.contains { $0 == UInt32(window.windowId.windowNumber) }
     }
