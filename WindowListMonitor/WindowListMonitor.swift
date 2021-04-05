@@ -35,26 +35,16 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
   let handler: (Event) -> Void
   
   
-  var observation: Any?
-  
   public init(handler: @escaping (Event) -> Void) {
     self.handler = handler
   }
   
   public func observeEvents() {
-        
-//    self.observation = self.observe(\.accessibilityInfosByPid) { o, c in
-//
-//    }
-    
-    // avoid slow return.
-    DispatchQueue.global().sync {
-      self.watchWindows()
-    }
+    self.watchWindows()
   }
   
   func unobserveEvents() {
-    // TODO
+    self.unwatchWindows()
   }
   
   override public func updateAccessibilityInfo(for siElement: SIAccessibilityElement, axNotification: CFString, forceUpdate: Bool) {
