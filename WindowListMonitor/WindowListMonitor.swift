@@ -50,12 +50,10 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
   override public func updateAccessibilityInfo(for siElement: SIAccessibilityElement, axNotification: CFString, forceUpdate: Bool) {
     super.updateAccessibilityInfo(for: siElement, axNotification: axNotification, forceUpdate: forceUpdate)
 
-    let siWindow = SIWindow(for: siElement)
-    let windowNumber = siWindow.windowID
-
     var event: Event!
     switch axNotification as String {
     case kAXWindowCreatedNotification:
+      let windowNumber = SIWindow(for: siElement).windowID
       event = .created(windowNumber: windowNumber)
     
     case kAXMainWindowChangedNotification, kAXFocusedWindowChangedNotification:
@@ -64,10 +62,12 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
         return
       }
       
+      let windowNumber = SIWindow(for: siElement).windowID
       event = .focused(windowNumber: windowNumber)
       // TODO confirm the id is reliable
     
     case kAXTitleChangedNotification:
+      let windowNumber = SIWindow(for: siElement).windowID
       event = .titleChanged(windowNumber: windowNumber)
       
     case kAXApplicationActivatedNotification:
@@ -82,6 +82,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       event = .activated(pid: focusedWindow.processIdentifier(), focusedWindowNumber: focusedWindow.windowID)
 
     case kAXWindowMovedNotification:
+      let windowNumber = SIWindow(for: siElement).windowID
       event = .moved(windowNumber: windowNumber)
     
     // TODO inferring closed.

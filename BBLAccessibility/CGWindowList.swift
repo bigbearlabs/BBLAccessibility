@@ -81,13 +81,13 @@ public struct CGWindowInfo: Codable, Equatable {
 
   public let frame: CGRect
   
-  let data: DebugPropertyWrapper<[String : Any?]>?
+  let data: DebugPropertyWrapper<[CFString : Any?]>?
   
 
-  init?(data: [String : Any?], debug: Bool = false) {
+  init?(data: [CFString : Any?], debug: Bool = false) {
     guard
-      let pid = (data[kCGWindowOwnerPID as String] as? NSNumber)?.int32Value,
-      let cgWindowId = data[kCGWindowNumber as String] as? NSNumber
+      let pid = data[kCGWindowOwnerPID] as? pid_t,
+      let cgWindowId = data[kCGWindowNumber] as? NSNumber
     else {
       return nil
     }
@@ -96,18 +96,18 @@ public struct CGWindowInfo: Codable, Equatable {
     
     self.pid = pid
     self.windowId = WindowId.from(windowNumber: String(describing: cgWindowId))
-    if let title = data[kCGWindowName as String] as? NSString {
+    if let title = data[kCGWindowName] as? NSString {
       self.title = String(title)
     } else {
       self.title = ""
     }
 
-    let boundsDict = data[kCGWindowBounds as String] as! CFDictionary
+    let boundsDict = data[kCGWindowBounds] as! CFDictionary
     self.frame = CGRect(dictionaryRepresentation: boundsDict)!
 
-    self.isInActiveSpace = data[kCGWindowIsOnscreen as String] as? Bool ?? false
+    self.isInActiveSpace = data[kCGWindowIsOnscreen] as? Bool ?? false
 
-    self.windowLayer = data[kCGWindowLayer as String] as? Int
+    self.windowLayer = data[kCGWindowLayer] as? Int
   }
   
   // MARK: -
@@ -166,7 +166,7 @@ public struct CGWindowInfo: Codable, Equatable {
         return []
       }
       
-    guard let windowInfos = cgWindowInfos as? [[String : Any?]]
+    guard let windowInfos = cgWindowInfos as? [[CFString : Any?]]
       else {
         // ?
         return []
@@ -179,13 +179,13 @@ public struct CGWindowInfo: Codable, Equatable {
       
     let results: [CGWindowInfo] = windowInfos.compactMap { e in
       // reject transparent windows.
-      if e[kCGWindowAlpha as String] as? CGFloat == 0 {
+      if e[kCGWindowAlpha] as? CGFloat == 0 {
         return nil
       }
       
         // apply bid filter early.
         if let pids = pidsForBundleId,
-          let pid = e[kCGWindowOwnerPID as String] as? pid_t {
+          let pid = e[kCGWindowOwnerPID] as? pid_t {
           if !pids.contains(pid) {
             return nil
           }
@@ -193,7 +193,7 @@ public struct CGWindowInfo: Codable, Equatable {
         
         var e = e
         if let bundleId = bundleId {
-          e["bundleId"] = bundleId
+          e["bundleId" as CFString] = bundleId
         }
         
         return CGWindowInfo(

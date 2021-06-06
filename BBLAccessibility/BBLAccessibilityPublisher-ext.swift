@@ -31,9 +31,9 @@ public extension BBLAccessibilityPublisher {
     
     // group by screen based on frame
     
+    let screens = NSScreen.screens
     let windowInfoListsByScreenId = Dictionary(
       grouping: axFilteredCgWindows.map { windowInfo -> (Int, CGWindowInfo) in
-        let screens = NSScreen.screens
         for (i, screen) in screens.enumerated() {
           if windowInfo.frame.intersects(screen.frame) {
             return (i, windowInfo)
