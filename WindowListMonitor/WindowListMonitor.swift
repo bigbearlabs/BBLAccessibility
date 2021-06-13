@@ -50,7 +50,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
   override public func updateAccessibilityInfo(for siElement: SIAccessibilityElement, axNotification: CFString, forceUpdate: Bool) {
     super.updateAccessibilityInfo(for: siElement, axNotification: axNotification, forceUpdate: forceUpdate)
 
-    var event: Event!
+    var event: Event?
     switch axNotification as String {
     case kAXWindowCreatedNotification:
       let windowNumber = SIWindow(for: siElement).windowID
@@ -72,14 +72,24 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       
     case kAXApplicationActivatedNotification:
       let pid = siElement.processIdentifier()
-      let focusedWindowNumber = focusedWindow(pid: pid)?.windowID
-      event = .activated(pid: pid, focusedWindowNumber: focusedWindowNumber)
+      focusedWindow(pid: pid) { w in
+        event = .activated(pid: pid, focusedWindowNumber: w?.windowID)
+        DispatchQueue.main.async {
+          self.handler(event!)
+        }
+        return
+      }
     
     case kAXApplicationDeactivatedNotification:
-      guard let focusedWindow = focusedWindow()
-      else { return }
-      
-      event = .activated(pid: focusedWindow.processIdentifier(), focusedWindowNumber: focusedWindow.windowID)
+      focusedWindow() { focusedWindow in
+        if let focusedWindow = focusedWindow {
+          event = .activated(pid: focusedWindow.processIdentifier(), focusedWindowNumber: focusedWindow.windowID)
+          DispatchQueue.main.async {
+            self.handler(event!)
+          }
+        }
+        return
+      }
 
     case kAXWindowMovedNotification:
       let windowNumber = SIWindow(for: siElement).windowID
@@ -88,9 +98,13 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     // TODO inferring closed.
     case kAXUIElementDestroyedNotification:
       let pid = siElement.processIdentifier()
-      if focusedWindow(pid: pid) == nil {
-        event = .noWindow(pid: pid)
-      } else {
+      focusedWindow(pid: pid) { focusedWindow in
+        if focusedWindow == nil {
+          event = .noWindow(pid: pid)
+          DispatchQueue.main.async {
+            self.handler(event!)
+          }
+        }
         return
       }
       
@@ -98,10 +112,11 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       return
     }
     
-    DispatchQueue.main.async {
-      self.handler(event)
+    if event != nil {
+      DispatchQueue.main.async {
+        self.handler(event!)
+      }
     }
-
   }
   
     
