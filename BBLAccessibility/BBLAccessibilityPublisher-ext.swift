@@ -1,9 +1,9 @@
-public typealias WindowServerState = (activeWindowInfo: CGWindowInfo?, currentScreenId: Int, windowInfoListsByScreenId: [Int : [CGWindowInfo]])
-
-
 public extension BBLAccessibilityPublisher {
-      
-  func withCurrentState(completionHandler: (BBLAccessibility.WindowServerState) -> Void) {
+
+  typealias State = [Int : [CGWindowInfo]]
+
+  
+  func withCurrentState(completionHandler: (State) -> Void) {
     let cgWindows = CGWindowInfo.query(scope: .onScreen, otherOptions: [.excludeDesktopElements])
     // TODO scope needs to change to 'all' in order for dock to show up during mission control activation.
     let onScreenCgWindows = cgWindows
@@ -18,12 +18,7 @@ public extension BBLAccessibilityPublisher {
 
     //  reject windows not seen by ax api, e.g. transparent windows.
     let pidsForCgWindows = onScreenCgWindows.map { $0.pid }.uniqueValues
-//    let onScreenAxWindowIds = pidsForCgWindows
-//      // exclude this app in order not to get stuck in certain situations.
-//      .filter { $0 != NSRunningApplication.current.processIdentifier }
-//      .flatMap { self.windows(pid: $0) }
-//      .map { $0.windowID }
-    
+
     // filter down to windows reported on-screen by ax api.
     var onScreenAxWindowIds: [CGWindowID] = []
     let g = DispatchGroup()
@@ -38,14 +33,11 @@ public extension BBLAccessibilityPublisher {
       }
     }
 
-    g.wait(timeout: .now() + 0.2) // HARDCODED
+    _ = g.wait(timeout: .now() + 0.2) // HARDCODED
 
     let axFilteredCgWindows = onScreenCgWindows.filter { window in
       onScreenAxWindowIds.contains(CGWindowID(window.windowId.windowNumber)!)
-//      true
     }
-    
-    let activeWindowInfo = axFilteredCgWindows.first
     
     // group by screen based on frame
     
@@ -60,52 +52,34 @@ public extension BBLAccessibilityPublisher {
         // no intersection; assume belonging to first screen.
         return (0, windowInfo)
       },
-      by: { screenId, _ in  screenId })
-    .mapValues { ts in
-      ts.map { $0.1 }
-    }
-    
-    let currentScreenId: Int = {
-      if let firstWindow = axFilteredCgWindows.first,
-        let currentScreenId = windowInfoListsByScreenId.first(where: {
-          $0.value.contains(firstWindow)
-        })?.key {
-        return currentScreenId
-      } else {
-        print("defaulting currentScreenId to 0")
-        return 0
-      }
-    }()
-    
-    completionHandler(
-      (activeWindowInfo: activeWindowInfo, currentScreenId: currentScreenId, windowInfoListsByScreenId: windowInfoListsByScreenId)
+      by: { screenId, _ in screenId }
     )
+      .mapValues {
+        $0.map { screenId, windowInfoLists in
+          windowInfoLists
+        }
+      }
+    
+    completionHandler(windowInfoListsByScreenId)
+    
   }
   
 
+  // MARK: -
+  
   func windows(pid: pid_t, completionHandler: @escaping ([SIWindow]) -> Void) {
-//    do {
-      siQuery(pid: pid) { siApp in
-        completionHandler(
-          siApp?.uncachedWindows
-          ?? []
-        )
-      }
-//    } catch let e {
-//      print("WARN \(e) acquiring windows for \(NSRunningApplication(processIdentifier: pid)?.debugDescription ?? String(pid))")
-//      return []
-//    }
+    siQuery(pid: pid) { siApp in
+      completionHandler(
+        siApp?.uncachedWindows
+        ?? []
+      )
+    }
   }
 
   func focusedWindow(pid: pid_t, completionHandler: @escaping (SIWindow?) -> Void) {
-//    do {
-      siQuery(pid: pid) { siApp in
-        completionHandler(siApp?.focusedWindow())
-      }
-//    } catch let e {
-//      print("WARN \(e) acquiring focused window for \(NSRunningApplication(processIdentifier: pid)?.debugDescription ?? String(pid))")
-//      return nil
-//    }
+    siQuery(pid: pid) { siApp in
+      completionHandler(siApp?.focusedWindow())
+    }
   }
   
   func focusedWindow(completionHandler: @escaping (SIWindow?) -> Void) {
@@ -117,6 +91,9 @@ public extension BBLAccessibilityPublisher {
     
     focusedWindow(pid: frontmostApp.processIdentifier, completionHandler: completionHandler)
   }
+  
+  
+  // MARK: -
   
   /**
       @callback siAppHandler:
@@ -131,9 +108,6 @@ public extension BBLAccessibilityPublisher {
     completionHandler: @escaping (SIApplication?) -> Void
   ) {
     
-//    var result: SIQueryResult? = nil
-//    let group = DispatchGroup()
-//    group.enter()
     execAsyncSynchronising(onPid: NSNumber(value: pid)) { [unowned self] in
       let siApp: SIApplication?
       if let app = NSRunningApplication(processIdentifier: pid),
@@ -143,16 +117,8 @@ public extension BBLAccessibilityPublisher {
         siApp = nil
       }
   
-          completionHandler(siApp)
-//      group.leave()
+      completionHandler(siApp)
     }
-//    _ = group.wait(timeout: .now() + timeout)
-//
-//    guard result != nil else {
-//      throw NSError(domain: "ax-query-failure", code: -1, userInfo: nil)
-//    }
-//
-//    return result!
   }
   
 }
