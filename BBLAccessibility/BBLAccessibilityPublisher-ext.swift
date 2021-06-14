@@ -41,7 +41,7 @@ public extension BBLAccessibilityPublisher {
     g.wait(timeout: .now() + 0.2) // HARDCODED
 
     let axFilteredCgWindows = onScreenCgWindows.filter { window in
-      onScreenAxWindowIds.contains { $0 == UInt32(window.windowId.windowNumber) }
+      onScreenAxWindowIds.contains(CGWindowID(window.windowId.windowNumber)!)
 //      true
     }
     
