@@ -32,11 +32,18 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     // out of scope: no suitable ax event found.
   }
   
+  
   let handler: (Event) -> Void
   
+  let handlerQueue: DispatchQueue
+
   
-  public init(handler: @escaping (Event) -> Void) {
+  public init(
+    handler: @escaping (Event) -> Void,
+    handlerQueue: DispatchQueue = DispatchQueue.main
+  ) {
     self.handler = handler
+    self.handlerQueue = handlerQueue
   }
   
   public func observeEvents() {
@@ -50,11 +57,10 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
   override public func updateAccessibilityInfo(for siElement: SIAccessibilityElement, axNotification: CFString, forceUpdate: Bool) {
     super.updateAccessibilityInfo(for: siElement, axNotification: axNotification, forceUpdate: forceUpdate)
 
-    var event: Event?
     switch axNotification as String {
     case kAXWindowCreatedNotification:
       let windowNumber = SIWindow(for: siElement).windowID
-      event = .created(windowNumber: windowNumber)
+      handle(.created(windowNumber: windowNumber))
     
     case kAXMainWindowChangedNotification, kAXFocusedWindowChangedNotification:
       guard siElement.subrole() == kAXStandardWindowSubrole else {
@@ -63,62 +69,49 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       }
       
       let windowNumber = SIWindow(for: siElement).windowID
-      event = .focused(windowNumber: windowNumber)
+      handle(.focused(windowNumber: windowNumber))
       // TODO confirm the id is reliable
     
     case kAXTitleChangedNotification:
       let windowNumber = SIWindow(for: siElement).windowID
-      event = .titleChanged(windowNumber: windowNumber)
+      handle(.titleChanged(windowNumber: windowNumber))
       
     case kAXApplicationActivatedNotification:
       let pid = siElement.processIdentifier()
-      focusedWindow(pid: pid) { w in
-        event = .activated(pid: pid, focusedWindowNumber: w?.windowID)
-        DispatchQueue.main.async {
-          self.handler(event!)
-        }
-        return
+      focusedWindow(pid: pid) { [unowned self] window in
+        handle(.activated(pid: pid, focusedWindowNumber: window?.windowID))
       }
-    
+
     case kAXApplicationDeactivatedNotification:
-      focusedWindow() { focusedWindow in
+      focusedWindow() { [unowned self] focusedWindow in
         if let focusedWindow = focusedWindow {
-          event = .activated(pid: focusedWindow.processIdentifier(), focusedWindowNumber: focusedWindow.windowID)
-          DispatchQueue.main.async {
-            self.handler(event!)
-          }
+          handle(.activated(pid: focusedWindow.processIdentifier(), focusedWindowNumber: focusedWindow.windowID))
         }
-        return
       }
 
     case kAXWindowMovedNotification:
       let windowNumber = SIWindow(for: siElement).windowID
-      event = .moved(windowNumber: windowNumber)
+      handle(.moved(windowNumber: windowNumber))
     
     // TODO inferring closed.
     case kAXUIElementDestroyedNotification:
       let pid = siElement.processIdentifier()
-      focusedWindow(pid: pid) { focusedWindow in
+      focusedWindow(pid: pid) { [unowned self] focusedWindow in
         if focusedWindow == nil {
-          event = .noWindow(pid: pid)
-          DispatchQueue.main.async {
-            self.handler(event!)
-          }
+          handle(.noWindow(pid: pid))
         }
-        return
       }
-      
+
     default:
       return
     }
-    
-    if event != nil {
-      DispatchQueue.main.async {
-        self.handler(event!)
-      }
+  }
+
+  func handle(_ event: Event) {
+    handlerQueue.async {
+      self.handler(event)
     }
   }
-  
     
   /**
    @return applications for which the AxObserver will register for AX notifications.
