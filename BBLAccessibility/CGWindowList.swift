@@ -230,7 +230,7 @@ extension CGWindowInfo: WindowFingerprintable {
 
 extension CGWindowInfo: CustomStringConvertible {
   public var description: String {
-    return "\(( pid, windowId, isInActiveSpace ))"
+    return "\(windowId) (\((pid, isInActiveSpace)))"
   }
 }
 
