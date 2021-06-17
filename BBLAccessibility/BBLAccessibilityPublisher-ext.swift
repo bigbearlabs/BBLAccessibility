@@ -11,34 +11,37 @@ public extension BBLAccessibilityPublisher {
       .filter {
         // exclude pids for status menu items or dock
         ![
+          NSWindow.Level.mainMenu.rawValue,
           NSWindow.Level.statusBar.rawValue,
-//          NSWindow.Level.dock.rawValue
+//          NSWindow.Level.dock.rawValue,  // deprecated in 10.13
         ].contains($0.windowLayer)
       }
 
-    //  reject windows not seen by ax api, e.g. transparent windows.
-    let pidsForCgWindows = onScreenCgWindows.map { $0.pid }.uniqueValues
+    // DISABLED further filtering based on ax queries can spin, and produces unstable results depending on ax target app responsiveness.
+//    //  reject windows not seen by ax api, e.g. transparent windows.
+//    let pidsForCgWindows = onScreenCgWindows.map { $0.pid }.uniqueValues
+//
+//    // filter down to windows reported on-screen by ax api.
+//    var onScreenAxWindowIds: [CGWindowID] = []
+//    let g = DispatchGroup()
+//    let l = NSLock()
+//    for pid in pidsForCgWindows {
+//      g.enter()
+//      windows(pid: pid) { windows in
+//        l.lock()
+//        onScreenAxWindowIds.append(contentsOf: windows.map { $0.windowID })
+//        l.unlock()
+//        g.leave()
+//      }
+//    }
+//
+//    _ = g.wait(timeout: .now() + 0.2) // HARDCODED
 
-    // filter down to windows reported on-screen by ax api.
-    var onScreenAxWindowIds: [CGWindowID] = []
-    let g = DispatchGroup()
-    let l = NSLock()
-    for pid in pidsForCgWindows {
-      g.enter()
-      windows(pid: pid) { windows in
-        l.lock()
-        onScreenAxWindowIds.append(contentsOf: windows.map { $0.windowID })
-        l.unlock()
-        g.leave()
-      }
-    }
-
-    _ = g.wait(timeout: .now() + 0.2) // HARDCODED
-
-    let axFilteredCgWindows = onScreenCgWindows.filter { window in
-      onScreenAxWindowIds.contains(CGWindowID(window.windowId.windowNumber)!)
-    }
+//    let axFilteredCgWindows = onScreenCgWindows.filter { window in
+//      onScreenAxWindowIds.contains(CGWindowID(window.windowId.windowNumber)!)
+//    }
     
+    let axFilteredCgWindows = onScreenCgWindows
     // group by screen based on frame
     
     let screens = NSScreen.screens
