@@ -97,7 +97,9 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     case kAXUIElementDestroyedNotification:
       let pid = siElement.processIdentifier()
       focusedWindow(pid: pid) { [unowned self] focusedWindow in
-        if focusedWindow == nil {
+        if let focusedWindow = focusedWindow {
+          handle(.focused(windowNumber: focusedWindow.windowID))
+        } else {
           handle(.noWindow(pid: pid))
         }
       }
