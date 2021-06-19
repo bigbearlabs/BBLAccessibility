@@ -23,7 +23,6 @@
 
   NSMutableDictionary* _bundleIdsByPid;
   
-  NSMutableDictionary* windowListsByPid;
 
   // control load of concurrent queue.
   dispatch_semaphore_t semaphore;
@@ -42,7 +41,6 @@
     _bundleIdsByPid = @{}.mutableCopy;
 
     observedAppsByPid = [@{} mutableCopy];
-    windowListsByPid =[@{} mutableCopy];
 
     serialQueue = dispatch_queue_create(
       "BBLAccessiblityPublisher-serial",
@@ -147,11 +145,6 @@
     
     NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
     
-    BBLAccessibilityPublisher* strongSelf = blockSelf;
-    @synchronized (strongSelf) {
-      [strongSelf->windowListsByPid removeObjectForKey:@(app.processIdentifier)];
-    }
-    
     [blockSelf unobserveAxEventsForApplication:app];
     
     NSMutableDictionary* axInfos = blockSelf.accessibilityInfosByPid.mutableCopy;
@@ -173,10 +166,6 @@
       bundleIdsByPid[@(app.processIdentifier)] = app.bundleIdentifier;
     }
     [self observeAxEventsForApplication:app];
-    
-    [self execAsyncSynchronisingOnPid:@(app.processIdentifier) block:^{
-      [self updateWindowsForPid:app.processIdentifier];
-    }];
   }
   
   __log("%@ is watching the windows", self);
@@ -456,25 +445,10 @@
           blockSelf.accessibilityInfosByPid = updatedAccessibilityInfosByPid;
         }
       });
-      
-      // track visible windows.
-      [self updateWindowsForPid:siElement.processIdentifier];
     }
   }];
 }
 
--(void)updateWindowsForPid: (pid_t)pid {
-  SIApplication* siApp = [SIApplication applicationForProcessIdentifier:pid];
-  [siApp dropWindowsCache]; // PERF?
-  id windows = [siApp windows];
-  if (windows == nil) {
-    NSLog(@"%@ reported nil windows; will not update window lists for it.", siApp);
-  } else {
-    @synchronized (self) {
-      [windowListsByPid setObject:windows forKey:@(pid)];
-    }
-  }
-}
 
 #pragma mark - handlers
 
@@ -537,12 +511,6 @@
 }
 
 #pragma mark - util
-
--(NSArray<SIWindow*>*) windowsForPid:(pid_t)pid {
-  @synchronized (self) {
-    return [windowListsByPid objectForKey:@(pid)];
-  }
-}
 
 -(SIWindow*) keyWindowForApplication:(SIApplication*) application {
   for (SIWindow* window in application.visibleWindows) {
