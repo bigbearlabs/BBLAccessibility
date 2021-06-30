@@ -327,7 +327,10 @@
   [blockSelf execAsyncSynchronisingOnObject:siApp block:^{
     for (NSString* notification in [blockSelf handlersByNotificationTypes]) {
       
-      [siApp observeNotification:(__bridge CFStringRef)notification withElement:siApp];
+      AXError observeResult = [siApp observeAxNotification:(__bridge CFStringRef)notification withElement:siApp];
+      if (observeResult != kAXErrorSuccess) {
+        __log("WARN %@: observing %@ failed with code: %@", siApp, notification, @(observeResult));
+      }
     }
   }];
 
