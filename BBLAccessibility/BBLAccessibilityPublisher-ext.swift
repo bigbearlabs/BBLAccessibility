@@ -1,3 +1,6 @@
+import Combine
+
+
 public extension BBLAccessibilityPublisher {
 
   typealias State = [Int : [CGWindowInfo]]
@@ -123,5 +126,96 @@ public extension BBLAccessibilityPublisher {
       completionHandler(siApp)
     }
   }
+}
+
+
+// MARK: -  ax observation of newly launched apps
+
+public extension BBLAccessibilityPublisher {
+  
+  @objc
+  func observeLaunch(_ handler: @escaping (_ app: NSRunningApplication) -> Void) {
+    _ = runningApplicationsSubscription
+    
+    handleLaunchSubscription = appEventPublisher.sink { event in
+      switch event {
+      case .launched(let app):
+        handler(app)
+      default: ()
+      }
+    }
+  }
+
+  @objc
+  func unobserveLaunch() {
+    handleLaunchSubscription = nil
+  }
+
+  @objc
+  func observeTerminate(_ handler: @escaping (_ app: NSRunningApplication) -> Void) {
+    _ = runningApplicationsSubscription
+
+    handleTerminateSubscription = appEventPublisher.sink { event in
+      switch event {
+      case .terminated(let app):
+        handler(app)
+      default: ()
+      }
+    }
+  }
+
+  @objc
+  func unobserveTerminate() {
+    handleTerminateSubscription = nil
+  }
+}
+
+
+var handleLaunchSubscription: Any?
+var handleTerminateSubscription: Any?
+
+
+enum AppEvent {
+  case launched(NSRunningApplication)
+  case terminated(NSRunningApplication)
+}
+
+
+let appEventPublisher = PassthroughSubject<AppEvent, Never>()
+
+class RunningApplicationsBookkeeper {
+  var finishedLaunchingSubsByPid: [pid_t : Any] = [:]
+
+  var runningApplications = NSWorkspace.shared.runningApplications {
+    didSet {
+      let newApps = Set(runningApplications).subtracting(oldValue)
+      for app in newApps {
+        let sendOnFinishedLaunching = app.publisher(for: \.isFinishedLaunching, options: [.initial, .new])
+          .filter { $0 == true }
+          .map { (app, $0) }
+          .sink { app, isFinishedLaunching in
+            appEventPublisher.send(.launched(app))
+            self.finishedLaunchingSubsByPid[app.processIdentifier] = nil
+          }
+        self.finishedLaunchingSubsByPid[app.processIdentifier] = sendOnFinishedLaunching
+        //  most app will signal readiness via isFinishedLaunching.
+        // what of apps that never do? warn after delay?
+      }
+      
+      let terminatedApps = Set(oldValue).subtracting(runningApplications)
+      for app in terminatedApps {
+        appEventPublisher.send(.terminated(app))
+      }
+    }
+  }
   
 }
+
+let runningApplicationsSubscription: Any? =
+  NSWorkspace.shared.publisher(for: \.runningApplications)
+  .removeDuplicates()
+  .assign(to: \.runningApplications, on: runningApplicationsBookkeeper)
+
+
+let runningApplicationsBookkeeper = RunningApplicationsBookkeeper()
+

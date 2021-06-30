@@ -18,9 +18,6 @@
 {
   NSMutableDictionary<NSNumber*, SIApplication*>* observedAppsByPid;
   
-  id launchObservation;
-  id terminateObservation;
-
   NSMutableDictionary* _bundleIdsByPid;
   
 
@@ -116,11 +113,9 @@
   __weak BBLAccessibilityPublisher* blockSelf = self;
   // private mutation.
   NSMutableDictionary* bundleIdsByPid = _bundleIdsByPid;
-  
-  // on didlaunchapplication notif, observe.
-  self->launchObservation = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidLaunchApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-    
-    NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
+
+  // observe ax of newly launched apps.
+  [self observeLaunch: ^(NSRunningApplication* _Nonnull app) {
     if ([blockSelf shouldObserveApplication:app]) {
 
       @synchronized (bundleIdsByPid) {
@@ -134,24 +129,30 @@
       
       SIAXNotificationHandler handler = [blockSelf handlersByNotificationTypes][(__bridge NSString*)kAXFocusedWindowChangedNotification];
       handler(window);
-      
+
+      __log("%@ has been launched, ax observations added", app);
+
     } else {
       __log("%@ is not in list of apps to observe", app);
     }
+
   }];
     
-  // on terminateapplication notif, unobserve.
-  self->terminateObservation = [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidTerminateApplicationNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-    
-    NSRunningApplication* app = (NSRunningApplication*) note.userInfo[NSWorkspaceApplicationKey];
-    
-    [blockSelf unobserveAxEventsForApplication:app];
-    
-    NSMutableDictionary* axInfos = blockSelf.accessibilityInfosByPid.mutableCopy;
-    [axInfos removeObjectForKey:@(app.processIdentifier)];
-    
-    @synchronized (bundleIdsByPid) {
-      [bundleIdsByPid removeObjectForKey:@(app.processIdentifier)];
+  // clean up on terminated apps.
+  [self observeTerminate: ^(NSRunningApplication* _Nonnull app) {
+
+    if ([blockSelf shouldObserveApplication:app]) {
+
+      [blockSelf unobserveAxEventsForApplication:app];
+      
+      NSMutableDictionary* axInfos = blockSelf.accessibilityInfosByPid.mutableCopy;
+      [axInfos removeObjectForKey:@(app.processIdentifier)];
+      
+      @synchronized (bundleIdsByPid) {
+        [bundleIdsByPid removeObjectForKey:@(app.processIdentifier)];
+      }
+      
+      __log("%@ has beent terminated, ax observations removed", app);
     }
   }];
 
@@ -179,18 +180,10 @@
     }
   }
   
-  if (self->launchObservation) {
-    [[[NSWorkspace sharedWorkspace] notificationCenter]
-      removeObserver:self->launchObservation];
-    self->launchObservation = nil;
-  }
+  [self unobserveLaunch];
   
-  if (self->terminateObservation) {
-    [[[NSWorkspace sharedWorkspace] notificationCenter]
-      removeObserver:self->terminateObservation];
-    self->terminateObservation = nil;
-  }
-
+  [self unobserveTerminate];
+  
   [self deregisterForNotification];
 }
 
