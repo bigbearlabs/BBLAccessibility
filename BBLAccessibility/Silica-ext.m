@@ -50,7 +50,7 @@
   }
   else {
       // CASE Preview.app: AXGroup doesn't have the selectedTextRange, but its child AXStaticText does.
-      if ([self.role isEqualToString:(__bridge NSString*)kAXGroupRole]) {
+      if ([self.role isEqual:(__bridge NSString*)kAXGroupRole]) {
         NSArray* children = self.children;
         if (children.count > 0) {
           AXUIElementRef staticText = (__bridge AXUIElementRef) children[0];
@@ -162,9 +162,9 @@
 
 -(BOOL) isTextContainerComponent {
   return
-    [self.role isEqualToString:(NSString*)kAXTextAreaRole]
-    || [self.role isEqualToString:(NSString*)kAXTextFieldRole]
-    || [self.role isEqualToString:(NSString*)kAXStaticTextRole]
+    [self.role isEqual:(NSString*)kAXTextAreaRole]
+    || [self.role isEqual:(NSString*)kAXTextFieldRole]
+    || [self.role isEqual:(NSString*)kAXStaticTextRole]
     ;
 }
 
