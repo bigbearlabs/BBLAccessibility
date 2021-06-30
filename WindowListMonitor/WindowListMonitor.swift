@@ -59,6 +59,12 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
 
     switch axNotification as String {
     case kAXWindowCreatedNotification:
+      // filter out some roles.
+      
+      guard siElement.role() != kAXPopoverRole
+      else {
+        return
+      }
       let windowNumber = SIWindow(for: siElement).windowID
       handle(.created(windowNumber: windowNumber))
     
