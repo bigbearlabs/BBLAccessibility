@@ -2,11 +2,15 @@
 #import <asl.h>
 
 #ifndef logging_h
-
-
 #define logging_h
 
-//#define BBL_LOG_AX
+
+// MARK: -  constants
+
+//#define BBL_LOG_AX  // DEBUG enable trace-level logging of AX.
+
+
+// MARK: -
 
 #ifndef BBL_LOG_AX
 
@@ -20,7 +24,7 @@
     // opt1. logging based on unified logging API.
     // requires 10.12 or higher.
 
-    #define   __log(...) os_log_info(OS_LOG_DEFAULT, __VA_ARGS__);
+    #define __log(...) os_log_info(OS_LOG_DEFAULT, __VA_ARGS__);
 
   #else
   // // opt2.

@@ -73,7 +73,7 @@
   __weak BBLAccessibilityPublisher* blockSelf = self;
   notificationCenterObserverToken = [NSNotificationCenter.defaultCenter addObserverForName:AX_EVENT_NOTIFICATION object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
     
-//    NSLog(@"!!notif: %@", note);
+//    __log("!!notif: %@", note);
     
     SIAXNotificationData* axData = note.userInfo[AX_EVENT_NOTIFICATION_DATA];
     
@@ -130,10 +130,10 @@
       SIAXNotificationHandler handler = [blockSelf handlersByNotificationTypes][(__bridge NSString*)kAXFocusedWindowChangedNotification];
       handler(window);
 
-      __log("%@ has been launched, ax observations added", app);
+      __log("%@ launched, ax observations added", app);
 
     } else {
-      __log("%@ is not in list of apps to observe", app);
+      __log("👺 %@ not in ax observation scope", app);
     }
 
   }];
@@ -152,7 +152,7 @@
         [bundleIdsByPid removeObjectForKey:@(app.processIdentifier)];
       }
       
-      __log("%@ has beent terminated, ax observations removed", app);
+      __log("%@ terminated, ax observations removed", app);
     }
   }];
 
@@ -185,6 +185,8 @@
   [self unobserveTerminate];
   
   [self deregisterForNotification];
+  
+  __log("%@ is no longer watching the windows", self);
 }
 
 // FIXME 'application' is a slightly dodgy parameter. consider replacing with the siElement that generated the ax event.
@@ -318,14 +320,19 @@
   // TODO timeout and alert user.
   __weak BBLAccessibilityPublisher* blockSelf = self;
   [blockSelf execAsyncSynchronisingOnObject:siApp block:^{
+    NSMutableArray* observationFailures = @[].mutableCopy;
+    
     for (NSString* notification in [blockSelf handlersByNotificationTypes]) {
       
       AXError observeResult = [siApp observeAxNotification:(__bridge CFStringRef)notification withElement:siApp];
       if (observeResult != kAXErrorSuccess) {
-        __log("WARN %@: observing %@ failed with code: %@", siApp, notification, @(observeResult));
+        [observationFailures addObject:@(observeResult)];
       }
     }
-  }];
+    
+    if (observationFailures.count > 0) {
+      __log("👺 %@: ax observation failed with codes: %@", siApp, [[[NSSet setWithArray:observationFailures] allObjects] componentsJoinedByString:@", "]);
+    }
 
   
   
@@ -434,7 +441,7 @@
         if (forceUpdate
             || ![accessibilityInfosByPid[pid] isEqual:axInfo]) {
 
-          __log("update ax info dict with: %@", siElement);
+//          __log("update ax info dict with: %@", siElement);
 
           NSMutableDictionary* updatedAccessibilityInfosByPid = accessibilityInfosByPid.mutableCopy;
           updatedAccessibilityInfosByPid[pid] = axInfo;
