@@ -366,15 +366,16 @@
 
 -(AccessibilityInfo*) accessibilityInfoForElement:(SIAccessibilityElement*)siElement axNotification:(CFStringRef)axNotification {
   NSString* bundleId = self.bundleIdsByPid[@(siElement.processIdentifier)];
-  
-  // * case: element is an SIApplication.
-  if ([[siElement class] isEqual:[SIApplication class]]) {
-    return [[AccessibilityInfo alloc] initWithAppElement:(SIApplication*)siElement axNotification:axNotification bundleId:bundleId];
-  }
 
+  // ensure we can reference the app for this element.
   id appElement = [self appElementForProcessIdentifier:siElement.processIdentifier];
   if (appElement == nil) {
     return nil;
+  }
+
+  // * case: element is an SIApplication.
+  if ([siElement.role isEqual:(NSString*)kAXApplicationRole]) {
+    return [[AccessibilityInfo alloc] initWithAppElement:appElement axNotification:axNotification bundleId:bundleId];
   }
 
   SIAccessibilityElement* focusedElement = siElement.focusedElement;
