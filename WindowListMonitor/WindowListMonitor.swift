@@ -176,13 +176,17 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       + [
         // always exclude my own bundle id.
         Bundle.main.bundleIdentifier,
-        "com.apple.loginwindow",
-        "com.kite.Kite",
-        "com.apple.controlstrip",
         
+        "com.apple.loginwindow",
+
         // exclude all input methods, ui agents.
         "com.apple.inputmethod",
         ".uiagent",
+
+        "com.apple.controlstrip",
+        "com.apple.ScreenSaver.Engine",
+
+        "com.kite.Kite",
 
 //        "com.apple.dt.Xcode",  // DEV to allow debugger ops while troubleshooting cases where watch setup was slow.
 
@@ -194,14 +198,26 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       + [
         "Dock",
         "loginwindow",
+
         "universalaccessd",
+        "passd",
+        "photolibraryd",
+
         "talagent",
         "coreautha.bundle",
         "AirPlayUIAgent",
+        "CalendarAgent",
+        "ARDAgent.app",
+
+        "UIKitSystem.app",
+        ".appex",
+
         "Siri",
         "SiriNCService",
         "universalAccessAuthWarn",
+        
         "BetterTouchTool",
+        "USBServer.app",
     ]
   }
 
