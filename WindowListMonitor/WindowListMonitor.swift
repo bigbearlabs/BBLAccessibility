@@ -143,11 +143,6 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       // don't observe this app.
       application.processIdentifier != pid
         
-      // exclude all agent apps. except webbuddy.
-      && (!application.isAgent()
-        || application.bundleIdentifier == "com.bigbearlabs.WebBuddy"
-        )
-        
       // exclude everything that ends with '.xpc'.
       && application.bundleURL?.absoluteString.hasSuffix(".xpc") != true
       // exclude e.g. '/System/Library/CoreServices/Siri.app/Contents/XPCServices/SiriNCService.xpc/Contents/MacOS/SiriNCService'
