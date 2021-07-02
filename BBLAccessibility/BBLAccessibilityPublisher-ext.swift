@@ -119,20 +119,27 @@ class RunningApplicationsBookkeeper {
   var runningApplications = NSWorkspace.shared.runningApplications {
     didSet {
       let newApps = Set(runningApplications).subtracting(oldValue)
-      
+        .filter {
+          // occasionally we get a corrupt instance with pid -1.
+          $0.processIdentifier > 0
+        }
       let newAppSubs = Dictionary(uniqueKeysWithValues: newApps.map { app in
         (
           app.processIdentifier,
-          app.publisher(for: \.isFinishedLaunching, options: [.initial, .new])
-            .filter { $0 == true }
-            .map { (app, $0) }
-            .sink { app, isFinishedLaunching in
-              appEventPublisher.send(.launched(app))
-              self.finishedLaunchingSubsByPid[app.processIdentifier] = nil
-            }
+          (
+            app,
+            app.publisher(for: \.isFinishedLaunching, options: [.initial, .new])
+              .filter { $0 == true }
+              .map { (app, $0) }
+              .sink { app, isFinishedLaunching in
+                appEventPublisher.send(.launched(app))
+                self.finishedLaunchingSubsByPid[app.processIdentifier] = nil
+              }
+          )
         )
       })
       
+
       self.finishedLaunchingSubsByPid.merge(newAppSubs) { $1 }
       //  most app will signal readiness via isFinishedLaunching.
       // what of apps that never do? warn after delay?
