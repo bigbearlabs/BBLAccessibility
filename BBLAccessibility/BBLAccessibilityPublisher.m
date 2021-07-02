@@ -17,9 +17,6 @@
 @implementation BBLAccessibilityPublisher
 {
   NSMutableDictionary<NSNumber*, SIApplication*>* observedAppsByPid;
-  
-  NSMutableDictionary* _bundleIdsByPid;
-  
 
   // control load of concurrent queue.
   dispatch_semaphore_t semaphore;
@@ -35,8 +32,7 @@
   self = [super init];
   if (self) {
     _accessibilityInfosByPid = [@{} mutableCopy];
-    _bundleIdsByPid = @{}.mutableCopy;
-
+    
     observedAppsByPid = [@{} mutableCopy];
 
     serialQueue = dispatch_queue_create(
@@ -111,16 +107,10 @@
   [self registerForNotification];
 
   __weak BBLAccessibilityPublisher* blockSelf = self;
-  // private mutation.
-  NSMutableDictionary* bundleIdsByPid = _bundleIdsByPid;
 
   // observe ax of newly launched apps.
   [self observeLaunch: ^(NSRunningApplication* _Nonnull app) {
     if ([blockSelf shouldObserveApplication:app]) {
-
-      @synchronized (bundleIdsByPid) {
-        bundleIdsByPid[@(app.processIdentifier)] = app.bundleIdentifier;
-      }
       
       [blockSelf observeAxEventsForApplication:app];
       
@@ -148,10 +138,6 @@
       NSMutableDictionary* axInfos = blockSelf.accessibilityInfosByPid.mutableCopy;
       [axInfos removeObjectForKey:@(app.processIdentifier)];
       
-      @synchronized (bundleIdsByPid) {
-        [bundleIdsByPid removeObjectForKey:@(app.processIdentifier)];
-      }
-      
       __log("%@ terminated, ax observations removed", app);
     }
   }];
@@ -163,9 +149,6 @@
       continue;
     }
     
-    @synchronized (bundleIdsByPid) {
-      bundleIdsByPid[@(app.processIdentifier)] = app.bundleIdentifier;
-    }
     [self observeAxEventsForApplication:app];
   }
   
@@ -372,7 +355,6 @@
 #pragma mark -
 
 -(AccessibilityInfo*) accessibilityInfoForElement:(SIAccessibilityElement*)siElement axNotification:(CFStringRef)axNotification {
-  NSString* bundleId = self.bundleIdsByPid[@(siElement.processIdentifier)];
 
   // ensure we can reference the app for this element.
   id appElement = [self appElementForProcessIdentifier:siElement.processIdentifier];
@@ -382,18 +364,18 @@
 
   // * case: element is an SIApplication.
   if ([siElement.role isEqual:(NSString*)kAXApplicationRole]) {
-    return [[AccessibilityInfo alloc] initWithAppElement:appElement axNotification:axNotification bundleId:bundleId];
+    return [[AccessibilityInfo alloc] initWithAppElement:appElement axNotification:axNotification];
   }
 
   SIAccessibilityElement* focusedElement = siElement.focusedElement;
   
   // * case: no focused element.
   if (focusedElement == nil) {
-    return [[AccessibilityInfo alloc] initWithAppElement:appElement focusedElement:siElement axNotification:axNotification bundleId:bundleId];
+    return [[AccessibilityInfo alloc] initWithAppElement:appElement focusedElement:siElement axNotification:axNotification];
   }
 
   // * default case.
-  return [[AccessibilityInfo alloc] initWithAppElement:appElement focusedElement:focusedElement axNotification:axNotification bundleId:bundleId];
+  return [[AccessibilityInfo alloc] initWithAppElement:appElement focusedElement:focusedElement axNotification:axNotification];
 }
 
 -(SIApplication*) appElementForProcessIdentifier:(pid_t)processIdentifier {
@@ -511,7 +493,7 @@
 -(AccessibilityInfo*) focusedWindowAccessibilityInfo {
   SIApplication* app = [SIApplication focusedApplication];
   SIWindow* window = [app focusedWindow];
-  return [[AccessibilityInfo alloc] initWithAppElement:app focusedElement:window axNotification:kAXFocusedWindowChangedNotification bundleId: self.bundleIdsByPid[@(app.processIdentifier)]];
+  return [[AccessibilityInfo alloc] initWithAppElement:app focusedElement:window axNotification:kAXFocusedWindowChangedNotification];
 }
 
 #pragma mark - util

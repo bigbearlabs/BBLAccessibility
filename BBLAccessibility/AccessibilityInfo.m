@@ -15,12 +15,11 @@
 }
 
 
--(instancetype)initWithAppElement:(SIApplication*)app axNotification:(CFStringRef)axNotification bundleId:(NSString*)bundleId;
+-(instancetype)initWithAppElement:(SIApplication*)app axNotification:(CFStringRef)axNotification;
 {
   return [self initWithAppElement:app
                    focusedElement:nil
-                   axNotification:axNotification
-                         bundleId:bundleId];
+                   axNotification:axNotification];
 }
 
 
@@ -29,7 +28,6 @@
 -(instancetype)initWithAppElement:(SIApplication*)appElement
                    focusedElement:(SIAccessibilityElement*)focusedElement
                    axNotification:(CFStringRef)axNotification
-                         bundleId:(NSString*)bundleId
 {
   self = [super init];
   if (self) {
@@ -54,7 +52,6 @@
     _windowRole = _windowElement.role;
     _windowSubrole = _windowElement.subrole;
 
-    _bundleId = bundleId;
   }
   
   return self;
@@ -80,8 +77,8 @@
     : 0;
   
     return [NSString stringWithFormat:
-            @"ax: %@, app: %@, pid: %@, bundleId: %@, title: %@, windowId: %@, windowRect: %@, selectedTextHash: %@, selectionBoundsHash: %@, role: %@, windowRole: %@, windowSubrole: %@",
-      _axNotification, _appName, @(_pid), _bundleId, _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], @(selectedTextHash), @(selectionBoundsHash), _role, _windowRole, _windowSubrole
+            @"ax: %@, app: %@, pid: %@, title: %@, windowId: %@, windowRect: %@, selectedTextHash: %@, selectionBoundsHash: %@, role: %@, windowRole: %@, windowSubrole: %@",
+      _axNotification, _appName, @(_pid), _windowTitle, _windowId, [NSValue valueWithRect:_windowRect], @(selectedTextHash), @(selectionBoundsHash), _role, _windowRole, _windowSubrole
     ];
 }
 

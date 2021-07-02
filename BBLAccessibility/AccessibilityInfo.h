@@ -16,7 +16,6 @@
 @property(readonly) NSString* _Nonnull axNotification;
 
 @property(readonly) NSString* _Nullable appName;
-@property(readonly) NSString* _Nonnull bundleId;
 @property(readonly) pid_t pid;
 
 @property(readonly) NSString* _Nullable role;
@@ -36,11 +35,11 @@
 
 -(nonnull instancetype)initWithAppElement:(nonnull SIApplication*)element
                            axNotification:(nonnull CFStringRef)axNotification
-                                 bundleId:(nonnull NSString*)bundleId;
+;
 
 -(nonnull instancetype)initWithAppElement:(nonnull SIApplication*)appElement
                            focusedElement:(nullable SIAccessibilityElement*)element
                            axNotification:(nonnull CFStringRef)axNotification
-                                 bundleId:(nonnull NSString*)bundleId;
+;
 
 @end
