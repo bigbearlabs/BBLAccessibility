@@ -43,17 +43,12 @@ public extension BBLAccessibilityPublisher {
     timeout: TimeInterval = 1,
     completionHandler: @escaping (SIApplication?) -> Void
   ) {
-    
-    execAsyncSynchronising(onPid: NSNumber(value: pid)) { [unowned self] in
-      let siApp: SIApplication?
-      if let app = NSRunningApplication(processIdentifier: pid),
-         self.shouldObserve(app) {
-        siApp = SIApplication(runningApplication: app)
-      } else {
-        siApp = nil
+    if let siApp = self.appElement(forProcessIdentifier: pid) {
+      execAsyncSynchronising(onPid: siApp.processIdentifier()) {
+        completionHandler(siApp)
       }
-  
-      completionHandler(siApp)
+    } else {
+      completionHandler(nil)
     }
   }
 }
