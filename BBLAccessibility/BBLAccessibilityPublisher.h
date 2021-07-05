@@ -66,10 +66,10 @@ NS_ASSUME_NONNULL_BEGIN
 //-(NSArray<SIWindow*>*) windowsForPid:(pid_t)pid;
 
 
--(SIApplication*) appElementForProcessIdentifier:(pid_t)processIdentifier;
+-(SIApplication* _Nullable) appElementForProcessIdentifier:(pid_t)processIdentifier;
 
 
--(void) execAsyncSynchronisingOnPid:(NSNumber*)pid block:(void(^)(void))block;
+-(void) execAsyncSynchronisingOnPid:(pid_t)pid block:(void(^)(void))block;
 
 -(void) execAsyncSynchronisingOnObject:(id)object block:(void(^)(void))block;
 

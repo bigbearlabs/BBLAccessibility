@@ -409,7 +409,7 @@
   // * updated the published property.
   
   //   dispatch to a queue, to avoid spins if ax query of the target app takes a long time.
-  id pid = @(siElement.processIdentifier);
+  pid_t pid = siElement.processIdentifier;
   __weak BBLAccessibilityPublisher* blockSelf = self;
   [self execAsyncSynchronisingOnPid:pid block:^{
     @autoreleasepool {
@@ -421,12 +421,12 @@
         NSDictionary* accessibilityInfosByPid = blockSelf.accessibilityInfosByPid;
 
         if (forceUpdate
-            || ![accessibilityInfosByPid[pid] isEqual:axInfo]) {
+            || ![accessibilityInfosByPid[@(pid)] isEqual:axInfo]) {
 
 //          __log("update ax info dict with: %@", siElement);
 
           NSMutableDictionary* updatedAccessibilityInfosByPid = accessibilityInfosByPid.mutableCopy;
-          updatedAccessibilityInfosByPid[pid] = axInfo;
+          updatedAccessibilityInfosByPid[@(pid)] = axInfo;
 
           blockSelf.accessibilityInfosByPid = updatedAccessibilityInfosByPid;
         }
@@ -509,16 +509,16 @@
   @throw [NSException exceptionWithName:@"invalid-state" reason:@"no suitable window to return as key" userInfo:nil];
 }
 
--(void) execAsyncSynchronisingOnPid:(NSNumber*)pid block:(void(^)(void))block {
+-(void) execAsyncSynchronisingOnPid:(pid_t)pid block:(void(^)(void))block {
   SIApplication* application = nil;
   @synchronized(observedAppsByPid) {
-    application = observedAppsByPid[pid];
+    application = observedAppsByPid[@(pid)];
   }
   if (application == nil) {
 //    @throw [[NSException alloc] initWithName:@"app-not-observed" reason:nil userInfo:@{@"pid": pid}];
     
     // retrieve running app, sync on it.
-    application = [SIApplication applicationForProcessIdentifier:pid.intValue];
+    application = [SIApplication applicationForProcessIdentifier:pid];
 //    if (![self shouldObserveApplication:application]) {
 //
 //    }
