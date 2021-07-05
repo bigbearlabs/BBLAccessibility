@@ -132,21 +132,21 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
    ```
   */
   public override func shouldObserve(_ application: NSRunningApplication) -> Bool {
-    let pid = NSRunningApplication.current.processIdentifier
-        
+
+    // don't observe this app.
+    guard application.processIdentifier != myPid
+    else { return false }
+
     // must have a bundle id.
     guard let bundleId = application.bundleIdentifier else {
       return false
     }
     
-    guard
-      // don't observe this app.
-      application.processIdentifier != pid
-        
-      // exclude everything that ends with '.xpc'.
-      && application.bundleURL?.absoluteString.hasSuffix(".xpc") != true
-      // exclude e.g. '/System/Library/CoreServices/Siri.app/Contents/XPCServices/SiriNCService.xpc/Contents/MacOS/SiriNCService'
-      && application.bundleURL?.absoluteString.contains(".xpc/") != true
+    guard let bundleUrl = application.bundleURL,
+          // exclude everything that ends with '.xpc'.
+          bundleUrl.absoluteString.hasSuffix(".xpc") != true
+          // exclude e.g. '/System/Library/CoreServices/Siri.app/Contents/XPCServices/SiriNCService.xpc/Contents/MacOS/SiriNCService'
+          && bundleUrl.absoluteString.contains(".xpc/") != true
     else {
       return false
     }
@@ -169,7 +169,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     return true
   }
   
-
+  lazy var myPid = NSRunningApplication.current.processIdentifier
 
   lazy var excludedBundleIdSubstrings: [String] = {
     return (UserDefaults.standard.stringArray(forKey: "excludedBundleIdPatterns")  ?? [])
