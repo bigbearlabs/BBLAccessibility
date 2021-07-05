@@ -14,7 +14,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     case created(windowNumber: UInt32)
     case focused(windowNumber: UInt32)  // RENAME activated
     
-    case titleChanged(windowNumber: UInt32)
+    case titleChanged(windowNumber: UInt32, title: String?)
     
     case activated(pid: pid_t, focusedWindowNumber: UInt32?)
     case noWindow(pid: pid_t)
@@ -79,11 +79,17 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       // TODO confirm the id is reliable
     
     case kAXTitleChangedNotification:
-      let windowNumber = SIWindow(for: siElement).windowID
-      handle(.titleChanged(windowNumber: windowNumber))
+      let window = SIWindow(for: siElement)
+      let windowNumber = window.windowID
+      let title = window.title()
+      handle(.titleChanged(windowNumber: windowNumber, title: title))
       
     case kAXApplicationActivatedNotification:
       let pid = siElement.processIdentifier()
+      
+      // log just activated notif to ensure we're listening.
+      print("activated \(pid) (\(siElement.title() ?? "?"))")
+      
       focusedWindow(pid: pid) { [unowned self] window in
         handle(.activated(pid: pid, focusedWindowNumber: window?.windowID))
       }
