@@ -213,17 +213,18 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
         "coreautha.bundle",
         "AirPlayUIAgent",
         "CalendarAgent",
-        "ARDAgent.app",
+        "ARDAgent",
 
-        "UIKitSystem.app",
-        ".appex",
+        "UIKitSystem",
 
         "Siri",
         "SiriNCService",
         "universalAccessAuthWarn",
         
         "BetterTouchTool",
-        "USBServer.app",
+        "USBserver",
+        
+        ".appex",
     ]
   }
 
