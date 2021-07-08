@@ -17,7 +17,7 @@ public class WindowCoordinator {
       
       if let window = SIWindow.for(windowNumber: windowNumber) {
         if frame == .zero {
-          print("WARN window \(windowNumber) is given a zero frame; will not set.")
+          print("👺 window \(windowNumber) is given a zero frame; will not set.")
         }
         else if window.frame() != frame {
           window.setFrame(frame)
