@@ -1,6 +1,12 @@
 import AppKit
 import BBLBasics
 
+
+
+private var debug = false
+//debug = false  // DEBUG
+
+
 public typealias WindowNumber = String // TODO make into Int.
 
 public typealias WindowServerSessionId = String
@@ -197,8 +203,8 @@ public struct CGWindowInfo: Codable, Equatable {
         }
         
         return CGWindowInfo(
-          data: e
-//          debug: true  // DEBUG
+          data: e,
+          debug: debug
         )
       }
       
