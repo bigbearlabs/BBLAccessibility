@@ -140,7 +140,7 @@ public struct CGWindowInfo: Codable, Equatable {
   // MARK: -
   
   public static func query(
-    windowId: WindowId? = nil,
+    windowId: WindowId? = nil,  // FIXME when calling with window id, must also include otherOptions: [.optionIncludingWindow]
     bundleId: String? = nil,
     scope: QueryScope = .allScreens,
     otherOptions: CGWindowListOption? = nil)
@@ -185,7 +185,7 @@ public struct CGWindowInfo: Codable, Equatable {
       
     let results: [CGWindowInfo] = windowInfos.compactMap { e in
       // reject transparent windows.
-      if e[kCGWindowAlpha] as? CGFloat == 0 {
+      if e[kCGWindowAlpha] as? CGFloat == 0.0 {
         return nil
       }
       
