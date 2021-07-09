@@ -156,3 +156,19 @@ let runningApplicationsSubscription: Any? =
 
 let runningApplicationsBookkeeper = RunningApplicationsBookkeeper()
 
+
+
+// TODO re-implement the async dispatch method that avoids current issues:
+// - global concurrent queue thread proliferation resulting in a crash as thread count hits 256 (possibly happening when any one of the critical section blocks
+//
+// DEFERRED wait until swift actors arrive (xcode 13).
+
+//public extension BBLAccessibilityPublisher {
+//  
+//  @objc
+//  func execAsyncSynchronisingOnObject(_ object: Any, block: () -> Void) {
+//    
+//  }
+//
+//}
+
