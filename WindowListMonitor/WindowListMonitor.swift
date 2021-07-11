@@ -105,13 +105,14 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       let windowNumber = SIWindow(for: siElement).windowID
       handle(.moved(windowNumber: windowNumber))
     
-    // TODO inferring closed.
+    // TODO infer closed:
+    // - compare app's windows with previous set.
+    // - limitation: window set is per-space, so ensure space change doesn't create false inferences.
     case kAXUIElementDestroyedNotification:
+      // TODO filter using same condition as on ax focus notif.
       let pid = siElement.processIdentifier()
       focusedWindow(pid: pid) { [unowned self] focusedWindow in
-        if let focusedWindow = focusedWindow {
-          handle(.focused(windowNumber: focusedWindow.windowID))
-        } else {
+        if focusedWindow == nil {
           handle(.noWindow(pid: pid))
         }
       }
