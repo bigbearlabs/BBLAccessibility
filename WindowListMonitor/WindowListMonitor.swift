@@ -19,7 +19,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     case activated(pid: pid_t, focusedWindowNumber: UInt32?)
     case noWindow(pid: pid_t)
 
-    case moved(windowNumber: UInt32)
+    case frameChanged(windowNumber: UInt32)
     
     // TODO
 //    case movedIn(windowNumber: WindowNumber)
@@ -88,7 +88,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       let pid = siElement.processIdentifier()
       
       // log just activated notif to ensure we're listening.
-      print("activated \(pid) (\(siElement.title() ?? "?"))")
+      print("activated pid:\(pid) (\(siElement.title() ?? "?"))")
       
       focusedWindow(pid: pid) { [unowned self] window in
         handle(.activated(pid: pid, focusedWindowNumber: window?.windowID))
@@ -101,10 +101,11 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
         }
       }
 
-    case kAXWindowMovedNotification:
+    case kAXWindowMovedNotification,
+         kAXWindowResizedNotification:
       let windowNumber = SIWindow(for: siElement).windowID
-      handle(.moved(windowNumber: windowNumber))
-    
+      handle(.frameChanged(windowNumber: windowNumber))
+          
     // TODO infer closed:
     // - compare app's windows with previous set.
     // - limitation: window set is per-space, so ensure space change doesn't create false inferences.
