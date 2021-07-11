@@ -11,9 +11,10 @@ import BBLAccessibility
 public class WindowListMonitor: BBLAccessibilityPublisher {
   
   public enum Event: Equatable {
-    case created(windowNumber: UInt32)
+    case created(windowNumber: UInt32, tabs: [SITabGroup.Tab]?)  // TODO extract leaky param type
     case focused(windowNumber: UInt32)  // RENAME activated
-    
+    case tabChanged(windowNumber: UInt32)
+
     case titleChanged(windowNumber: UInt32, title: String?)
     
     case activated(pid: pid_t, focusedWindowNumber: UInt32?)
@@ -65,8 +66,15 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       else {
         return
       }
-      let windowNumber = SIWindow(for: siElement).windowID
-      handle(.created(windowNumber: windowNumber))
+      
+      let window = SIWindow(for: siElement)
+      let windowNumber = window.windowID
+      
+      // CASE window tab creation.
+      // if tab group's children buttons (AXRoleDescription='tab') should has 1 new element,
+      // this ia a tab creation case.
+      let tabs = window.tabGroup?.tabs
+      handle(.created(windowNumber: windowNumber, tabs: tabs))
     
     case kAXMainWindowChangedNotification, kAXFocusedWindowChangedNotification:
       guard siElement.subrole() == kAXStandardWindowSubrole else {
@@ -118,6 +126,14 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
         }
       }
 
+    case "AXFocusedTabChanged":  // EXTRACT
+      if siElement.role() == kAXWindowRole {
+        let window = SIWindow(for: siElement)
+        print("tab changed to wid:\(window.windowID)")
+        handle(.tabChanged(windowNumber: window.windowID))
+      } else {
+        print("👺 \(siElement) is not a window; AXFocusedTabChanged will be ignored.")
+      }
     default:
       return
     }

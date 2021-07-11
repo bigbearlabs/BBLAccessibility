@@ -290,6 +290,10 @@
 //          [blockSelf onTextSelectionChanged:accessibilityElement];
         }
       },
+      
+      @"AXFocusedTabChanged": ^(SIAccessibilityElement *accessibilityElement) {
+        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:(CFStringRef)@"AXFocusedTabChanged"];
+      },
     };
   }
   
