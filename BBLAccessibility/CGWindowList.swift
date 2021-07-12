@@ -116,6 +116,21 @@ public struct CGWindowInfo: Codable, Equatable {
     self.windowLayer = data[kCGWindowLayer] as? Int
   }
   
+  
+  public init(pid: pid_t, windowNumber: WindowNumber, title: String, isInActiveSpace: Bool,
+              frame: CGRect,
+              windowLayer: Int? = nil
+  ) {
+    self.pid = pid
+    self.windowId = WindowId.from(windowNumber: windowNumber)
+    self.title = title
+    self.isInActiveSpace = isInActiveSpace
+    self.windowLayer = windowLayer
+    self.frame = frame
+    self.data = nil
+  }
+  
+  
   // MARK: -
   
   public var bundleId: String {

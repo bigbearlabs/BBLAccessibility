@@ -12,6 +12,12 @@
 		51100F251CC15D540095B985 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51100F241CC15D540095B985 /* Assets.xcassets */; };
 		51100F281CC15D540095B985 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51100F261CC15D540095B985 /* MainMenu.xib */; };
 		51100F331CC15D540095B985 /* BBLAccessibilityAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51100F321CC15D540095B985 /* BBLAccessibilityAppUITests.swift */; };
+		51135119269B342C005B8668 /* TabInference.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51135110269B342C005B8668 /* TabInference.framework */; };
+		5113511E269B342C005B8668 /* TabInferenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5113511D269B342C005B8668 /* TabInferenceTests.swift */; };
+		51135120269B342C005B8668 /* TabInference.h in Headers */ = {isa = PBXBuildFile; fileRef = 51135112269B342C005B8668 /* TabInference.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		51135128269B3441005B8668 /* BBLAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; };
+		51135129269B3441005B8668 /* BBLAccessibility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51100F0B1CC15D200095B985 /* BBLAccessibility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5113512E269B3485005B8668 /* TabInference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5113512D269B3485005B8668 /* TabInference.swift */; };
 		511EECD824909C560029982D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511EECD724909C560029982D /* AppDelegate.swift */; };
 		511EECDA24909C560029982D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511EECD924909C560029982D /* ContentView.swift */; };
 		511EECDC24909C590029982D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 511EECDB24909C590029982D /* Assets.xcassets */; };
@@ -74,6 +80,20 @@
 			remoteGlobalIDString = 51100F1F1CC15D540095B985;
 			remoteInfo = BBLAccessibilityApp;
 		};
+		5113511A269B342C005B8668 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 51100F021CC15D200095B985 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5113510F269B342C005B8668;
+			remoteInfo = TabInference;
+		};
+		5113512A269B3441005B8668 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 51100F021CC15D200095B985 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 51100F0A1CC15D200095B985;
+			remoteInfo = BBLAccessibility;
+		};
 		511EECEA24909C8E0029982D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 51100F021CC15D200095B985 /* Project object */;
@@ -126,6 +146,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		5113512C269B3441005B8668 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				51135129269B3441005B8668 /* BBLAccessibility.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		511EECEC24909C8F0029982D /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -213,6 +244,13 @@
 		51100F321CC15D540095B985 /* BBLAccessibilityAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BBLAccessibilityAppUITests.swift; sourceTree = "<group>"; };
 		51100F341CC15D540095B985 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		51100F3F1CC15DA30095B985 /* BBLAccessibilityApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BBLAccessibilityApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		51135110269B342C005B8668 /* TabInference.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TabInference.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		51135112269B342C005B8668 /* TabInference.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TabInference.h; sourceTree = "<group>"; };
+		51135113269B342C005B8668 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		51135118269B342C005B8668 /* TabInferenceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TabInferenceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5113511D269B342C005B8668 /* TabInferenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabInferenceTests.swift; sourceTree = "<group>"; };
+		5113511F269B342C005B8668 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5113512D269B3485005B8668 /* TabInference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabInference.swift; sourceTree = "<group>"; };
 		511EECD524909C560029982D /* WindowListMonitorDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WindowListMonitorDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		511EECD724909C560029982D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		511EECD924909C560029982D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -282,6 +320,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5113510D269B342C005B8668 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				51135128269B3441005B8668 /* BBLAccessibility.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		51135115269B342C005B8668 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				51135119269B342C005B8668 /* TabInference.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		511EECD224909C560029982D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -326,6 +380,8 @@
 		51100F011CC15D200095B985 = {
 			isa = PBXGroup;
 			children = (
+				51135111269B342C005B8668 /* TabInference */,
+				5113511C269B342C005B8668 /* TabInferenceTests */,
 				51100F0D1CC15D200095B985 /* BBLAccessibility */,
 				51100F211CC15D540095B985 /* BBLAccessibilityApp */,
 				51100F311CC15D540095B985 /* BBLAccessibilityAppUITests */,
@@ -350,6 +406,8 @@
 				514DAEAE2493EA23009AD46A /* WindowListMonitor.framework */,
 				514DAED024972E23009AD46A /* WindowCoordinator.framework */,
 				514DAEE724972EA9009AD46A /* WindowCoordinatorDemo.app */,
+				51135110269B342C005B8668 /* TabInference.framework */,
+				51135118269B342C005B8668 /* TabInferenceTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -393,6 +451,25 @@
 				51100F341CC15D540095B985 /* Info.plist */,
 			);
 			path = BBLAccessibilityAppUITests;
+			sourceTree = "<group>";
+		};
+		51135111269B342C005B8668 /* TabInference */ = {
+			isa = PBXGroup;
+			children = (
+				51135112269B342C005B8668 /* TabInference.h */,
+				51135113269B342C005B8668 /* Info.plist */,
+				5113512D269B3485005B8668 /* TabInference.swift */,
+			);
+			path = TabInference;
+			sourceTree = "<group>";
+		};
+		5113511C269B342C005B8668 /* TabInferenceTests */ = {
+			isa = PBXGroup;
+			children = (
+				5113511D269B342C005B8668 /* TabInferenceTests.swift */,
+				5113511F269B342C005B8668 /* Info.plist */,
+			);
+			path = TabInferenceTests;
 			sourceTree = "<group>";
 		};
 		511EECD624909C560029982D /* WindowListMonitorDemo */ = {
@@ -500,6 +577,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5113510B269B342C005B8668 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				51135120269B342C005B8668 /* TabInference.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		514DAEA92493EA23009AD46A /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -574,6 +659,44 @@
 			productName = BBLAccessibilityAppUITests;
 			productReference = 51100F2E1CC15D540095B985 /* BBLAccessibilityAppUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		5113510F269B342C005B8668 /* TabInference */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 51135126269B342C005B8668 /* Build configuration list for PBXNativeTarget "TabInference" */;
+			buildPhases = (
+				5113510B269B342C005B8668 /* Headers */,
+				5113510C269B342C005B8668 /* Sources */,
+				5113510D269B342C005B8668 /* Frameworks */,
+				5113510E269B342C005B8668 /* Resources */,
+				5113512C269B3441005B8668 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5113512B269B3441005B8668 /* PBXTargetDependency */,
+			);
+			name = TabInference;
+			productName = TabInference;
+			productReference = 51135110269B342C005B8668 /* TabInference.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		51135117269B342C005B8668 /* TabInferenceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 51135127269B342C005B8668 /* Build configuration list for PBXNativeTarget "TabInferenceTests" */;
+			buildPhases = (
+				51135114269B342C005B8668 /* Sources */,
+				51135115269B342C005B8668 /* Frameworks */,
+				51135116269B342C005B8668 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5113511B269B342C005B8668 /* PBXTargetDependency */,
+			);
+			name = TabInferenceTests;
+			productName = TabInferenceTests;
+			productReference = 51135118269B342C005B8668 /* TabInferenceTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		511EECD424909C560029982D /* WindowListMonitorDemo */ = {
 			isa = PBXNativeTarget;
@@ -660,7 +783,7 @@
 		51100F021CC15D200095B985 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1130;
+				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = "Big Bear Labs";
 				TargetAttributes = {
@@ -676,6 +799,17 @@
 						CreatedOnToolsVersion = 7.3;
 						LastSwiftMigration = 0830;
 						TestTargetID = 51100F1F1CC15D540095B985;
+					};
+					5113510F269B342C005B8668 = {
+						CreatedOnToolsVersion = 12.5.1;
+						DevelopmentTeam = XK44TD8U4S;
+						LastSwiftMigration = 1250;
+						ProvisioningStyle = Automatic;
+					};
+					51135117269B342C005B8668 = {
+						CreatedOnToolsVersion = 12.5.1;
+						DevelopmentTeam = XK44TD8U4S;
+						ProvisioningStyle = Automatic;
 					};
 					511EECD424909C560029982D = {
 						CreatedOnToolsVersion = 11.3.1;
@@ -723,6 +857,8 @@
 				514DAEAD2493EA23009AD46A /* WindowListMonitor */,
 				514DAECF24972E23009AD46A /* WindowCoordinator */,
 				514DAEE624972EA9009AD46A /* WindowCoordinatorDemo */,
+				5113510F269B342C005B8668 /* TabInference */,
+				51135117269B342C005B8668 /* TabInferenceTests */,
 			);
 		};
 /* End PBXProject section */
@@ -755,6 +891,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		51100F2C1CC15D540095B985 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5113510E269B342C005B8668 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		51135116269B342C005B8668 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -829,6 +979,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5113510C269B342C005B8668 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5113512E269B3485005B8668 /* TabInference.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		51135114269B342C005B8668 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5113511E269B342C005B8668 /* TabInferenceTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		511EECD124909C560029982D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -870,6 +1036,16 @@
 			isa = PBXTargetDependency;
 			target = 51100F1F1CC15D540095B985 /* BBLAccessibilityApp */;
 			targetProxy = 51100F2F1CC15D540095B985 /* PBXContainerItemProxy */;
+		};
+		5113511B269B342C005B8668 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5113510F269B342C005B8668 /* TabInference */;
+			targetProxy = 5113511A269B342C005B8668 /* PBXContainerItemProxy */;
+		};
+		5113512B269B3441005B8668 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 51100F0A1CC15D200095B985 /* BBLAccessibility */;
+			targetProxy = 5113512A269B3441005B8668 /* PBXContainerItemProxy */;
 		};
 		511EECEB24909C8E0029982D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1136,6 +1312,116 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = BBLAccessibilityApp;
+			};
+			name = Release;
+		};
+		51135121269B342C005B8668 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = XK44TD8U4S;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = TabInference/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.TabInference;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		51135122269B342C005B8668 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = XK44TD8U4S;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = TabInference/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.TabInference;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		51135123269B342C005B8668 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = XK44TD8U4S;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = TabInferenceTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.TabInferenceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		51135124269B342C005B8668 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = XK44TD8U4S;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = TabInferenceTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bigbearlabs.TabInferenceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -1406,6 +1692,24 @@
 			buildConfigurations = (
 				51100F391CC15D540095B985 /* Debug */,
 				51100F3A1CC15D540095B985 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		51135126269B342C005B8668 /* Build configuration list for PBXNativeTarget "TabInference" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				51135121269B342C005B8668 /* Debug */,
+				51135122269B342C005B8668 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		51135127269B342C005B8668 /* Build configuration list for PBXNativeTarget "TabInferenceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				51135123269B342C005B8668 /* Debug */,
+				51135124269B342C005B8668 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
