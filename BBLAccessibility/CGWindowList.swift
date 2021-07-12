@@ -154,45 +154,31 @@ public struct CGWindowInfo: Codable, Equatable {
   
   // MARK: -
   
+  public static func query(windowNumber: UInt32) -> CGWindowInfo? {
+    fatalError("IMPL")
+  }
+  
   public static func query(
-    windowId: WindowId? = nil,  // FIXME when calling with window id, must also include otherOptions: [.optionIncludingWindow]
     bundleId: String? = nil,
     scope: QueryScope = .allScreens,
-    otherOptions: CGWindowListOption? = nil)
+    otherOptions: CGWindowListOption = [])
     -> [CGWindowInfo] {
       
-    if scope == .onScreen {
-      // ensure arguments conform to API spec.
-      guard windowId == nil else {
-        fatalError()
-      }
-    }
-      
-    let cgWindowId = windowId == nil ?
-      kCGNullWindowID
-      : CGWindowID(windowId!.windowNumber)!
-      
-    var options = CGWindowListOption(arrayLiteral: [
+    var options = otherOptions
+    options.formUnion([
       scope == .allScreens ? .optionAll : .optionOnScreenOnly,
     ])
-    if let otherOptions = otherOptions {
-      options.formUnion(otherOptions)
+      
+    guard let cgWindowInfos = CGWindowListCopyWindowInfo(options, kCGNullWindowID) else {
+      // !?
+      return []
     }
       
-    guard let cgWindowInfos = CGWindowListCopyWindowInfo(
-      options,
-      cgWindowId)
-      else {
-        // !?
-        return []
-      }
-      
-    guard let windowInfos = cgWindowInfos as? [[CFString : Any?]]
-      else {
-        // ?
-        return []
-      }
-      
+    guard let windowInfos = cgWindowInfos as? [[CFString : Any?]] else {
+      // ?
+      return []
+    }
+          
     let pidsForBundleId = bundleId.flatMap {
       NSRunningApplication.runningApplications(withBundleIdentifier: $0)
         .map { $0.processIdentifier }
@@ -204,24 +190,24 @@ public struct CGWindowInfo: Codable, Equatable {
         return nil
       }
       
-        // apply bid filter early.
-        if let pids = pidsForBundleId,
-          let pid = e[kCGWindowOwnerPID] as? pid_t {
-          if !pids.contains(pid) {
-            return nil
-          }
+      // apply bid filter early.
+      if let pids = pidsForBundleId,
+        let pid = e[kCGWindowOwnerPID] as? pid_t {
+        if !pids.contains(pid) {
+          return nil
         }
-        
-        var e = e
-        if let bundleId = bundleId {
-          e["bundleId" as CFString] = bundleId
-        }
-        
-        return CGWindowInfo(
-          data: e,
-          debug: debug
-        )
       }
+      
+      var e = e
+      if let bundleId = bundleId {
+        e["bundleId" as CFString] = bundleId
+      }
+      
+      return CGWindowInfo(
+        data: e,
+        debug: debug
+      )
+    }
       
     return results
   }
