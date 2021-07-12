@@ -22,6 +22,11 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
 
     case frameChanged(windowNumber: UInt32)
     
+    case minimised(windowNumber: UInt32)
+    case unminimised(windowNumber: UInt32)
+    case hidden(pid: pid_t)
+
+
     // TODO
 //    case movedIn(windowNumber: WindowNumber)
     
@@ -126,6 +131,17 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
         }
       }
 
+    case kAXWindowMiniaturizedNotification:
+      let windowNumber = SIWindow(for: siElement).windowID
+      handle(.minimised(windowNumber: windowNumber))
+
+    case kAXWindowDeminiaturizedNotification:
+      let windowNumber = SIWindow(for: siElement).windowID
+      handle(.unminimised(windowNumber: windowNumber))
+
+    case kAXApplicationHiddenNotification:
+      let pid = siElement.processIdentifier()
+      handle(.hidden(pid: pid))
     case "AXFocusedTabChanged":  // EXTRACT
       if siElement.role() == kAXWindowRole {
         let window = SIWindow(for: siElement)
