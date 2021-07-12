@@ -36,21 +36,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       
       print("event: \(event)")
       
-      // IT1 poll cgwindowlist for on-space windows.
-      self.currentSpaceWindows = self.windowListMonitor.activeWindowsInCurrentSpace.1
-      let dump = self.currentSpaceWindows.flatMap { e -> [[String : String]] in
-        let (screen, windows) = e
-        return windows.map {[
-          "screen": screen.description,
-          "title": $0.title,
-          "app": $0.bundleId,
-          ]
-        }
-      }
+//      // IT1 poll cgwindowlist for on-space windows.
+//      self.currentSpaceWindows = self.windowListMonitor.activeWindowsInCurrentSpace.1
+//      let dump = self.currentSpaceWindows.flatMap { e -> [[String : String]] in
+//        let (screen, windows) = e
+//        return windows.map {[
+//          "screen": screen.description,
+//          "title": $0.title,
+//          "app": $0.bundleId,
+//          ]
+//        }
+//      }
       
-      print(try! ["currentSpaceWindows": dump].jsonString())
+//      print(try! ["currentSpaceWindows": dump].jsonString())
     }
-    windowListMonitor.observeEvents()
+    windowListMonitor?.observeEvents()
     
     loopInspectCgWindows()
     
@@ -77,6 +77,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
   var currentSpaceWindows: [Int : [CGWindowInfo]] = [:]
   
-  lazy var windowListMonitor = WindowListMonitor()
+  var windowListMonitor: WindowListMonitor?
 
 }
