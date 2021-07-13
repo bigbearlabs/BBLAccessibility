@@ -104,6 +104,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       print("activated pid:\(pid) (\(siElement.title() ?? "?"))")
       
       focusedWindow(pid: pid) { [unowned self] window in
+        print("activated pid:\(pid) (\(siElement.title() ?? "?")) reports focused window \(window?.windowID ?? kCGNullWindowID)")
         handle(.activated(pid: pid, focusedWindowNumber: window?.windowID))
       }
 
@@ -187,6 +188,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
           bundleUrl.absoluteString.hasSuffix(".xpc") != true
           // exclude e.g. '/System/Library/CoreServices/Siri.app/Contents/XPCServices/SiriNCService.xpc/Contents/MacOS/SiriNCService'
           && bundleUrl.absoluteString.contains(".xpc/") != true
+          && bundleUrl.absoluteString.contains(".appex/") != true
     else {
       return false
     }
@@ -238,7 +240,8 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       + [
         "Dock",
         "loginwindow",
-
+        "WindowServer",
+        
         "universalaccessd",
         "passd",
         "photolibraryd",
@@ -262,4 +265,28 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     ]
   }
 
+}
+
+
+
+public func dumpCg(windowNumber: UInt32) -> Any {
+  // wid -> pid
+  let q1 = CGWindowInfo.query(windowNumber: windowNumber)
+  if let pid = q1?.pid {
+    let q2 = (CGWindowListCopyWindowInfo([.optionAll,], kCGNullWindowID) as? [[CFString : Any?]] ?? [])
+      .filter {
+        $0[kCGWindowOwnerPID] as? pid_t == pid
+    }
+    let summary = q2.map {
+      [
+        "wid": $0[kCGWindowNumber],
+        "pid": pid,
+        "title": $0[kCGWindowName],
+        "onScreen": $0[kCGWindowIsOnscreen],
+        "frame": String(describing: $0[kCGWindowBounds]),
+      ]
+    }
+    return summary
+  }
+  return []
 }
