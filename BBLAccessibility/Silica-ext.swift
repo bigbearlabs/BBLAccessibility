@@ -47,11 +47,13 @@ public extension SIWindow {
   
   
   var childrenInNavigationOrder: [SIAccessibilityElement] {
-    let childrenAxRefs = self.array(forKey: "AXChildrenInNavigationOrder" as CFString) as! [AXUIElement]
-    let siElements = childrenAxRefs.map {
-      SIAccessibilityElement(axElement: $0)
+    if let childrenAxRefs = self.array(forKey: "AXChildrenInNavigationOrder" as CFString) as? [AXUIElement] {
+      let siElements = childrenAxRefs.map {
+        SIAccessibilityElement(axElement: $0)
+      }
+      return siElements
     }
-    return siElements
+    return []
   }
   
   var tabGroup: SITabGroup? {
@@ -67,14 +69,13 @@ public extension SIWindow {
 
 public class SITabGroup: SIAccessibilityElement {
   
-//  init(siElement: SIAccessibilityElement) {
-//    super.init(axElement: siElement.axElementRef)
-//  }
-  
   public var tabs: [Tab] {
-    let tabElements = self.children()
-      .map { axElem -> SIAccessibilityElement in
-        let axElem = axElem as! AXUIElement
+    guard let children = self.children() as? [AXUIElement] else {
+      fatalError()
+    }
+    
+    let tabElements = children
+      .map { axElem in
         return SIAccessibilityElement(axElement: axElem)
       }
       .filter {
@@ -82,12 +83,25 @@ public class SITabGroup: SIAccessibilityElement {
       }
     
     return tabElements.map {
-      Tab(title: $0.title() ?? "unknown tab title")
+      Tab(
+        title: $0.title() ?? "<<tab>>",
+        isSelected: $0.bool(forKey: kAXValueAttribute as CFString),
+        pid: $0.processIdentifier()
+      )
     }
   }
   
   public struct Tab: Equatable {
     public let title: String
+    public let isSelected: Bool
+    
+    public let pid: pid_t
+    
+    public init (title: String, isSelected: Bool, pid: pid_t) {
+      self.title = title
+      self.isSelected = isSelected
+      self.pid = pid
+    }
   }
 }
 
