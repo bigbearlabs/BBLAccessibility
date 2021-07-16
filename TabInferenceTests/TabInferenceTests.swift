@@ -26,8 +26,8 @@ class TabInferenceTests: XCTestCase {
 
     func test_inferForUnambiguousTitles() throws {
       let infosAfterNewTab = [
-        CGWindowInfo(pid: 1, windowNumber: "1", title: "a", isInActiveSpace: false, frame: frameA),
-        CGWindowInfo(pid: 1, windowNumber: "2", title: "b", isInActiveSpace: true, frame: frameB),
+        CGWindowInfo(pid: 1, windowNumber: "1", title: "a", isVisible: false, frame: frameA),
+        CGWindowInfo(pid: 1, windowNumber: "2", title: "b", isVisible: true, frame: frameB),
       ]
       
       let tabsAfterNewTab = [
@@ -46,8 +46,8 @@ class TabInferenceTests: XCTestCase {
       )
       
       let infosWithUnmatchingTitles = [
-        CGWindowInfo(pid: 1, windowNumber: "1", title: "a", isInActiveSpace: false, frame: frameA),
-        CGWindowInfo(pid: 1, windowNumber: "2", title: "c", isInActiveSpace: true, frame: frameB),
+        CGWindowInfo(pid: 1, windowNumber: "1", title: "a", isVisible: false, frame: frameA),
+        CGWindowInfo(pid: 1, windowNumber: "2", title: "c", isVisible: true, frame: frameB),
       ]
 
       XCTAssertEqual(
@@ -61,8 +61,8 @@ class TabInferenceTests: XCTestCase {
         SITabGroup.Tab(title: "a", isSelected: true, pid: 1),
       ]
       let infosWithAmbiguousTitles = [
-        CGWindowInfo(pid: 1, windowNumber: "1", title: "a", isInActiveSpace: false, frame: frameA),
-        CGWindowInfo(pid: 1, windowNumber: "2", title: "a", isInActiveSpace: true, frame: frameB),
+        CGWindowInfo(pid: 1, windowNumber: "1", title: "a", isVisible: false, frame: frameA),
+        CGWindowInfo(pid: 1, windowNumber: "2", title: "a", isVisible: true, frame: frameB),
       ]
 
       XCTAssertEqual(
@@ -71,9 +71,9 @@ class TabInferenceTests: XCTestCase {
       )
 
       let infosWithAdditionalAmbiguousTitles = [
-        CGWindowInfo(pid: 1, windowNumber: "1", title: "a", isInActiveSpace: false, frame: frameA),
-        CGWindowInfo(pid: 1, windowNumber: "2", title: "b", isInActiveSpace: true, frame: frameB),
-        CGWindowInfo(pid: 1, windowNumber: "3", title: "a", isInActiveSpace: false, frame: frameB),
+        CGWindowInfo(pid: 1, windowNumber: "1", title: "a", isVisible: false, frame: frameA),
+        CGWindowInfo(pid: 1, windowNumber: "2", title: "b", isVisible: true, frame: frameB),
+        CGWindowInfo(pid: 1, windowNumber: "3", title: "a", isVisible: false, frame: frameB),
       ]
 
       XCTAssertEqual(
@@ -89,8 +89,8 @@ class TabInferenceTests: XCTestCase {
       SITabGroup.Tab(title: "a", isSelected: true, pid: 1),
     ]
     let infosWithAmbiguousTitles = [
-      CGWindowInfo(pid: 1, windowNumber: "1", title: "a", isInActiveSpace: false, frame: frameA),
-      CGWindowInfo(pid: 1, windowNumber: "2", title: "a", isInActiveSpace: true, frame: frameA),
+      CGWindowInfo(pid: 1, windowNumber: "1", title: "a", isVisible: false, frame: frameA),
+      CGWindowInfo(pid: 1, windowNumber: "2", title: "a", isVisible: true, frame: frameA),
     ]
 
     XCTAssertEqual(
@@ -101,9 +101,9 @@ class TabInferenceTests: XCTestCase {
     )
 
     let infosWithAdditionalAmbiguous = [
-      CGWindowInfo(pid: 1, windowNumber: "1", title: "a", isInActiveSpace: false, frame: frameA),
-      CGWindowInfo(pid: 1, windowNumber: "2", title: "a", isInActiveSpace: true, frame: frameA),
-      CGWindowInfo(pid: 1, windowNumber: "3", title: "a", isInActiveSpace: false, frame: frameA),
+      CGWindowInfo(pid: 1, windowNumber: "1", title: "a", isVisible: false, frame: frameA),
+      CGWindowInfo(pid: 1, windowNumber: "2", title: "a", isVisible: true, frame: frameA),
+      CGWindowInfo(pid: 1, windowNumber: "3", title: "a", isVisible: false, frame: frameA),
     ]
 
     XCTAssertEqual(
@@ -116,7 +116,7 @@ class TabInferenceTests: XCTestCase {
   
   func testX() {
     let baselineInfos = [
-      CGWindowInfo(pid: 1, windowNumber: "1", title: "a", isInActiveSpace: true, frame: frameA),
+      CGWindowInfo(pid: 1, windowNumber: "1", title: "a", isVisible: true, frame: frameA),
     ]
     
     // HOW in calling context, how to bookkeep this history of infos?
@@ -163,7 +163,7 @@ struct Inferrer {
         let nonmatches = zip(sortedTabs, sortedInfos).filter {
           let (tab, info) = $0
           return tab.title != info.title
-            || tab.isSelected !=  info.isInActiveSpace
+            || tab.isSelected !=  info.isVisible
         }
         
         if nonmatches.isEmpty {

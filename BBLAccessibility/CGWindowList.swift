@@ -81,13 +81,13 @@ public struct CGWindowInfo: Codable, Equatable {
   public let windowId: WindowId
   public let title: String
 
-  public let isInActiveSpace: Bool
+  public let isVisible: Bool
   
   public let windowLayer: Int?
 
   public let frame: CGRect
   
-  let data: DebugPropertyWrapper<[CFString : Any?]>?
+  let rawData: DebugPropertyWrapper<[CFString : Any?]>?
   
 
   init?(data: [CFString : Any?], debug: Bool = false) {
@@ -98,7 +98,7 @@ public struct CGWindowInfo: Codable, Equatable {
       return nil
     }
 
-    self.data = debug ? DebugPropertyWrapper(data: data) : nil
+    self.rawData = debug ? DebugPropertyWrapper(data: data) : nil
     
     self.pid = pid
     self.windowId = WindowId.from(windowNumber: String(describing: cgWindowId))
@@ -111,23 +111,23 @@ public struct CGWindowInfo: Codable, Equatable {
     let boundsDict = data[kCGWindowBounds] as! CFDictionary
     self.frame = CGRect(dictionaryRepresentation: boundsDict)!
 
-    self.isInActiveSpace = data[kCGWindowIsOnscreen] as? Bool ?? false
+    self.isVisible = data[kCGWindowIsOnscreen] as? Bool ?? false
 
     self.windowLayer = data[kCGWindowLayer] as? Int
   }
   
   
-  public init(pid: pid_t, windowNumber: WindowNumber, title: String, isInActiveSpace: Bool,
+  public init(pid: pid_t, windowNumber: WindowNumber, title: String, isVisible: Bool,
               frame: CGRect,
               windowLayer: Int? = nil
   ) {
     self.pid = pid
     self.windowId = WindowId.from(windowNumber: windowNumber)
     self.title = title
-    self.isInActiveSpace = isInActiveSpace
+    self.isVisible = isVisible
     self.windowLayer = windowLayer
     self.frame = frame
-    self.data = nil
+    self.rawData = nil
   }
   
   
@@ -237,7 +237,7 @@ extension CGWindowInfo: WindowFingerprintable {
 
 extension CGWindowInfo: CustomStringConvertible {
   public var description: String {
-    return "\(windowId) (\((pid, isInActiveSpace)))"
+    return "\(windowId) (\((pid, isVisible)))"
   }
 }
 
