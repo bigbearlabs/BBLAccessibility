@@ -155,7 +155,7 @@ public struct CGWindowInfo: Codable, Equatable {
   // MARK: -
   
   public static func query(windowNumber: UInt32) -> CGWindowInfo? {
-    fatalError("IMPL")
+    self.query().first { $0.windowId.windowNumber == String(windowNumber) }
   }
   
   public static func query(

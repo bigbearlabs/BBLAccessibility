@@ -13,14 +13,14 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
   public enum Event: Equatable {
     case created(windowNumber: UInt32, tabs: [SITabGroup.Tab]?)  // TODO extract leaky param type
     case focused(windowNumber: UInt32)  // RENAME activated
-    case tabChanged(windowNumber: UInt32)
+    case tabChanged(windowNumber: UInt32, tabs: [SITabGroup.Tab]?)
 
     case titleChanged(windowNumber: UInt32, title: String?)
     
     case activated(pid: pid_t, focusedWindowNumber: UInt32?)
     case noWindow(pid: pid_t)
 
-    case frameChanged(windowNumber: UInt32)
+    case frameChanged(windowNumber: UInt32, frame: CGRect)
     
     case minimised(windowNumber: UInt32)
     case unminimised(windowNumber: UInt32)
@@ -117,8 +117,10 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
 
     case kAXWindowMovedNotification,
          kAXWindowResizedNotification:
-      let windowNumber = SIWindow(for: siElement).windowID
-      handle(.frameChanged(windowNumber: windowNumber))
+      let window = SIWindow(for: siElement)
+      let windowNumber = window.windowID
+      let frame = window.frame()
+      handle(.frameChanged(windowNumber: windowNumber, frame: frame))
           
     // TODO infer closed:
     // - compare app's windows with previous set.
@@ -147,7 +149,8 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       if siElement.role() == kAXWindowRole {
         let window = SIWindow(for: siElement)
         print("tab changed to wid:\(window.windowID)")
-        handle(.tabChanged(windowNumber: window.windowID))
+        let tabs = window.tabGroup?.tabs
+        handle(.tabChanged(windowNumber: window.windowID, tabs: tabs))
       } else {
         print("👺 \(siElement) is not a window; AXFocusedTabChanged will be ignored.")
       }

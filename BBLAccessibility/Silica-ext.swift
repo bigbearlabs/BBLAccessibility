@@ -91,7 +91,7 @@ public class SITabGroup: SIAccessibilityElement {
     }
   }
   
-  public struct Tab: Equatable {
+  public struct Tab: Equatable, CustomStringConvertible {
     public let title: String
     public let isSelected: Bool
     
@@ -102,7 +102,12 @@ public class SITabGroup: SIAccessibilityElement {
       self.isSelected = isSelected
       self.pid = pid
     }
+    
+    public var description: String {
+      "Tab(\(title))"
+    }
   }
+  
 }
 
 
