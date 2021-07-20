@@ -261,34 +261,8 @@
 //        [blockSelf onElementDestroyed:accessibilityElement];
       },
 
-      // observe appropriately for text selection handling.
-      // NOTE some apps, e.g. iterm, seem to fail to notify observers properly.
-      // FIXME investigate why not working with Notes.app
-      // INVESTIGATE sierra + safari: notifies only for some windows.
-      // during investigation we saw that inspecting with Prefab UI Browser 'wakes up' the windows such that they send out notifications only after inspection.
       (NSString*)kAXSelectedTextChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-        NSString* selectedText = accessibilityElement.selectedText;
-        if (selectedText == nil) {
-          selectedText = @"";
-        }
-        
-        // guard: xcode spams us with notifs even when no text has changed, so only notify when value has changed.
-        id previousSelectedText = blockSelf.accessibilityInfosByPid[@(accessibilityElement.processIdentifier)].selectedText;
-        if (previousSelectedText == nil) {
-          previousSelectedText = @"";
-        }
-
-        if ( selectedText == previousSelectedText
-            ||
-            [selectedText isEqualToString:previousSelectedText]) {
-          // no need to update.
-        }
-        else {
-          
-          [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXSelectedTextChangedNotification];
-          
-//          [blockSelf onTextSelectionChanged:accessibilityElement];
-        }
+        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXSelectedTextChangedNotification];
       },
       
       @"AXFocusedTabChanged": ^(SIAccessibilityElement *accessibilityElement) {
@@ -409,6 +383,32 @@
                            axNotification:(CFStringRef)axNotification
                               forceUpdate:(BOOL)forceUpdate
 {
+
+  // * case: text selection handling special cases.
+  if (CFEqual(axNotification, kAXSelectedTextChangedNotification)) {
+    
+    // NOTE some apps, e.g. iterm, seem to fail to notify observers properly.
+    // FIXME investigate why not working with Notes.app
+    // INVESTIGATE sierra + safari: notifies only for some windows.
+    // during investigation we saw that inspecting with Prefab UI Browser 'wakes up' the windows such that they send out notifications only after inspection.
+    NSString* selectedText = siElement.selectedText;
+    if (selectedText == nil) {
+      selectedText = @"";
+    }
+
+    // guard: xcode spams us with notifs even when no text has changed, so only notify when value has changed.
+    id previousSelectedText = self.accessibilityInfosByPid[@(siElement.processIdentifier)].selectedText;  // FIXME synchronise access.
+    if (previousSelectedText == nil) {
+      previousSelectedText = @"";
+    }
+
+    if ( selectedText == previousSelectedText
+        ||
+        [selectedText isEqual:previousSelectedText]) {
+      // no need to update.
+      return;
+    }
+  }
 
   // * updated the published property.
   
