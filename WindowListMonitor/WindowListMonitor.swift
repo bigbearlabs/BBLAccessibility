@@ -61,7 +61,8 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
   }
   
   override public func updateAccessibilityInfo(for siElement: SIAccessibilityElement, axNotification: CFString, forceUpdate: Bool) {
-    super.updateAccessibilityInfo(for: siElement, axNotification: axNotification, forceUpdate: forceUpdate)
+//    super.updateAccessibilityInfo(for: siElement, axNotification: axNotification, forceUpdate: forceUpdate)
+    // DISABLED no longer using the ax info property; don't incur the additional processing which could be quite frequent (per ax event)
 
     switch axNotification as String {
     case kAXWindowCreatedNotification:
