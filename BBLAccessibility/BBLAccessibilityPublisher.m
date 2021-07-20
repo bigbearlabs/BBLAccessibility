@@ -280,7 +280,7 @@
   // * observe ax notifications for the app asynchronously.
   // TODO timeout and alert user.
   __weak BBLAccessibilityPublisher* blockSelf = self;
-  [blockSelf execAsyncSynchronisingOnObject:siApp block:^{
+//  [blockSelf execAsyncSynchronisingOnObject:siApp block:^{
     NSMutableArray* observationFailures = @[].mutableCopy;
     
     for (NSString* notification in [blockSelf handlersByNotificationTypes]) {
