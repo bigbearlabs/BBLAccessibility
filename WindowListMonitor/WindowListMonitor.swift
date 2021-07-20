@@ -233,7 +233,8 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
         "com.apple.ScreenSaver.Engine",
 
         "com.kite.Kite",
-
+        "at.obdev.littlesnitch.softwareupdate",
+        
 //        "com.apple.dt.Xcode",  // DEV to allow debugger ops while troubleshooting cases where watch setup was slow.
 
       ].compactMap { $0 }
