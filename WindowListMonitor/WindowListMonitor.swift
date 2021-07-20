@@ -246,6 +246,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
         "Dock",
         "loginwindow",
         "WindowServer",
+        "ScreenSaverEngine",
         
         "universalaccessd",
         "passd",
