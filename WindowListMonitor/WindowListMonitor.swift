@@ -178,9 +178,9 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
   */
   public override func shouldObserve(_ application: NSRunningApplication) -> Bool {
 
-    // don't observe this app.
-    guard application.processIdentifier != myPid
-    else { return false }
+//    // don't observe this app.
+//    guard application.processIdentifier != myPid
+//    else { return false }
 
     // must have a bundle id.
     guard let bundleId = application.bundleIdentifier else {
@@ -220,8 +220,8 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
   lazy var excludedBundleIdSubstrings: [String] = {
     return (UserDefaults.standard.stringArray(forKey: "excludedBundleIdPatterns")  ?? [])
       + [
-        // always exclude my own bundle id.
-        Bundle.main.bundleIdentifier,
+//        // always exclude my own bundle id.
+//        Bundle.main.bundleIdentifier,
         
         "com.apple.loginwindow",
 
