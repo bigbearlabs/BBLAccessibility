@@ -8,6 +8,11 @@
 
 import BBLAccessibility
 
+
+
+// FIXME exclude safari tab preview, tooltip windows
+// FIXME remove safari popup window after closing
+
 public class WindowListMonitor: BBLAccessibilityPublisher {
   
   public enum Event: Equatable {
