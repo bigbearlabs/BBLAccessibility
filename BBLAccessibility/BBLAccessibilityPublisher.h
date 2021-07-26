@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void) unwatchWindows;
 
 
--(void) observeAxEventsForApplication:(NSRunningApplication*)app;
+-(NSArray<NSNumber*>*) observeAxEventsForApplication:(NSRunningApplication*)application;
 
 -(void) unobserveAxEventsForApplication:(NSRunningApplication*)app;
 
@@ -72,6 +72,9 @@ NS_ASSUME_NONNULL_BEGIN
 -(void) execAsyncSynchronisingOnPid:(pid_t)pid block:(void(^)(void))block;
 
 //-(void) execAsyncSynchronisingOnObject:(id)object block:(void(^)(void))block;
+
+
+-(void) handleAxObservationResults:(NSArray<NSNumber*>*) axResults forRunningApplication:(NSRunningApplication*) application;
 
 
 NS_ASSUME_NONNULL_END

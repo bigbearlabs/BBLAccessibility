@@ -112,13 +112,15 @@
   [self observeLaunch: ^(NSRunningApplication* _Nonnull app) {
     if ([blockSelf shouldObserveApplication:app]) {
       
-      [blockSelf observeAxEventsForApplication:app];
+      NSArray* axResults = [blockSelf observeAxEventsForApplication:app];
       
-      // ensure ax info doesn't lag after new windows.
-      SIWindow* window = [SIApplication applicationWithRunningApplication:app].focusedWindow;
+      [blockSelf handleAxObservationResults:axResults forRunningApplication:app];
       
-      SIAXNotificationHandler handler = [blockSelf handlersByNotificationTypes][(__bridge NSString*)kAXFocusedWindowChangedNotification];
-      handler(window);
+//      // ensure ax info doesn't lag after new windows.
+//      SIWindow* window = [SIApplication applicationWithRunningApplication:app].focusedWindow;
+      
+//      SIAXNotificationHandler handler = [blockSelf handlersByNotificationTypes][(__bridge NSString*)kAXFocusedWindowChangedNotification];
+//      handler(window);
 
       __log("%@ launched, ax observations added", app);
 
@@ -149,7 +151,8 @@
       continue;
     }
     
-    [self observeAxEventsForApplication:app];
+    NSArray* axResults = [self observeAxEventsForApplication:app];
+    [self handleAxObservationResults: axResults forRunningApplication:app];
   }
   
   __log("%@ is watching the windows", self);
@@ -274,28 +277,24 @@
   return _handlersByNotificationTypes;
 }
 
--(void) observeAxEventsForApplication:(NSRunningApplication*)application {
+// TODO return errors for further processing by callers.
+-(NSArray<NSNumber*>*) observeAxEventsForApplication:(NSRunningApplication*)application {
   SIApplication* siApp = [SIApplication applicationWithRunningApplication:application];
   
-  // * observe ax notifications for the app asynchronously.
-  // TODO timeout and alert user.
-  __weak BBLAccessibilityPublisher* blockSelf = self;
-//  [blockSelf execAsyncSynchronisingOnObject:siApp block:^{
-    NSMutableArray* observationFailures = @[].mutableCopy;
-    
-    for (NSString* notification in [blockSelf handlersByNotificationTypes]) {
-      
-      AXError observeResult = [siApp observeAxNotification:(__bridge CFStringRef)notification withElement:siApp];
-      if (observeResult != kAXErrorSuccess) {
-        [observationFailures addObject:@(observeResult)];
-      }
-    }
-    
-    if (observationFailures.count > 0) {
-      __log("👺 %@: ax observation failed with codes: %@", siApp, [[[NSSet setWithArray:observationFailures] allObjects] componentsJoinedByString:@", "]);
-    }
-
+  NSMutableArray* observationFailures = @[].mutableCopy;
   
+  for (NSString* notification in [self handlersByNotificationTypes]) {
+    
+    AXError observeResult = [siApp observeAxNotification:(__bridge CFStringRef)notification withElement:siApp];
+    if (observeResult != kAXErrorSuccess) {
+      [observationFailures addObject:@(observeResult)];
+    }
+  }
+  
+  if (observationFailures.count > 0) {
+    __log("👺 %@: ax observation failed with codes: %@", siApp, [[[NSSet setWithArray:observationFailures] allObjects] componentsJoinedByString:@", "]);
+    return observationFailures;
+  }
   
   // in order for the notifications to work, we must retain the SIApplication.
   @synchronized(observedAppsByPid) {
@@ -303,6 +302,8 @@
   }
   
   __log("%@ registered observation for app %@", self, application);
+  
+  return @[];
 }
 
 -(void) unobserveAxEventsForApplication:(NSRunningApplication*)application {
@@ -553,5 +554,11 @@
     dispatch_semaphore_wait(_semaphore, dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC));
   });
 }
+
+
+-(void) handleAxObservationResults:(NSArray<NSNumber*>*) axResults forRunningApplication:(NSRunningApplication*) application {
+  // override.
+}
+
 
 @end

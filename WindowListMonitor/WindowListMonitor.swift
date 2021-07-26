@@ -271,6 +271,11 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     ]
   }
 
+  public override func handleAxObservationResults(_ axResults: [NSNumber], for application: NSRunningApplication) {
+    // observe on the next opportunity.
+    // when app activated?
+  }
+
 }
 
 
