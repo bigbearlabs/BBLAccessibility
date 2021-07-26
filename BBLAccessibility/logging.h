@@ -7,7 +7,7 @@
 
 // MARK: -  constants
 
-//#define BBL_LOG_AX  // DEBUG enable trace-level logging of AX.
+#define BBL_LOG_AX  // DEBUG enable trace-level logging of AX.
 
 
 // MARK: -
