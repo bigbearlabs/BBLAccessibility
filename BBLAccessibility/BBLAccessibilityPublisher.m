@@ -97,6 +97,15 @@
 //  assert(siApp != nil);
   // DISABLED we saw some notifs from what look like child processes. (e.g. ...webkit.webcontent), in which case we can't get the si app back from the registry.
   
+  // TMPHACK pass through notif for elemdestroyed.
+  // TODO replace handler dict with an array of notifs to initially reg, and a generic handler block member.
+  if (CFEqual(notification, kAXUIElementDestroyedNotification)) {
+    id blockSelf = self;
+    handler = ^(SIAccessibilityElement *accessibilityElement) {
+      [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXUIElementDestroyedNotification];
+    };
+  }
+  
 //  [self execAsyncSynchronisingOn:siApp block:^{
     handler(siElement);
 //  }];
@@ -179,6 +188,7 @@
 -(NSDictionary*) handlersByNotificationTypes {
   if (!_handlersByNotificationTypes) {
     __weak BBLAccessibilityPublisher* blockSelf = self;
+    
     _handlersByNotificationTypes = @{
       (NSString*)kAXApplicationActivatedNotification: ^(SIAccessibilityElement *accessibilityElement) {
 //        id application = (SIApplication*) accessibilityElement;
@@ -254,15 +264,20 @@
 //        [blockSelf onFocusedElementChanged:accessibilityElement];
       },
       
-      (NSString*)kAXUIElementDestroyedNotification: ^(SIAccessibilityElement *accessibilityElement) {
-//        SIWindow* window = [SIWindow windowForElement:accessibilityElement];
+//      (NSString*)kAXUIElementDestroyedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+////        SIWindow* window = [SIWindow windowForElement:accessibilityElement];
+////
+////        id element = window != nil ? window : accessibilityElement;
+//        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXUIElementDestroyedNotification];
 //
-//        id element = window != nil ? window : accessibilityElement;
-        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXUIElementDestroyedNotification];
-        
-        
-//        [blockSelf onElementDestroyed:accessibilityElement];
+//
+////        [blockSelf onElementDestroyed:accessibilityElement];
+//      },
+
+      (NSString*)kAXValueChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
+        [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXValueChangedNotification];
       },
+      
 
       (NSString*)kAXSelectedTextChangedNotification: ^(SIAccessibilityElement *accessibilityElement) {
         [blockSelf updateAccessibilityInfoForElement:accessibilityElement axNotification:kAXSelectedTextChangedNotification];
@@ -281,6 +296,8 @@
 -(NSArray<NSNumber*>*) observeAxEventsForApplication:(NSRunningApplication*)application {
   SIApplication* siApp = [SIApplication applicationWithRunningApplication:application];
   
+  __log("%@ registering observation for app %@", self, application);
+
   NSMutableArray* observationFailures = @[].mutableCopy;
   
   for (NSString* notification in [self handlersByNotificationTypes]) {
@@ -300,8 +317,6 @@
   @synchronized(observedAppsByPid) {
     observedAppsByPid[@(application.processIdentifier)] = siApp;
   }
-  
-  __log("%@ registered observation for app %@", self, application);
   
   return @[];
 }

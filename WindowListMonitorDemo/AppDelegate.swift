@@ -31,7 +31,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     window.contentView = NSHostingView(rootView: contentView)
     window.makeKeyAndOrderFront(nil)
     
-    
+//    AXIsProcessTrustedWithOptions([kAXTrustedCheckOptionPrompt : true] as CFDictionary)
+    AccessibilityHelper().queryAccessibilityPermission(systemPromptIfNotFound: true) {
+      
+    } onPermissionReceived: {
+      
+    } onPollFindsNoPermission: {
+      
+    }
+
     self.windowListMonitor = WindowListMonitor { [unowned self] event in
       
       print("event: \(event)")
@@ -52,11 +60,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     windowListMonitor?.observeEvents()
     
-    loopInspectCgWindows()
+//    loopInspectCgWindows()
     
     sub = NSWorkspace.shared.publisher(for: \.frontmostApplication)
       .sink {
-       print("!! frontmost application changed: \($0)")
+       print("! frontmost application changed: \($0)")
       }
   }
   var sub: Any?
