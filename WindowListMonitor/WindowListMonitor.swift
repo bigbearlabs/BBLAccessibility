@@ -124,10 +124,6 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       }
 
       self.windowsByPid[pid, default:[]].append(window)
-      
-      if let tabGroup = window.tabGroup {
-        self.tabGroupsByWindowId[window.windowID] = tabGroup
-      }
     }
     
 //    func isTracked(tabGroup: SITabGroup) -> Bool {
@@ -147,9 +143,6 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
 //    }
   }
 
-  var tabGroupsByWindowId: [CGWindowID : SITabGroup] = [:]
-
-  
   
   func untrack(window: SIWindow, pid: pid_t) {
     self.windowsByPid[pid]?.removeAll { $0.axElementRef == window.axElementRef }
@@ -215,11 +208,6 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       track(window: window, pid: pid)
 
       let tabGroup = window.tabGroup
-//      bookkeep(window, tabGroup)
-      
-//      let windows = SIApplication(forProcessIdentifier: pid).uncachedWindows
-//      let tabContext = tabContext(window: window)
-//      print(tabContext)
       
       handle(.focused(windowNumber: windowNumber, tabGroup: tabGroup))
       
@@ -322,15 +310,6 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     // - compare app's windows with previous set.
     // - limitation: window set is per-space, so ensure space change doesn't create false inferences.
     case kAXUIElementDestroyedNotification:
-//      // TODO filter using same condition as on ax focus notif.
-//      let pid = siElement.processIdentifier()
-//      focusedWindow(pid: pid) { [unowned self] focusedWindow in
-//        if focusedWindow == nil {
-//          handle(.noWindow(pid: pid))
-//        }
-//      }
-      
-      // IT2
       if let window = trackedWindow(element: siElement) {
         print("!! \(window) closed, removing from the books.")
         untrack(window: window, pid: window.processIdentifier())
@@ -340,93 +319,11 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
         handle(.closed(windowNumber: window.windowID))
       }
     
-    case kAXValueChangedNotification:
-      if let parent = siElement.forKey(kAXParentAttribute as CFString),
-         parent.role() == kAXTabGroupRole {
-//        let window = SIWindow(for: parent)
-//        let tabs = window.tabGroup?.tabs ?? []
-        
-//        snapAllTabGroups(pid: siElement.processIdentifier())
-        
-//        if let tabGroup = window.tabGroup {
-//          tabGroupsByWindowId[window.windowID] = tabGroup
-//        } else {
-//          // * window with no tab, or a tab slave.
-//        }
-        // !!! tab groups have the same identity!!! we can use this to infer tab sibling windows.
-        
-      }
+//    case kAXValueChangedNotification:
+//      if let parent = siElement.forKey(kAXParentAttribute as CFString),
+//         parent.role() == kAXTabGroupRole {
+//      }
 
-      func snapAllTabGroups(pid: pid_t) {
-        let windows = windowsByPid[pid]!
-        let andTabs = windows.map {
-          ($0.windowID, $0.tabGroup?.tabs)
-        }
-        
-        let tabsByWindowId = Dictionary(uniqueKeysWithValues: andTabs)
-        
-      }
-      
-      func diffTabs(tabs: [SITabGroup.Tab], window: SIWindow, tabsDict: [AXUIElement : [SITabGroup.Tab]], priorTabsDict: [AXUIElement : [SITabGroup.Tab]]) -> TabDiff {
-        
-        // first check if same window was tab owner.
-        if let tabsForWindow = tabsDict[window.axElementRef] {
-          return diffTabs(tabs: tabs, prior: tabsForWindow)
-        }
-        
-        // find any prior tab owners who have lost the status.
-        let priorOwnersWhoLost: [AXUIElement] = priorTabsDict.compactMap { windowAxElem, tabs in
-          if tabsDict[windowAxElem] == nil {
-            return windowAxElem
-          }
-          return nil
-        }
-        
-        switch priorOwnersWhoLost.count {
-        case 0:
-          print("!!! no prior tab owner; we have a new tab group.")
-        case 1:
-          print("!!! inferred tab sibling \(priorOwnersWhoLost[0]) for tab owner \(window)")
-        default:
-          print("!!! multiple prior tab owners: \(priorOwnersWhoLost); please investigate.")
-        }
-        
-        return TabDiff() // stub
-      }
-
-      
-      func diffTabs(tabs: [SITabGroup.Tab], prior: [SITabGroup.Tab]) -> TabDiff {
-        let deltaCount = tabs.count - prior.count
-        if deltaCount > 0 {
-          
-          let currentTitles = Set(tabs.map { $0.title })
-          let priorTitles = Set(prior.map { $0.title })
-          // tabs should be a clean superset of the prior tabs.
-          assert(currentTitles.isSuperset(of: priorTitles))
-          
-          let newTitles = currentTitles.subtracting(priorTitles)
-          return TabDiff(added: Array(newTitles))
-          
-        } else if deltaCount < 0 {
-          
-          let currentTitles = Set(tabs.map { $0.title })
-          let priorTitles = Set(prior.map { $0.title })
-          // tabs should be a clean subset of the prior tabs.
-          assert(currentTitles.isSubset(of: priorTitles))
-          
-          let removedTitles = priorTitles.subtracting(currentTitles)
-          return TabDiff(removed: Array(removedTitles))
-
-        }
-        else {
-          return TabDiff()
-        }
-      }
-      
-      struct TabDiff {
-        var added: [String] = []  // work with just names.
-        var removed: [String] = []
-      }
       
     case kAXWindowMiniaturizedNotification:
       let windowNumber = SIWindow(for: siElement).windowID
