@@ -1,6 +1,43 @@
 import Combine
 
 
+
+public typealias AxNotification = String
+
+
+public extension BBLAccessibilityPublisher {
+  
+  @objc
+  var axNotificationsToObserve: [AxNotification] {
+    [
+      kAXApplicationActivatedNotification,
+      kAXApplicationDeactivatedNotification,
+
+      kAXApplicationShownNotification,
+      kAXApplicationHiddenNotification,
+      
+      kAXWindowCreatedNotification,
+
+      kAXMainWindowChangedNotification,
+      kAXFocusedWindowChangedNotification,
+      
+      kAXWindowMovedNotification,
+      kAXWindowResizedNotification,
+      kAXTitleChangedNotification,
+      "AXFocusedTabChanged",
+
+      kAXWindowMiniaturizedNotification,
+      kAXWindowDeminiaturizedNotification,
+
+//      kAXUIElementDestroyedNotification,  // obsreved for individual windows.
+      
+      kAXFocusedUIElementChangedNotification,
+    ]
+  }
+  
+}
+
+
 public extension BBLAccessibilityPublisher {
   
   func windows(pid: pid_t, completionHandler: @escaping ([SIWindow]) -> Void) {
@@ -93,6 +130,7 @@ public extension BBLAccessibilityPublisher {
   func unobserveTerminate() {
     handleTerminateSubscription = nil
   }
+
 }
 
 
