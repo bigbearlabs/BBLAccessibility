@@ -16,14 +16,14 @@ import BBLAccessibility
 public class WindowListMonitor: BBLAccessibilityPublisher {
   
   public enum Event: Equatable {
-    case activated(pid: pid_t, focusedWindowNumber: UInt32?)
+    case activated(pid: pid_t, focusedWindowNumber: UInt32?, tabGroup: SITabGroup?)
     case hidden(pid: pid_t)
 
-    case created(windowNumber: UInt32, tabs: [SITabGroup.Tab]?)  // TODO extract leaky param type
+    case created(windowNumber: UInt32, tabGroup: SITabGroup?)
     case closed(windowNumber: UInt32)
 
-    case focused(windowNumber: UInt32, tabGroup: SITabGroup? = nil)
-    case tabChanged(windowNumber: UInt32, tabs: [SITabGroup.Tab]?)
+    case focused(windowNumber: UInt32, tabGroup: SITabGroup?)
+    case tabChanged(windowNumber: UInt32, tabGroup: SITabGroup?)
     
     case titleChanged(windowNumber: UInt32, title: String?)
     case frameChanged(windowNumber: UInt32, frame: CGRect)
@@ -197,16 +197,11 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       
       let window = SIWindow(for: siElement)
       let pid = window.processIdentifier()
-      let windowNumber = window.windowID
       
       // observe teardown of this window.
       track(window: window, pid: pid)
       
-      // CASE window tab creation.
-      // if tab group's children buttons (AXRoleDescription='tab') should has 1 new element,
-      // this ia a tab creation case.
-      let tabs = window.tabGroup?.tabs
-      handle(.created(windowNumber: windowNumber, tabs: tabs))
+      handle(.created(windowNumber: window.windowID, tabGroup: window.tabGroup))
     
     case kAXMainWindowChangedNotification, kAXFocusedWindowChangedNotification:
       guard siElement.subrole() == kAXStandardWindowSubrole else {
@@ -301,14 +296,14 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       track(window: window, pid: pid)
 
       focusedWindow(pid: pid) { [unowned self] window in
-        print("activated pid:\(pid) (\(siElement.title() ?? "?")) reports focused window \(window?.windowID ?? kCGNullWindowID)")
-        handle(.activated(pid: pid, focusedWindowNumber: window?.windowID))
+        print("activated pid:\(pid) (\(siElement.title() ?? "?")), ax reports focused window \(window?.windowID ?? kCGNullWindowID)")
+        handle(.activated(pid: pid, focusedWindowNumber: window?.windowID, tabGroup: window?.tabGroup))
       }
 
     case kAXApplicationDeactivatedNotification:
       focusedWindow() { [unowned self] focusedWindow in
         if let focusedWindow = focusedWindow {
-          handle(.activated(pid: focusedWindow.processIdentifier(), focusedWindowNumber: focusedWindow.windowID))
+          handle(.activated(pid: focusedWindow.processIdentifier(), focusedWindowNumber: focusedWindow.windowID, tabGroup: focusedWindow.tabGroup))
         }
       }
 
@@ -317,6 +312,9 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       let window = SIWindow(for: siElement)
       let windowNumber = window.windowID
       let frame = window.frame()
+      guard windowNumber != kCGNullWindowID,
+            frame != .zero
+      else { return }
       handle(.frameChanged(windowNumber: windowNumber, frame: frame))
           
       
@@ -345,7 +343,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     case kAXValueChangedNotification:
       if let parent = siElement.forKey(kAXParentAttribute as CFString),
          parent.role() == kAXTabGroupRole {
-        let window = SIWindow(for: parent)
+//        let window = SIWindow(for: parent)
 //        let tabs = window.tabGroup?.tabs ?? []
         
 //        snapAllTabGroups(pid: siElement.processIdentifier())
@@ -445,8 +443,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       if siElement.role() == kAXWindowRole {
         let window = SIWindow(for: siElement)
         print("tab changed to wid:\(window.windowID)")
-        let tabs = window.tabGroup?.tabs
-        handle(.tabChanged(windowNumber: window.windowID, tabs: tabs))
+        handle(.tabChanged(windowNumber: window.windowID, tabGroup: window.tabGroup))
       } else {
         print("👺 \(siElement) is not a window; AXFocusedTabChanged will be ignored.")
       }
