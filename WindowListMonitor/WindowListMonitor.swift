@@ -116,6 +116,30 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     // DISABLED no longer using the ax info property; don't incur the additional processing which could be quite frequent (per ax event)
 
     switch axNotification as String {
+    
+    case kAXApplicationActivatedNotification:
+      let pid = siElement.processIdentifier()
+      
+      let focusedElement = siElement.focused()
+      let window = focusedElement != nil
+        ? SIWindow(for: focusedElement!)
+        : SIApplication(forProcessIdentifier: pid).focusedWindow()
+      
+      if let window = window {
+        track(window: window, pid: pid)
+      }
+
+      print("activated pid:\(pid) (\(siElement.title() ?? "?")), ax reports focused wid:\(String(describing: window?.windowID))")
+      handle(.activated(pid: pid, focusedWindowNumber: window?.windowID, tabGroup: window?.tabGroup))
+
+//    case kAXApplicationDeactivatedNotification:
+//      focusedWindow() { [unowned self] focusedWindow in
+//        if let focusedWindow = focusedWindow {
+//          handle(.activated(pid: focusedWindow.processIdentifier(), focusedWindowNumber: focusedWindow.windowID, tabGroup: focusedWindow.tabGroup))
+//        }
+//      }
+
+
     case kAXWindowCreatedNotification:
       // filter out some roles.
       
@@ -151,22 +175,6 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       let title = window.title()
       handle(.titleChanged(windowNumber: windowNumber, title: title))
       
-    case kAXApplicationActivatedNotification:
-      let pid = siElement.processIdentifier()
-      
-      let window = SIWindow(for: siElement.focused())
-      track(window: window, pid: pid)
-
-      print("activated pid:\(pid) (\(siElement.title() ?? "?")), ax reports focused window \(window.windowID)")
-      handle(.activated(pid: pid, focusedWindowNumber: window.windowID, tabGroup: window.tabGroup))
-
-//    case kAXApplicationDeactivatedNotification:
-//      focusedWindow() { [unowned self] focusedWindow in
-//        if let focusedWindow = focusedWindow {
-//          handle(.activated(pid: focusedWindow.processIdentifier(), focusedWindowNumber: focusedWindow.windowID, tabGroup: focusedWindow.tabGroup))
-//        }
-//      }
-
     case kAXWindowMovedNotification,
          kAXWindowResizedNotification:
       let window = SIWindow(for: siElement)
