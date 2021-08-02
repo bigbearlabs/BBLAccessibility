@@ -66,7 +66,11 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     trackObservableApplicationsExistingWindows()
   }
   
+  public func unobserveEvents() {
+    self.unwatchWindows()
     
+    untrackWindows()
+  }
     
 //    self.registerForNotification()
 //
@@ -204,6 +208,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     case kAXApplicationHiddenNotification:
       let pid = siElement.processIdentifier()
       handle(.hidden(pid: pid))
+      
     case "AXFocusedTabChanged":  // EXTRACT
       if siElement.role() == kAXWindowRole {
         let window = SIWindow(for: siElement)
@@ -212,6 +217,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       } else {
         print("👺 \(siElement) is not a window; AXFocusedTabChanged will be ignored.")
       }
+      
     default:
       return
     }
@@ -386,6 +392,14 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     }
   }
 
+  func untrackWindows() {
+    for (pid, windows) in windowsByPid {
+      for window in windows {
+        untrack(window: window, pid: pid)
+      }
+    }
+  }
+
 }
 
 
@@ -430,3 +444,5 @@ extension SIWindow {
     "wid:\(windowID) \(super.description)"
   }
 }
+
+
