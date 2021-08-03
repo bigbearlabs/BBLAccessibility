@@ -165,6 +165,9 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       let window = SIWindow(for: siElement)
       let pid = window.processIdentifier()
       
+      guard pid != 0
+      else { return }
+      
       // observe teardown of this window.
       track(window: window, pid: pid)
       
