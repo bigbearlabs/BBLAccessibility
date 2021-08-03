@@ -120,10 +120,16 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     case kAXApplicationActivatedNotification:
       let pid = siElement.processIdentifier()
       
-      let focusedElement = siElement.focused()
-      let window = focusedElement != nil
-        ? SIWindow(for: focusedElement!)
-        : SIApplication(forProcessIdentifier: pid).focusedWindow()
+      let window = { () -> SIWindow? in
+        if let focusedElement = siElement.focused() {
+          let windowFromFocusedElem = SIWindow(for: focusedElement)
+          if windowFromFocusedElem.role() == kAXWindowRole {
+            return windowFromFocusedElem
+          }
+        }
+        let windowFromApp = SIApplication(forProcessIdentifier: pid).focusedWindow()
+        return windowFromApp
+      }()
       
       if let window = window {
         track(window: window, pid: pid)
