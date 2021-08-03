@@ -18,7 +18,8 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
   public enum Event: Equatable {
     case activated(pid: pid_t, focusedWindowNumber: UInt32?, tabGroup: SITabGroup?)
     case hidden(pid: pid_t)
-
+    case unhidden(pid: pid_t)
+    
     case created(windowNumber: UInt32, tabGroup: SITabGroup?)
     case closed(windowNumber: UInt32)
 
@@ -148,6 +149,10 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       let pid = siElement.processIdentifier()
       handle(.hidden(pid: pid))
       
+    case kAXApplicationShownNotification:
+      let pid = siElement.processIdentifier()
+      handle(.unhidden(pid: pid))
+
 
     case kAXWindowCreatedNotification:
       // filter out some roles.
