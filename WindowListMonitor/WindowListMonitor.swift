@@ -129,7 +129,6 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
         track(window: window, pid: pid)
       }
 
-      print("activated pid:\(pid) (\(siElement.title() ?? "?")), ax reports focused wid:\(String(describing: window?.windowID))")
       handle(.activated(pid: pid, focusedWindowNumber: window?.windowID, tabGroup: window?.tabGroup))
 
 //    case kAXApplicationDeactivatedNotification:
@@ -139,6 +138,10 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
 //        }
 //      }
 
+    case kAXApplicationHiddenNotification:
+      let pid = siElement.processIdentifier()
+      handle(.hidden(pid: pid))
+      
 
     case kAXWindowCreatedNotification:
       // filter out some roles.
@@ -191,7 +194,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     // - limitation: window set is per-space, so ensure space change doesn't create false inferences.
     case kAXUIElementDestroyedNotification:
       if let window = trackedWindow(element: siElement) {
-        print("!! \(window) closed, removing from the books.")
+        print("\(window) closed, removing from the books.")
         untrack(window: window, pid: window.processIdentifier())
         
         // TODO unobserve ax?
@@ -213,14 +216,9 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       let windowNumber = SIWindow(for: siElement).windowID
       handle(.unminimised(windowNumber: windowNumber))
 
-    case kAXApplicationHiddenNotification:
-      let pid = siElement.processIdentifier()
-      handle(.hidden(pid: pid))
-      
     case "AXFocusedTabChanged":  // EXTRACT
       if siElement.role() == kAXWindowRole {
         let window = SIWindow(for: siElement)
-        print("tab changed to wid:\(window.windowID)")
         handle(.tabChanged(windowNumber: window.windowID, tabGroup: window.tabGroup))
       } else {
         print("👺 \(siElement) is not a window; AXFocusedTabChanged will be ignored.")
