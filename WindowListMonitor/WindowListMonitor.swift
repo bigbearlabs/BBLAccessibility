@@ -68,9 +68,9 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
   }
   
   public func unobserveEvents() {
-    self.unwatchWindows()
-    
     untrackWindows()
+
+    self.unwatchWindows()
   }
     
 //    self.registerForNotification()
@@ -367,7 +367,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
         print("!! watching \(window) for destruction. result:\(result.rawValue)")
       }
       else {
-        print("!!!! couldn't find SIApplication for pid:\(pid); can't track window for destruction.")
+        print("👺 couldn't find SIApplication for pid:\(pid); can't track window for destruction.")
       }
 
       self.windowsByPid[pid, default:[]].append(window)
@@ -392,6 +392,15 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
 
   
   func untrack(window: SIWindow, pid: pid_t) {
+    if let axWindows = self.windowsByPid[pid],
+       let siApp = self.appElement(forProcessIdentifier: pid) {
+      for window in axWindows {
+        siApp.unobserveNotification(kAXUIElementDestroyedNotification as CFString, with: window)
+      }
+    } else {
+      print("👺 couldn't unobserve ax notifs for pid:\(pid)")
+    }
+    
     self.windowsByPid[pid]?.removeAll { $0.axElementRef == window.axElementRef }
   }
   
