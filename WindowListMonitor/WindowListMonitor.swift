@@ -62,7 +62,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
   }
   
   public func observeEvents() {
-    self.watchWindows()
+    self.observeAxEvents()
     
     trackObservableApplicationsExistingWindows()
   }
@@ -70,7 +70,7 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
   public func unobserveEvents() {
     untrackWindows()
 
-    self.unwatchWindows()
+    self.unobserveAxEvents()
   }
     
 //    self.registerForNotification()

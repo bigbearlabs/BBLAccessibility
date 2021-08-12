@@ -18,9 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(BOOL)shouldObserveApplication: (NSRunningApplication*)application;
 
--(void) watchWindows;
+-(void) observeAxEvents;
 
--(void) unwatchWindows;
+-(void) unobserveAxEvents;
 
 
 -(NSArray<NSNumber*>*) observeAxEventsForApplication:(NSRunningApplication*)application;
@@ -75,6 +75,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 -(void) handleAxObservationResults:(NSArray<NSNumber*>*) axResults forRunningApplication:(NSRunningApplication*) application;
+
+
+// notif center registration
+-(void) observeInternalNotification;
+-(void) unobserveInternalNotification;
 
 
 NS_ASSUME_NONNULL_END

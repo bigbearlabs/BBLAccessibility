@@ -63,7 +63,7 @@
 
 #pragma mark -
 
--(void) registerForNotification {
+-(void) observeInternalNotification {
   __weak BBLAccessibilityPublisher* blockSelf = self;
   notificationCenterObserverToken = [NSNotificationCenter.defaultCenter addObserverForName:AX_EVENT_NOTIFICATION object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
     
@@ -75,7 +75,7 @@
   }];
 }
 
--(void) deregisterForNotification {
+-(void) unobserveInternalNotification {
   if (notificationCenterObserverToken) {
     [NSNotificationCenter.defaultCenter removeObserver:notificationCenterObserverToken];
   }
@@ -90,9 +90,8 @@
 //  }];
 }
 
-// RENAME -> observeAxEvents
--(void) watchWindows {
-  [self registerForNotification];
+-(void) observeAxEvents {
+  [self observeInternalNotification];
 
   __weak BBLAccessibilityPublisher* blockSelf = self;
 
@@ -146,7 +145,7 @@
   __log("%@ is watching the windows", self);
 }
 
--(void) unwatchWindows {
+-(void) unobserveAxEvents {
 
   @synchronized(observedAppsByPid) {
     for (SIApplication* app in observedAppsByPid.allValues) {
@@ -154,11 +153,11 @@
     }
   }
   
-  [self unobserveLaunch];
-  
   [self unobserveTerminate];
   
-  [self deregisterForNotification];
+  [self unobserveLaunch];
+  
+  [self unobserveInternalNotification];
   
   __log("%@ is no longer watching the windows", self);
 }

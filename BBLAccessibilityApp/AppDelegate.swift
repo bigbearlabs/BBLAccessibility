@@ -46,7 +46,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       }
     
     // PoC watch windows.
-    axPublisher!.watchWindows()
+    axPublisher!.observeAxEvents()
     
   }
 
