@@ -121,22 +121,12 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
     case kAXApplicationActivatedNotification:
       let pid = siElement.processIdentifier()
       
-      let window = { () -> SIWindow? in
-        if let focusedElement = siElement.focused() {
-          let windowFromFocusedElem = SIWindow(for: focusedElement)
-          if windowFromFocusedElem.role() == kAXWindowRole {
-            return windowFromFocusedElem
-          }
-        }
-        let windowFromApp = SIApplication(forProcessIdentifier: pid).focusedWindow()
-        return windowFromApp
-      }()
-      
-      if let window = window {
-        track(window: window, pid: pid)
+      if let _window = window(siElement: siElement) {
+        track(window: _window, pid: pid)
+        
+        handle(.activated(pid: pid, focusedWindowNumber: _window.windowID, tabGroup: _window.tabGroup))
       }
 
-      handle(.activated(pid: pid, focusedWindowNumber: window?.windowID, tabGroup: window?.tabGroup))
 
 //    case kAXApplicationDeactivatedNotification:
 //      focusedWindow() { [unowned self] focusedWindow in
@@ -179,12 +169,11 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
         return
       }
       
-      let window = SIWindow(for: siElement)
-      let pid = siElement.processIdentifier()
-      
-      track(window: window, pid: pid)
+      if let window = window(siElement: siElement) {
+        track(window: window, pid: window.processIdentifier())
 
-      handle(.focused(windowNumber: window.windowID, tabGroup: window.tabGroup))
+        handle(.focused(windowNumber: window.windowID, tabGroup: window.tabGroup))
+      }
       
     case kAXTitleChangedNotification:
       let window = SIWindow(for: siElement)
@@ -401,7 +390,10 @@ public class WindowListMonitor: BBLAccessibilityPublisher {
       print("👺 couldn't unobserve ax notifs for pid:\(pid)")
     }
     
-    self.windowsByPid[pid]?.removeAll { $0.axElementRef == window.axElementRef }
+    if var windows = self.windowsByPid[pid] {
+      windows.removeAll { $0.axElementRef == window.axElementRef }
+      self.windowsByPid[pid] = windows
+    }
   }
   
   func trackedWindow(element: SIAccessibilityElement) -> SIWindow? {
@@ -475,3 +467,15 @@ extension SIWindow {
 }
 
 
+
+func window(siElement: SIAccessibilityElement) -> SIWindow? {
+  if let focusedElement = siElement.focused() {
+    let windowFromFocusedElem = SIWindow(for: focusedElement)
+    if windowFromFocusedElem.role() == kAXWindowRole {
+      return windowFromFocusedElem
+    }
+  }
+  let pid = siElement.processIdentifier()
+  let windowFromApp = SIApplication(forProcessIdentifier: pid).focusedWindow()
+  return windowFromApp
+}
