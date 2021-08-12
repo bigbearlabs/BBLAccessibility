@@ -51,10 +51,13 @@
 #pragma mark -
 
 -(NSArray<NSRunningApplication*>*) applicationsToObserve {
-  return [[NSWorkspace sharedWorkspace] runningApplications];
-
-//  // DEBUG selected text not reported on some safari windows, only on Sierra (10.12).
-//  return [NSRunningApplication runningApplicationsWithBundleIdentifier:@"com.apple.Safari"];
+  NSMutableArray* apps = @[].mutableCopy;
+  for (NSRunningApplication* app in [[NSWorkspace sharedWorkspace] runningApplications]) {
+    if ([self shouldObserveApplication:app]) {
+      [apps addObject:app];
+    }
+  }
+  return apps;
 }
 
 -(BOOL)shouldObserveApplication: (NSRunningApplication*)application {
@@ -134,10 +137,6 @@
   // observe all current apps.
   // NOTE it still takes a while for the notifs to actually invoke the handlers. at least with concurrent set up we don't hog the main thread as badly as before.
   for (NSRunningApplication* app in self.applicationsToObserve) {
-    if (![self shouldObserveApplication: app]) {
-      continue;
-    }
-    
     NSArray* axResults = [self observeAxEventsForApplication:app];
     [self handleAxObservationResults: axResults forRunningApplication:app];
   }

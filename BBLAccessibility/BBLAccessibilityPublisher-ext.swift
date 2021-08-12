@@ -32,6 +32,8 @@ public extension BBLAccessibilityPublisher {
 //      kAXUIElementDestroyedNotification,  // obsreved for individual windows.
       
       kAXFocusedUIElementChangedNotification,
+      
+//      kAXSelectedTextChangedNotification
     ]
   }
   
