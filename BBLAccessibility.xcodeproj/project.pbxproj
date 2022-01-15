@@ -417,7 +417,7 @@
 				51FA4A2E1F5774B0007123B0 /* Silica-ext.swift */,
 			);
 			name = "Window Buttons";
-			path = BBLAccessibilitySwift;
+			path = BBLAccessibility;
 			sourceTree = SOURCE_ROOT;
 		};
 		5191A9401E34FFBF001B94FD /* Frameworks */ = {
