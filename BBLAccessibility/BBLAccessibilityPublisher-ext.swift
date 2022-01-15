@@ -4,6 +4,8 @@ import Combine
 
 public typealias AxNotification = String
 
+public typealias WindowNumber = UInt32
+
 
 public extension BBLAccessibilityPublisher {
   

@@ -7,7 +7,7 @@ private var debug = false
 //debug = false  // DEBUG
 
 
-public typealias WindowNumber = String // TODO make into Int.
+public typealias WindowNumberString = String // TODO make into Int.
 
 public typealias WindowServerSessionId = String
 
@@ -32,9 +32,9 @@ extension WindowFingerprintable {
 public struct WindowId: Codable, Hashable {
 
   public let windowServerSessionId: WindowServerSessionId
-  public let windowNumber: WindowNumber
+  public let windowNumber: WindowNumberString
   
-  public init(windowServerSessionId: WindowServerSessionId, windowNumber: WindowNumber) {
+  public init(windowServerSessionId: WindowServerSessionId, windowNumber: WindowNumberString) {
     self.windowServerSessionId = windowServerSessionId
     self.windowNumber = windowNumber
   }
@@ -47,7 +47,7 @@ public struct WindowId: Codable, Hashable {
   }
   
   // TODO consider performing once per process / windowserver session / whatever is appropriate.
-  static public func from(windowNumber: WindowNumber) -> WindowId {
+  static public func from(windowNumber: WindowNumberString) -> WindowId {
     var securitySessionId: SecuritySessionId = 0
     SessionGetInfo(callerSecuritySession, &securitySessionId, nil)
     
@@ -117,7 +117,7 @@ public struct CGWindowInfo: Codable, Equatable {
   }
   
   
-  public init(pid: pid_t, windowNumber: WindowNumber, title: String, isVisible: Bool,
+  public init(pid: pid_t, windowNumber: WindowNumberString, title: String, isVisible: Bool,
               frame: CGRect,
               windowLayer: Int? = nil
   ) {
