@@ -30,6 +30,31 @@ public extension SIApplication {
 }
 
 
+public extension SIWindow {
+  
+  class func `for`(windowNumber: UInt32) -> SIWindow? {
+    if let app = NSRunningApplication.application(windowNumber: windowNumber),
+      
+      // NOTE -25204 was caused by sandbox settings applied to default app template since xcode 11.3  }
+      let siWindow = SIApplication(forProcessIdentifier: app.processIdentifier).windows.first(where: {$0.windowID ==  windowNumber}) {
+      
+      return siWindow
+    }
+    
+    return nil
+  }
+  
+}
+
+
+public extension SIAccessibilityElement {
+  var roleDescription: String? {
+    self.string(forKey: kAXRoleDescriptionAttribute as CFString)
+  }
+}
+
+
+// MARK: - buttons
 
 public extension SIWindow {
   
@@ -66,6 +91,9 @@ public extension SIWindow {
     return nil
   }
 }
+
+
+// MARK: - tab groups
 
 public class SITabGroup: SIAccessibilityElement {
   
@@ -111,8 +139,18 @@ public class SITabGroup: SIAccessibilityElement {
 }
 
 
-public extension SIAccessibilityElement {
-  var roleDescription: String? {
-    self.string(forKey: kAXRoleDescriptionAttribute as CFString)
+// MARK: -
+
+extension NSRunningApplication {
+  
+  class func application(windowNumber: UInt32) -> NSRunningApplication? {
+    if let dict = (CGWindowListCopyWindowInfo([.optionIncludingWindow], windowNumber) as? [[CFString : Any?]])?.first {
+      let pid = Int32(truncating: (dict as NSDictionary)[kCGWindowOwnerPID] as! NSNumber)
+      return NSRunningApplication(processIdentifier: pid)
+    }
+    return nil
   }
+  
 }
+
+

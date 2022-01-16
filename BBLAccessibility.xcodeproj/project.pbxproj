@@ -322,7 +322,9 @@
 			isa = PBXGroup;
 			children = (
 				51FA4A2B1F5774A5007123B0 /* AccessibilityHelper.swift */,
-				516218501F5770F00011508E /* Window Buttons */,
+				511EED11249116B40029982D /* BBLAccessibilityPublisher-ext.swift */,
+				51FA4A2D1F5774B0007123B0 /* AccessibilityInfo-ext.swift */,
+				51FA4A2E1F5774B0007123B0 /* Silica-ext.swift */,
 				51B8F2221DB5774100E79EEC /* BBLAccessibilityPublisher.h */,
 				51B8F2231DB5774100E79EEC /* BBLAccessibilityPublisher.m */,
 				51D6F8991DDF73D0003F7E31 /* AccessibilityInfo.h */,
@@ -333,7 +335,6 @@
 				51B0D8C71E4BD47900EED498 /* logging.h */,
 				51100F101CC15D200095B985 /* Info.plist */,
 				511EECF1249101680029982D /* CGWindowList.swift */,
-				511EED11249116B40029982D /* BBLAccessibilityPublisher-ext.swift */,
 			);
 			path = BBLAccessibility;
 			sourceTree = "<group>";
@@ -409,16 +410,6 @@
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
-		};
-		516218501F5770F00011508E /* Window Buttons */ = {
-			isa = PBXGroup;
-			children = (
-				51FA4A2D1F5774B0007123B0 /* AccessibilityInfo-ext.swift */,
-				51FA4A2E1F5774B0007123B0 /* Silica-ext.swift */,
-			);
-			name = "Window Buttons";
-			path = BBLAccessibility;
-			sourceTree = SOURCE_ROOT;
 		};
 		5191A9401E34FFBF001B94FD /* Frameworks */ = {
 			isa = PBXGroup;
