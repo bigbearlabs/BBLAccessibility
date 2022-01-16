@@ -111,6 +111,11 @@
       
 //      SIAXNotificationHandler handler = [blockSelf handlersByNotificationTypes][(__bridge NSString*)kAXFocusedWindowChangedNotification];
 //      handler(window);
+      
+      //  check if app is active, manually issue ax notif.
+      if (SIApplication.focusedApplication.processIdentifier == app.processIdentifier) {
+        [blockSelf updateAccessibilityInfoForApplication:app axNotification:kAXApplicationActivatedNotification];
+      }
 
       __log("%@ launched, ax observations added", app);
 
