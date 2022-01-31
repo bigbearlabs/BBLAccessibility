@@ -2,6 +2,7 @@ import Foundation
 import Silica
 import BBLBasics
 import BBLAccessibility
+import OrderedCollections
 
 
 public class WindowCoordinator {
@@ -9,7 +10,7 @@ public class WindowCoordinator {
   public init() {}
   
   public func position(
-    framesByWindowNumber: [UInt32 : CGRect],
+    framesByWindowNumber: OrderedDictionary<UInt32, CGRect>,
     raise: Bool = false,
     activate windowNumberToFocus: UInt32? = nil,
     queue: DispatchQueue = coordinatorQueue
@@ -18,7 +19,7 @@ public class WindowCoordinator {
     // TODO animations
     coordinatorQueue.async {
 
-      for (windowNumber, frame) in framesByWindowNumber {
+      for (windowNumber, frame) in framesByWindowNumber.reversed() {
         
         if let window = SIWindow.for(windowNumber: windowNumber) {
           if frame == .zero {
