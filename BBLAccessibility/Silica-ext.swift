@@ -119,6 +119,10 @@ public class SITabGroup: SIAccessibilityElement {
     }
   }
   
+  public var window: SIWindow {
+    SIWindow.init(for: self)
+  }
+  
   public struct Tab: Equatable, CustomStringConvertible {
     public let title: String
     public let isSelected: Bool
