@@ -237,14 +237,14 @@ extension CGWindowInfo: WindowFingerprintable {
 
 extension CGWindowInfo: CustomStringConvertible {
   public var description: String {
-    return "\(windowId) (\((pid, isVisible)))"
+    return "\(windowId)(\(pid),\(isVisible ? "visible" : ""))"
   }
 }
 
 extension CGWindowInfo: CustomDebugStringConvertible {
   public var debugDescription: String {
     let bundleId = NSRunningApplication(processIdentifier: pid)?.bundleIdentifier ?? "<no bundle id>"
-    return "\(windowId) '\(title)' (\((pid, bundleId, isVisible)))"
+    return "\(windowId) '\(title)' (\(pid),\(bundleId),\(isVisible ? "visible" : ""))"
   }
 }
 
