@@ -244,7 +244,7 @@ extension CGWindowInfo: CustomStringConvertible {
 extension CGWindowInfo: CustomDebugStringConvertible {
   public var debugDescription: String {
     let bundleId = NSRunningApplication(processIdentifier: pid)?.bundleIdentifier ?? "<no bundle id>"
-    return "\(windowId) '\(title)' (\(pid),\(bundleId),\(isVisible ? "visible" : ""))"
+    return "\(windowId) '\(title)' (\(pid),\(bundleId),\(isVisible ? "visible" : ""),\(frame),l:\(windowLayer != nil ? String(describing: windowLayer!) : "?" )"
   }
 }
 
