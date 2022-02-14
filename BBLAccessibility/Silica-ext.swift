@@ -10,6 +10,9 @@ import Foundation
 import Silica
 
 
+// NOTE window tabs:
+// an SIWindow acquired prior has correct isVisible status even after being turned into an inactive tab!
+
 
 public extension SIApplication {
   
