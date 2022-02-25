@@ -207,12 +207,9 @@
       return;
     }
     
-    __weak BBLAccessibilityPublisher* blockSelf = self;
-    [self execAsyncSynchronisingOnObject:siApp block:^{
-      for (NSString* notification in [blockSelf axNotificationsToObserve]) {
-        [siApp unobserveNotification:(__bridge CFStringRef)notification withElement:siApp];
-      }
-    }];
+    for (NSString* notification in [self axNotificationsToObserve]) {
+      [siApp unobserveNotification:(__bridge CFStringRef)notification withElement:siApp];
+    }
   
     [observedAppsByPid removeObjectForKey:pid];
     
@@ -274,60 +271,6 @@
                            axNotification:(CFStringRef)axNotification
                               forceUpdate:(BOOL)forceUpdate
 {
-
-  // * case: text selection handling special cases.
-  if (CFEqual(axNotification, kAXSelectedTextChangedNotification)) {
-    
-    // NOTE some apps, e.g. iterm, seem to fail to notify observers properly.
-    // FIXME investigate why not working with Notes.app
-    // INVESTIGATE sierra + safari: notifies only for some windows.
-    // during investigation we saw that inspecting with Prefab UI Browser 'wakes up' the windows such that they send out notifications only after inspection.
-    NSString* selectedText = siElement.selectedText;
-    if (selectedText == nil) {
-      selectedText = @"";
-    }
-
-    // guard: xcode spams us with notifs even when no text has changed, so only notify when value has changed.
-    id previousSelectedText = self.accessibilityInfosByPid[@(siElement.processIdentifier)].selectedText;  // FIXME synchronise access.
-    if (previousSelectedText == nil) {
-      previousSelectedText = @"";
-    }
-
-    if ( selectedText == previousSelectedText
-        ||
-        [selectedText isEqual:previousSelectedText]) {
-      // no need to update.
-      return;
-    }
-  }
-
-  // * updated the published property.
-  
-  //   dispatch to a queue, to avoid spins if ax query of the target app takes a long time.
-  pid_t pid = siElement.processIdentifier;
-  __weak BBLAccessibilityPublisher* blockSelf = self;
-  [self execAsyncSynchronisingOnPid:pid block:^{
-    @autoreleasepool {
-      id axInfo = [blockSelf accessibilityInfoForElement:siElement axNotification:axNotification];
-
-      // synchronise state access on main queue.
-      // this restricts usage of this class on the main thread!
-      dispatch_async(dispatch_get_main_queue(), ^{
-        NSDictionary* accessibilityInfosByPid = blockSelf.accessibilityInfosByPid;
-
-        if (forceUpdate
-            || ![accessibilityInfosByPid[@(pid)] isEqual:axInfo]) {
-
-//          __log("update ax info dict with: %@", siElement);
-
-          NSMutableDictionary* updatedAccessibilityInfosByPid = accessibilityInfosByPid.mutableCopy;
-          updatedAccessibilityInfosByPid[@(pid)] = axInfo;
-
-          blockSelf.accessibilityInfosByPid = updatedAccessibilityInfosByPid;
-        }
-      });
-    }
-  }];
 }
 
 
@@ -450,5 +393,77 @@
   // override.
 }
 
+
+@end
+
+
+
+// MARK: -
+
+@interface StateBasedBBLAccessibilityPublisher: BBLAccessibilityPublisher
+@end
+
+
+@implementation StateBasedBBLAccessibilityPublisher
+
+-(void) updateAccessibilityInfoForElement:(SIAccessibilityElement*)siElement
+                           axNotification:(CFStringRef)axNotification
+                              forceUpdate:(BOOL)forceUpdate
+{
+
+  // * case: text selection handling special cases.
+  if (CFEqual(axNotification, kAXSelectedTextChangedNotification)) {
+    
+    // NOTE some apps, e.g. iterm, seem to fail to notify observers properly.
+    // FIXME investigate why not working with Notes.app
+    // INVESTIGATE sierra + safari: notifies only for some windows.
+    // during investigation we saw that inspecting with Prefab UI Browser 'wakes up' the windows such that they send out notifications only after inspection.
+    NSString* selectedText = siElement.selectedText;
+    if (selectedText == nil) {
+      selectedText = @"";
+    }
+
+    // guard: xcode spams us with notifs even when no text has changed, so only notify when value has changed.
+    id previousSelectedText = self.accessibilityInfosByPid[@(siElement.processIdentifier)].selectedText;  // FIXME synchronise access.
+    if (previousSelectedText == nil) {
+      previousSelectedText = @"";
+    }
+
+    if ( selectedText == previousSelectedText
+        ||
+        [selectedText isEqual:previousSelectedText]) {
+      // no need to update.
+      return;
+    }
+  }
+
+  // * updated the published property.
+  
+  //   dispatch to a queue, to avoid spins if ax query of the target app takes a long time.
+  pid_t pid = siElement.processIdentifier;
+  __weak BBLAccessibilityPublisher* blockSelf = self;
+  [self execAsyncSynchronisingOnPid:pid block:^{
+    @autoreleasepool {
+      id axInfo = [blockSelf accessibilityInfoForElement:siElement axNotification:axNotification];
+
+      // synchronise state access on main queue.
+      // this restricts usage of this class on the main thread!
+      dispatch_async(dispatch_get_main_queue(), ^{
+        NSDictionary* accessibilityInfosByPid = blockSelf.accessibilityInfosByPid;
+
+        if (forceUpdate
+            || ![accessibilityInfosByPid[@(pid)] isEqual:axInfo]) {
+
+//          __log("update ax info dict with: %@", siElement);
+
+          NSMutableDictionary* updatedAccessibilityInfosByPid = accessibilityInfosByPid.mutableCopy;
+          updatedAccessibilityInfosByPid[@(pid)] = axInfo;
+
+          blockSelf.accessibilityInfosByPid = updatedAccessibilityInfosByPid;
+        }
+      });
+    }
+  }];
+}
 
 @end
