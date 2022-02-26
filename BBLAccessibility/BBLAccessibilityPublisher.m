@@ -113,7 +113,7 @@
 //      handler(window);
       
       //  check if app is active, manually issue ax notif.
-      if (SIApplication.focusedApplication.processIdentifier == app.processIdentifier) {
+      if ([SIApplication.focusedApplication.runningApplication isEqualTo:app]) {
         [blockSelf updateAccessibilityInfoForApplication:app axNotification:kAXApplicationActivatedNotification];
       }
 
