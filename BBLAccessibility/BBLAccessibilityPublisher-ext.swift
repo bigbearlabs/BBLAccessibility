@@ -150,10 +150,11 @@ enum AppEvent {
 
 let appEventPublisher = PassthroughSubject<AppEvent, Never>()
 
-public class RunningApplicationsBookkeeper {
+public actor RunningApplicationsBookkeeper {
+  
   var finishedLaunchingSubsByPid: [pid_t : Any] = [:]
 
-  var runningApplications = NSWorkspace.shared.runningApplications {
+  @Published public var runningApplications = NSWorkspace.shared.runningApplications {
     didSet {
       let newApps = Set(runningApplications).subtracting(oldValue)
         .filter {
@@ -188,6 +189,9 @@ public class RunningApplicationsBookkeeper {
     }
   }
   
+  func update(runningApplications: [NSRunningApplication]) {
+    self.runningApplications = runningApplications
+  }
   
   public func runningApplication(pid: pid_t) -> NSRunningApplication? {
     runningApplications.first { $0.processIdentifier == pid }
@@ -197,7 +201,11 @@ public class RunningApplicationsBookkeeper {
 let runningApplicationsSubscription: Any? =
   NSWorkspace.shared.publisher(for: \.runningApplications)
   .removeDuplicates()
-  .assign(to: \.runningApplications, on: runningApplicationsBookkeeper)
+  .sink { apps in
+    Task {
+      await runningApplicationsBookkeeper.update(runningApplications: apps)
+    }
+  }
 
 
 public let runningApplicationsBookkeeper = RunningApplicationsBookkeeper()
