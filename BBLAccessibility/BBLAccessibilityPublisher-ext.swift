@@ -158,9 +158,12 @@ public actor RunningApplicationsBookkeeper {
     didSet {
       let newApps = Set(runningApplications).subtracting(oldValue)
         .filter {
+          // filter out the terminated ones
+          !$0.isTerminated
           // occasionally we get a corrupt instance with pid -1.
-          $0.processIdentifier > 0
+          && $0.processIdentifier > 0
         }
+      
       let newAppSubs = Dictionary(uniqueKeysWithValues: newApps.map { app in
         (
           app.processIdentifier,
@@ -168,8 +171,7 @@ public actor RunningApplicationsBookkeeper {
             app,
             app.publisher(for: \.isFinishedLaunching, options: [.initial, .new])
               .filter { $0 == true }
-              .map { (app, $0) }
-              .sink { app, isFinishedLaunching in
+              .sink { isFinishedLaunching in
                 appEventPublisher.send(.launched(app))
                 self.finishedLaunchingSubsByPid.removeValue(forKey: app.processIdentifier)
               }
@@ -185,6 +187,7 @@ public actor RunningApplicationsBookkeeper {
       let terminatedApps = Set(oldValue).subtracting(runningApplications)
       for app in terminatedApps {
         appEventPublisher.send(.terminated(app))
+        self.finishedLaunchingSubsByPid.removeValue(forKey: app.processIdentifier)
       }
     }
   }

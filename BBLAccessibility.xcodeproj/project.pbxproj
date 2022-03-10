@@ -51,6 +51,7 @@
 		51DE74962793007200AC8845 /* BBLBasics.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 514DE3AF2490746700A3E184 /* BBLBasics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		51DE74982793007400AC8845 /* Silica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; };
 		51DE74992793007400AC8845 /* Silica.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 51D53AE21DCA3A9200079955 /* Silica.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		51F8A60127D5B76500232278 /* withPrior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F8A60027D5B76500232278 /* withPrior.swift */; };
 		51FA4A271F57740E007123B0 /* Silica-ext.m in Sources */ = {isa = PBXBuildFile; fileRef = 5123E4C01DDFD62B0099D11E /* Silica-ext.m */; };
 		51FA4A2C1F5774A5007123B0 /* AccessibilityHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA4A2B1F5774A5007123B0 /* AccessibilityHelper.swift */; };
 		51FA4A2F1F5774B0007123B0 /* AccessibilityInfo-ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA4A2D1F5774B0007123B0 /* AccessibilityInfo-ext.swift */; };
@@ -218,6 +219,7 @@
 		51DE74742792F78A00AC8845 /* Permissions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Permissions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51DE74802792F7E400AC8845 /* Permissions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Permissions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51DF495A1E4E7F9800D1DCA5 /* BBLBasics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BBLBasics.framework; path = "../../../../../../../Volumes/ramdisk/DerivedData/contexter-diussbvhwfomebclgpkcecfnrgtm/Build/Products/Debug/BBLBasics.framework"; sourceTree = "<group>"; };
+		51F8A60027D5B76500232278 /* withPrior.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = withPrior.swift; sourceTree = "<group>"; };
 		51FA4A2B1F5774A5007123B0 /* AccessibilityHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilityHelper.swift; sourceTree = "<group>"; };
 		51FA4A2D1F5774B0007123B0 /* AccessibilityInfo-ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "AccessibilityInfo-ext.swift"; path = "BBLAccessibility/AccessibilityInfo-ext.swift"; sourceTree = SOURCE_ROOT; };
 		51FA4A2E1F5774B0007123B0 /* Silica-ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Silica-ext.swift"; path = "BBLAccessibility/Silica-ext.swift"; sourceTree = SOURCE_ROOT; };
@@ -301,6 +303,7 @@
 				51100F311CC15D540095B985 /* BBLAccessibilityAppUITests */,
 				51D53ADD1DCA3A9200079955 /* Silica.xcodeproj */,
 				5183AAAF20F53038004388C3 /* lab */,
+				51F8A60027D5B76500232278 /* withPrior.swift */,
 				51100F0C1CC15D200095B985 /* Products */,
 				5191A9401E34FFBF001B94FD /* Frameworks */,
 			);
@@ -758,6 +761,7 @@
 				511EED12249116B40029982D /* BBLAccessibilityPublisher-ext.swift in Sources */,
 				51D6F89C1DDF73D0003F7E31 /* AccessibilityInfo.m in Sources */,
 				51FA4A301F5774B0007123B0 /* Silica-ext.swift in Sources */,
+				51F8A60127D5B76500232278 /* withPrior.swift in Sources */,
 				51B8F2251DB5774100E79EEC /* BBLAccessibilityPublisher.m in Sources */,
 				51FA4A2C1F5774A5007123B0 /* AccessibilityHelper.swift in Sources */,
 				51FA4A271F57740E007123B0 /* Silica-ext.m in Sources */,
