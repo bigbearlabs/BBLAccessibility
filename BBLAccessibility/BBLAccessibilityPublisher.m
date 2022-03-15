@@ -16,8 +16,6 @@
 
 @implementation BBLAccessibilityPublisher
 {
-  NSMutableDictionary<NSNumber*, SIApplication*>* observedAppsByPid;
-
   // control load of concurrent queue.
   dispatch_semaphore_t semaphore;
   dispatch_queue_t serialQueue;
@@ -31,7 +29,7 @@
   if (self) {
     _accessibilityInfosByPid = [@{} mutableCopy];
     
-    observedAppsByPid = [@{} mutableCopy];
+    _observedAppsByPid = [@{} mutableCopy];
 
     serialQueue = dispatch_queue_create(
       "BBLAccessiblityPublisher-serial",
@@ -151,8 +149,8 @@
 
 -(void) unobserveAxEvents {
 
-  @synchronized(observedAppsByPid) {
-    for (SIApplication* app in observedAppsByPid.allValues) {
+  @synchronized(_observedAppsByPid) {
+    for (SIApplication* app in _observedAppsByPid.allValues) {
       [self unobserveAxEventsForApplication:app.runningApplication];
     }
   }
@@ -189,8 +187,8 @@
   }
   
   // in order for the notifications to work, we must retain the SIApplication.
-  @synchronized(observedAppsByPid) {
-    observedAppsByPid[@(application.processIdentifier)] = siApp;
+  @synchronized(_observedAppsByPid) {
+    _observedAppsByPid[@(application.processIdentifier)] = siApp;
   }
   
   return @[];
@@ -198,10 +196,10 @@
 
 -(void) unobserveAxEventsForApplication:(NSRunningApplication*)application {
 
-  @synchronized(observedAppsByPid) {
+  @synchronized(_observedAppsByPid) {
     
     NSNumber* pid = @(application.processIdentifier);
-    SIApplication* siApp = observedAppsByPid[pid];
+    SIApplication* siApp = _observedAppsByPid[pid];
     if (siApp == nil) {
         __log("%@ %@ was not being observed.", application.bundleIdentifier, pid);
       return;
@@ -211,7 +209,7 @@
       [siApp unobserveNotification:(__bridge CFStringRef)notification withElement:siApp];
     }
   
-    [observedAppsByPid removeObjectForKey:pid];
+    [_observedAppsByPid removeObjectForKey:pid];
     
     __log("%@ deregistered observation for app %@", self, application);
   }
@@ -245,8 +243,8 @@
 }
 
 -(SIApplication*) appElementForProcessIdentifier:(pid_t)processIdentifier {
-  @synchronized(observedAppsByPid) {
-    return observedAppsByPid[@(processIdentifier)];
+  @synchronized(_observedAppsByPid) {
+    return _observedAppsByPid[@(processIdentifier)];
   }
 }
 
@@ -349,8 +347,8 @@
 
 -(void) execAsyncSynchronisingOnPid:(pid_t)pid block:(void(^)(void))block {
   SIApplication* application = nil;
-  @synchronized(observedAppsByPid) {
-    application = observedAppsByPid[@(pid)];
+  @synchronized(_observedAppsByPid) {
+    application = _observedAppsByPid[@(pid)];
   }
   if (application == nil) {
 //    @throw [[NSException alloc] initWithName:@"app-not-observed" reason:nil userInfo:@{@"pid": pid}];

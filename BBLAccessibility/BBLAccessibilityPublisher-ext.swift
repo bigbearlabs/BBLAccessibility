@@ -150,11 +150,12 @@ enum AppEvent {
 
 let appEventPublisher = PassthroughSubject<AppEvent, Never>()
 
+
 public actor RunningApplicationsBookkeeper {
   
   var finishedLaunchingSubsByPid: [pid_t : Any] = [:]
 
-  @Published public var runningApplications = NSWorkspace.shared.runningApplications {
+  public var runningApplications = NSWorkspace.shared.runningApplications {
     didSet {
       let newApps = Set(runningApplications).subtracting(oldValue)
         .filter {
