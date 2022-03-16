@@ -1,4 +1,5 @@
 import Combine
+import AppKit
 
 
 
@@ -101,15 +102,16 @@ public extension BBLAccessibilityPublisher {
   
   @objc
   func observeLaunch(_ handler: @escaping (_ app: NSRunningApplication) -> Void) {
-    _ = runningApplicationsSubscription
-    
-    handleLaunchSubscription = appEventPublisher.sink { event in
-      switch event {
-      case .launched(let app):
-        handler(app)
-      default: ()
+    handleLaunchSubscription = NSWorkspace.shared.notificationCenter.publisher(for: NSWorkspace.didLaunchApplicationNotification, object: nil)
+      .map { notif in
+        guard let app = notif.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication
+        else { fatalError() }
+        
+        return app
       }
-    }
+      .sink { app in
+        handler(app)
+      }
   }
 
   @objc
@@ -119,15 +121,16 @@ public extension BBLAccessibilityPublisher {
 
   @objc
   func observeTerminate(_ handler: @escaping (_ app: NSRunningApplication) -> Void) {
-    _ = runningApplicationsSubscription
-
-    handleTerminateSubscription = appEventPublisher.sink { event in
-      switch event {
-      case .terminated(let app):
-        handler(app)
-      default: ()
+    handleTerminateSubscription = NSWorkspace.shared.notificationCenter.publisher(for: NSWorkspace.didTerminateApplicationNotification, object: nil)
+      .map { notif in
+        guard let app = notif.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication
+        else { fatalError() }
+        
+        return app
       }
-    }
+      .sink { app in
+        handler(app)
+      }
   }
 
   @objc
@@ -193,28 +196,7 @@ public actor RunningApplicationsBookkeeper {
     }
   }
   
-  func update(runningApplications: [NSRunningApplication]) {
-    self.runningApplications = runningApplications
-  }
-  
-  public func runningApplication(pid: pid_t) -> NSRunningApplication? {
-    runningApplications.first { $0.processIdentifier == pid }
-  }
 }
-
-let runningApplicationsSubscription: Any? =
-  NSWorkspace.shared.publisher(for: \.runningApplications)
-  .removeDuplicates()
-  .sink { apps in
-    Task {
-      await runningApplicationsBookkeeper.update(runningApplications: apps)
-    }
-  }
-
-
-public let runningApplicationsBookkeeper = RunningApplicationsBookkeeper()
-
-
 
 // TODO re-implement the async dispatch method that avoids current issues:
 // - global concurrent queue thread proliferation resulting in a crash as thread count hits 256 (possibly happening when any one of the critical section blocks
