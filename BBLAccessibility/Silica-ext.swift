@@ -36,12 +36,31 @@ public extension SIApplication {
 public extension SIWindow {
   
   class func `for`(windowNumber: UInt32) -> SIWindow? {
-    if let app = NSRunningApplication.application(windowNumber: windowNumber),
-      
-      // NOTE -25204 was caused by sandbox settings applied to default app template since xcode 11.3  }
-      let siWindow = SIApplication(forProcessIdentifier: app.processIdentifier).windows.first(where: {$0.windowID ==  windowNumber}) {
-      
+    
+    guard let app = NSRunningApplication.application(windowNumber: windowNumber) else { return nil }
+    let siApp = SIApplication(forProcessIdentifier: app.processIdentifier)
+    
+    // NOTE -25204 was caused by sandbox settings applied to default app template since xcode 11.3  }
+    let siWindow = siApp.windows.first(where: {$0.windowID ==  windowNumber})
+    if siWindow != nil {
       return siWindow
+    }
+    
+    
+    // fallback in cases where reading the windows ax attribute results in an error.
+    // e.g.
+    // 2023-01-28 11:50:59.043679+0900 Zen[43434:11034094] <SIApplication: 0x600003f195f0> <Title: Finder> pid: 1388, AXApplication/(null)  file:///System/Library/CoreServices/Finder.app/: AXError -25201 getting AXWindows
+    
+    guard let children = siApp.children() as? [AXUIElement]
+    else { return nil }
+    
+    for child in children {
+      if SIAccessibilityElement(axElement: child).role() == kAXWindowRole {
+        let siWindow = SIWindow(axElement: child)
+        if siWindow.windowID == windowNumber {
+          return siWindow
+        }
+      }
     }
     
     return nil
