@@ -367,6 +367,7 @@
 
 
 /// asynchronously execute on global concurrent queue, synchronised on object to avoid deadlocks.
+/// FIXME can result in temp thread explosion.
 -(void) execAsyncSynchronisingOnObject:(id)object block:(void(^)(void))block {
   
   // use a semaphore to avoid excessive thread spawning if the code path leading to the global
