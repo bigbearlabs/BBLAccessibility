@@ -15,10 +15,9 @@ public class WindowCoordinator {
     activate windowNumberToFocus: UInt32? = nil,
     queue: DispatchQueue = coordinatorQueue
   ) {
-
-    // TODO animations
+    
     coordinatorQueue.async {
-
+      
       for (windowNumber, frame) in framesByWindowNumber.reversed() {
         
         if let window = SIWindow.for(windowNumber: windowNumber) {
@@ -31,7 +30,7 @@ public class WindowCoordinator {
           
           if raise {
             if windowNumberToFocus != nil
-              && windowNumber == windowNumberToFocus {
+                && windowNumber == windowNumberToFocus {
               // don't raise since we will focus later
             } else {
               self.raise(windowNumber: windowNumber)
@@ -44,10 +43,29 @@ public class WindowCoordinator {
         
         self.focus(windowNumber: n)
       }
-
+      
     }
+    
+    // investigating cases where call to this method didn't seem to position correctly
+#if DEBUG
+    coordinatorQueue.asyncAfter(deadline: .now() + 1) {
+      let widTargetCurrentTuple = framesByWindowNumber.map { (wid, targetFrame) in
+        let window = SIWindow.for(windowNumber: wid)!
+        let actualFrame = window.frame()
+        return (wid, targetFrame, actualFrame)
+      }
+      
+      let targetActualDiscrepencies = widTargetCurrentTuple.filter { wid, targetFrame, actualFrame in
+        targetFrame != actualFrame
+      }
+      
+      if targetActualDiscrepencies.count > 0 {
+        
+      }
+    }
+#endif
   }
-  
+
   public func focus(windowNumber: UInt32) {
     if let w = SIWindow.for(windowNumber: windowNumber) {
       w.focusOnlyThisWindow()
@@ -70,4 +88,3 @@ public class WindowCoordinator {
 
 
 public let coordinatorQueue = DispatchQueue.global(qos: .userInteractive)
-
