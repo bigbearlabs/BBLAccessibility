@@ -25,6 +25,14 @@ public extension SIApplication {
     }
   }
   
+  
+  var mainWindow: SIWindow? {
+    if let mainWindowElement = self.forKey(kAXMainWindowAttribute as CFString) {
+      return SIWindow(axElement: mainWindowElement.axElementRef)
+    }
+    return nil
+  }
+  
   var uncachedWindows: [SIWindow] {
     self.dropWindowsCache()
     return self.windows
@@ -64,6 +72,11 @@ public extension SIWindow {
     }
     
     return nil
+  }
+  
+  
+  var isMain: Bool {
+    self.bool(forKey: kAXMainAttribute as CFString)
   }
   
 }
@@ -170,9 +183,11 @@ public class SITabGroup: SIAccessibilityElement {
 extension NSRunningApplication {
   
   class func application(windowNumber: UInt32) -> NSRunningApplication? {
-    if let dict = (CGWindowListCopyWindowInfo([.optionIncludingWindow], windowNumber) as? [[CFString : Any?]])?.first {
-      let pid = Int32(truncating: (dict as NSDictionary)[kCGWindowOwnerPID] as! NSNumber)
-      return NSRunningApplication(processIdentifier: pid)
+    if let dicts = (CGWindowListCopyWindowInfo([.optionAll], kCGNullWindowID) as? [NSDictionary]) {
+      if let matching = dicts.first(where: { $0[kCGWindowNumber] as? NSNumber == NSNumber(value: windowNumber) }) {
+        let pid = Int32(truncating: matching[kCGWindowOwnerPID] as! NSNumber)
+        return NSRunningApplication(processIdentifier: pid)
+      }
     }
     return nil
   }

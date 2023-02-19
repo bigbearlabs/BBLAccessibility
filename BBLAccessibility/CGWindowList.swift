@@ -75,7 +75,7 @@ extension WindowId: CustomStringConvertible {
   }
 }
 
-public struct CGWindowInfo: Codable, Equatable {
+public struct CGWindowInfo: Codable, Hashable {
   
   public let pid: pid_t
   public let windowId: WindowId
@@ -87,7 +87,7 @@ public struct CGWindowInfo: Codable, Equatable {
 
   public let frame: CGRect
   
-  let rawData: DebugPropertyWrapper<[CFString : Any?]>?
+  public let rawData: DebugPropertyWrapper<[CFString : Any?]>?
   
 
   init?(data: [CFString : Any?], debug: Bool = false) {
@@ -251,9 +251,9 @@ extension CGWindowInfo: CustomDebugStringConvertible {
 
 // MARK: -
 
-struct DebugPropertyWrapper<T>: Codable, Equatable {
+public struct DebugPropertyWrapper<T>: Codable, Hashable {
 
-  let data: T?
+  public let data: T?
 
   init(data: T?) {
     self.data = data
@@ -262,16 +262,19 @@ struct DebugPropertyWrapper<T>: Codable, Equatable {
   
   // MARK: - no-op conformance
   
-  init(from decoder: Decoder) throws {
+  public init(from decoder: Decoder) throws {
     self.init(data: nil)
   }
   
-  func encode(to encoder: Encoder) throws {
+  public func encode(to encoder: Encoder) throws {
   }
   
-  static func == (lhs: DebugPropertyWrapper<T>, rhs: DebugPropertyWrapper<T>) -> Bool {
+  public static func == (lhs: DebugPropertyWrapper<T>, rhs: DebugPropertyWrapper<T>) -> Bool {
     return true
   }
   
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(1)
+  }
 }
 
