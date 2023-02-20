@@ -159,6 +159,7 @@ public struct CGWindowInfo: Codable, Hashable {
   }
   
   public static func query(
+    pid: pid_t? = nil,
     bundleId: String? = nil,
     scope: QueryScope = .allScreens,
     otherOptions: CGWindowListOption = [])
@@ -178,10 +179,15 @@ public struct CGWindowInfo: Codable, Hashable {
       // ?
       return []
     }
-          
-    let pidsForBundleId = bundleId.flatMap {
-      NSRunningApplication.runningApplications(withBundleIdentifier: $0)
-        .map { $0.processIdentifier }
+  
+    let pids: [pid_t]?
+    if let pid = pid {
+      pids = [pid]
+    } else {
+      pids = bundleId.flatMap {
+        NSRunningApplication.runningApplications(withBundleIdentifier: $0)
+          .map { $0.processIdentifier }
+      }
     }
       
     let results: [CGWindowInfo] = windowInfos.compactMap { e in
@@ -191,7 +197,7 @@ public struct CGWindowInfo: Codable, Hashable {
       }
       
       // apply bid filter early.
-      if let pids = pidsForBundleId,
+      if let pids = pids,
         let pid = e[kCGWindowOwnerPID] as? pid_t {
         if !pids.contains(pid) {
           return nil
