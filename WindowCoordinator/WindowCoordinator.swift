@@ -49,10 +49,11 @@ public class WindowCoordinator {
     // investigating cases where call to this method didn't seem to position correctly
 #if DEBUG
     coordinatorQueue.asyncAfter(deadline: .now() + 1) {
-      let widTargetCurrentTuple = framesByWindowNumber.map { (wid, targetFrame) in
-        let window = SIWindow.for(windowNumber: wid)!
-        let actualFrame = window.frame()
-        return (wid, targetFrame, actualFrame)
+      let widTargetCurrentTuple = framesByWindowNumber.compactMap { wid, targetFrame in
+        SIWindow.for(windowNumber: wid).flatMap { window in
+          let actualFrame = window.frame()
+          return (wid, targetFrame, actualFrame)
+        }
       }
       
       let targetActualDiscrepencies = widTargetCurrentTuple.filter { wid, targetFrame, actualFrame in
