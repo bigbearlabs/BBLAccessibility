@@ -1,3 +1,4 @@
 [submodule "Silica"]
 	path = Silica
 	url = git@github.com:bigbearlabs/Silica.git
+	update = rebase
