@@ -25,7 +25,7 @@ public struct AxApplication {
   
   public func focus(windowNumber: CGWindowID) {
     print("focusing window \(windowNumber)")
-    let matches = self.siApp.windows.filter {
+    let matches = self.siApp.uncachedWindows.filter {
       $0.windowID == windowNumber
     }
     

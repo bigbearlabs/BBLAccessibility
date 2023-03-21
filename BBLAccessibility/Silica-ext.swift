@@ -49,7 +49,7 @@ public extension SIWindow {
     let siApp = SIApplication(forProcessIdentifier: app.processIdentifier)
     
     // NOTE -25204 was caused by sandbox settings applied to default app template since xcode 11.3  }
-    let siWindow = siApp.windows.first(where: {$0.windowID ==  windowNumber})
+    let siWindow = siApp.uncachedWindows.first(where: {$0.windowID ==  windowNumber})
     if siWindow != nil {
       return siWindow
     }
