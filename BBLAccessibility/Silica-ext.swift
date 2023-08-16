@@ -255,17 +255,18 @@ extension SIWindow {
 //    guard UserConfiguration.shared.mouseFollowsFocus() else {
 //        return true
 //    }
-
-    let windowFrame = self.frame()
-    let mouseCursorPoint = NSPoint(x: windowFrame.midX, y: windowFrame.midY)
-    guard let mouseMoveEvent = CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: mouseCursorPoint, mouseButton: .left) else {
+    let mouseFollowsFocus = false
+    if mouseFollowsFocus {
+      let windowFrame = self.frame()
+      let mouseCursorPoint = NSPoint(x: windowFrame.midX, y: windowFrame.midY)
+      guard let mouseMoveEvent = CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: mouseCursorPoint, mouseButton: .left) else {
         return
+      }
+      mouseMoveEvent.flags = CGEventFlags(rawValue: 0)
+      mouseMoveEvent.post(tap: CGEventTapLocation.cghidEventTap)
     }
-    mouseMoveEvent.flags = CGEventFlags(rawValue: 0)
-    mouseMoveEvent.post(tap: CGEventTapLocation.cghidEventTap)
-
+    
     return
-
   }
 }
 
