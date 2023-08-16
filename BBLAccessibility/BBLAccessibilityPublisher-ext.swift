@@ -92,8 +92,25 @@ public extension BBLAccessibilityPublisher {
       completionHandler(nil)
     }
   }
-}
+  
+  // MARK: -
 
+  // NOTE #execAsyncSynchronising causes thread explosion due to its use of global concurrent queues.
+  // this freaks us out every now and then when we see 100+ threads.
+  //
+  // But after considering many alternatives, this is still considered the best trade-off to make as of now, since:
+  // - it has the least impact in the face of a blocked thread when making ax queries (e.g. Expander unzipping Xcode)
+  // - the only occasions where thread explosion occurs are: a) on app launch where we need all ax subscriptions -- this is very thread-heavy, and b) space changes bring forth a lot of new apps that need to be queried -- this is moderately thread-heavy.
+  //
+  // in the future we may be able to reimplement this method to work on swift async operations + precise cancellations.
+  // but it's still unclear whether such an approach would mitigate issues when the ax query blocks and doesn't return, which in principle can happen with any locked process currently running.
+  // so, revisit when thread explosion becomes a more material issue.
+//  // temp swift-impl to investigate cause of abandoned memory
+//  @objc
+//  func execAsyncSynchronising(onObject: NSObject, block: @escaping () -> Void) {
+  // IMPL!
+//  }
+}
 
 // MARK: -  ax observation of newly launched apps
 
