@@ -209,3 +209,82 @@ extension NSRunningApplication {
 }
 
 
+
+// MARK: - window focusing hack
+
+extension SIWindow {
+
+  ///  messy indeed.
+  ///  https://github.com/ianyh/Amethyst/blob/4d0e820beb25f4bdb89088326a470a9132d89ccb/Amethyst/Model/Window.swift#L16
+  public func focusBetter() {
+    let pid = self.processIdentifier()
+    var wid = self.windowID
+    var psn = ProcessSerialNumber()
+    let status = GetProcessForPID(pid, &psn)
+
+    guard status == noErr else {
+        return
+    }
+
+    var cgStatus = _SLPSSetFrontProcessWithOptions(&psn, wid, SLPSMode.userGenerated.rawValue)
+
+    guard cgStatus == .success else {
+        return
+    }
+
+    for byte in [0x01, 0x02] {
+        var bytes = [UInt8](repeating: 0, count: 0xf8)
+        bytes[0x04] = 0xF8
+        bytes[0x08] = UInt8(byte)
+        bytes[0x3a] = 0x10
+        memcpy(&bytes[0x3c], &wid, MemoryLayout<UInt32>.size)
+        memset(&bytes[0x20], 0xFF, 0x10)
+        cgStatus = bytes.withUnsafeMutableBufferPointer { pointer in
+            return SLPSPostEventRecordTo(&psn, &pointer.baseAddress!.pointee)
+        }
+        guard cgStatus == .success else {
+            return
+        }
+    }
+
+//    guard super.focus() else {
+//        return false
+//    }
+    self.focusOnlyThisWindow()
+    
+//    guard UserConfiguration.shared.mouseFollowsFocus() else {
+//        return true
+//    }
+
+    let windowFrame = self.frame()
+    let mouseCursorPoint = NSPoint(x: windowFrame.midX, y: windowFrame.midY)
+    guard let mouseMoveEvent = CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: mouseCursorPoint, mouseButton: .left) else {
+        return
+    }
+    mouseMoveEvent.flags = CGEventFlags(rawValue: 0)
+    mouseMoveEvent.post(tap: CGEventTapLocation.cghidEventTap)
+
+    return
+
+  }
+}
+
+//// focuses the front process
+//// * macOS 10.12+
+@_silgen_name("_SLPSSetFrontProcessWithOptions") @discardableResult
+func _SLPSSetFrontProcessWithOptions(_ psn: inout ProcessSerialNumber, _ wid: CGWindowID, _ mode: SLPSMode.RawValue) -> CGError
+
+enum SLPSMode: UInt32 {
+    case allWindows = 0x100
+    case userGenerated = 0x200
+    case noWindows = 0x400
+}
+
+// returns the psn for a given pid
+// * macOS 10.9-10.15 (officially removed in 10.9, but available as a private API still)
+@_silgen_name("GetProcessForPID") @discardableResult
+func GetProcessForPID(_ pid: pid_t, _ psn: inout ProcessSerialNumber) -> OSStatus
+
+@_silgen_name("SLPSPostEventRecordTo") @discardableResult
+func SLPSPostEventRecordTo(_ psn: inout ProcessSerialNumber, _ bytes: inout UInt8) -> CGError
+
