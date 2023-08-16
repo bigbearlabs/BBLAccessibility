@@ -81,6 +81,20 @@ public extension SIWindow {
   
 }
 
+extension SIWindow {
+  open override var debugDescription: String {
+    let minDesc = isWindowMinimized() ? " min'ed" : ""
+    let visDesc = isVisible() ? "" : " notVisible"
+    let tabsDesc = tabGroup.map {
+      " \($0.tabs.count) tabs"
+    } ?? ""
+    return self.description
+      + tabsDesc
+      + minDesc
+      + visDesc
+    
+  }
+}
 
 public extension SIAccessibilityElement {
   var roleDescription: String? {
