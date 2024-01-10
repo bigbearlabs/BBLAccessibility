@@ -172,6 +172,10 @@ public class SITabGroup: SIAccessibilityElement {
     SIWindow.init(for: self)
   }
   
+  public override var description: String {
+    "tabGroup:\(self.axElementRef.hashValue)"
+  }
+  
   public struct Tab: Equatable, CustomStringConvertible {
     public let title: String
     public let isSelected: Bool
