@@ -256,21 +256,17 @@ extension SIWindow {
 //    }
     self.focusOnlyThisWindow()
     
-//    guard UserConfiguration.shared.mouseFollowsFocus() else {
-//        return true
-//    }
-    let mouseFollowsFocus = false
-    if mouseFollowsFocus {
-      let windowFrame = self.frame()
-      let mouseCursorPoint = NSPoint(x: windowFrame.midX, y: windowFrame.midY)
-      guard let mouseMoveEvent = CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: mouseCursorPoint, mouseButton: .left) else {
+    guard UserConfiguration.shared.mouseFollowsFocus() else {
         return
-      }
-      mouseMoveEvent.flags = CGEventFlags(rawValue: 0)
-      mouseMoveEvent.post(tap: CGEventTapLocation.cghidEventTap)
     }
     
-    return
+    let windowFrame = self.frame()
+    let mouseCursorPoint = NSPoint(x: windowFrame.midX, y: windowFrame.midY)
+    guard let mouseMoveEvent = CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: mouseCursorPoint, mouseButton: .left) else {
+      return
+    }
+    mouseMoveEvent.flags = CGEventFlags(rawValue: 0)
+    mouseMoveEvent.post(tap: CGEventTapLocation.cghidEventTap)
   }
 }
 
@@ -293,3 +289,13 @@ func GetProcessForPID(_ pid: pid_t, _ psn: inout ProcessSerialNumber) -> OSStatu
 @_silgen_name("SLPSPostEventRecordTo") @discardableResult
 func SLPSPostEventRecordTo(_ psn: inout ProcessSerialNumber, _ bytes: inout UInt8) -> CGError
 
+
+// MARK: -
+
+struct UserConfiguration {
+  static let shared = UserConfiguration()
+  
+  func mouseFollowsFocus() -> Bool {
+    false
+  }
+}
