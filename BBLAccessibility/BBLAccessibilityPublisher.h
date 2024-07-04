@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <Silica/Silica.h>
-#import "AccessibilityInfo.h"
+#import <BBLAccessibility/AccessibilityInfo.h>
 
 @interface BBLAccessibilityPublisher : NSObject
 
