@@ -42,6 +42,8 @@ public class WindowCoordinator {
       if let n = windowNumberToFocus {
         
         self.focus(windowNumber: n)
+        
+        // FIXME will crash if invoked on own process -- check and dispatch on main if this is my own window.
       }
       
     }
