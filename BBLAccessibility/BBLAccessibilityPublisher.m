@@ -355,6 +355,7 @@
     
     // retrieve running app, sync on it.
     application = [SIApplication applicationForProcessIdentifier:pid];
+    NSLog(@"created obj %@ to synchronise operations", application);
 //    if (![self shouldObserveApplication:application]) {
 //
 //    }
@@ -367,7 +368,7 @@
 
 
 /// asynchronously execute on global concurrent queue, synchronised on object to avoid deadlocks.
-/// FIXME can result in temp thread explosion.
+/// NOTE for zen, overridden by swift impl in WindowListMonitor
 -(void) execAsyncSynchronisingOnObject:(id)object block:(void(^)(void))block {
   
   // use a semaphore to avoid excessive thread spawning if the code path leading to the global

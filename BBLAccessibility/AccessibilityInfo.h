@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <Silica/Silica.h>
-#import "Silica-ext.h"
+#import <BBLAccessibility/Silica-ext.h>
+
 
 @interface AccessibilityInfo : NSObject
 

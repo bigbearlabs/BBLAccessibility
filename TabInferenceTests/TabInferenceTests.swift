@@ -9,6 +9,7 @@
 import XCTest
 @testable import TabInference
 import BBLAccessibility
+import CGWindow
 
 
 
